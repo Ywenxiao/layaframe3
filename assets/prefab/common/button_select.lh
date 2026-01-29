@@ -1,0 +1,72 @@
+{
+  "_$ver": 1,
+  "_$id": "dq4jxxc2",
+  "_$type": "GButton",
+  "name": "Button",
+  "x": 325,
+  "y": 873,
+  "width": 128,
+  "height": 47,
+  "anchorX": 0.5,
+  "anchorY": 0.5,
+  "titleWidget": {
+    "_$ref": "kahpmowa"
+  },
+  "iconWidget": {
+    "_$ref": "ug1dmopr"
+  },
+  "downEffect": 2,
+  "_$child": [
+    {
+      "_$id": "ug1dmopr",
+      "_$type": "GImage",
+      "name": "normal",
+      "width": 128,
+      "height": 47,
+      "relations": [
+        {
+          "_$type": "Relation",
+          "target": {
+            "_$ref": "dq4jxxc2"
+          },
+          "data": [
+            1,
+            0,
+            2,
+            0
+          ]
+        }
+      ],
+      "src": "res://6822677b-6c62-4f7d-bf7a-21dfd0c6e546"
+    },
+    {
+      "_$id": "kahpmowa",
+      "_$type": "GTextField",
+      "name": "title",
+      "x": 4,
+      "y": 4,
+      "width": 120,
+      "height": 38,
+      "relations": [
+        {
+          "_$type": "Relation",
+          "target": {
+            "_$ref": "dq4jxxc2"
+          },
+          "data": [
+            1,
+            0,
+            2,
+            0
+          ]
+        }
+      ],
+      "text": "点击",
+      "_isDemo": true,
+      "fontSize": 20,
+      "bold": true,
+      "align": "center",
+      "valign": "middle"
+    }
+  ]
+}

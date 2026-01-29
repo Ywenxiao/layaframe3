@@ -1,0 +1,26 @@
+{
+  "resolution": {
+    "designWidth": 750,
+    "designHeight": 1334
+  },
+  "modules": {
+    "laya.ui": true,
+    "laya.d3": true,
+    "laya.spine": true,
+    "laya.particle": true,
+    "laya.trail2D": true,
+    "laya.line2D": true,
+    "laya.light2D": true,
+    "laya.device": true,
+    "laya.tilemap": true,
+    "laya.physics2D": true
+  },
+  "addons": {
+    "laya.ui": "ui2"
+  },
+  "splash": {
+    "fit": "center"
+  },
+  "stat": true,
+  "vConsole": true
+}
