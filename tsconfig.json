@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "es6",
     "target": "es6",
-    "strict": true,
+    "strict": false,
     "strictNullChecks": false,
     "noEmitHelpers": true,
     "sourceMap": false,

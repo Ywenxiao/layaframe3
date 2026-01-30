@@ -1,13 +1,5 @@
 {
-  "defines": [
-    {
-      "name": "DEBUG",
-      "debugValue": "true",
-      "releaseValue": "false"
-    }
-  ],
-  "entries": [
-    "res://7bad1742-6eed-4d8d-81c0-501dc5bf03d6"
-  ],
+  "defines": [],
+  "entries": [],
   "mainScript": "res://7bad1742-6eed-4d8d-81c0-501dc5bf03d6"
 }

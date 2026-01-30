@@ -13,7 +13,8 @@
     "laya.light2D": true,
     "laya.device": true,
     "laya.tilemap": true,
-    "laya.physics2D": true
+    "laya.physics2D": true,
+    "laya.navMesh2D": true
   },
   "addons": {
     "laya.ui": "ui2"
