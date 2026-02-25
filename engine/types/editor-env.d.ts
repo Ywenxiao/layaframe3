@@ -1475,6 +1475,24 @@ declare global {
              */
             function collectResources(node: Laya.Node, out?: Set<any>): Set<any>;
         }
+        export interface ValidationError {
+            /**
+             * RFC 6902 JSON Pointer 格式的错误位置路径
+             * 例如: /root/child/items/0/position
+             */
+            path: string;
+            errorType: 'undefined-property' | 'type-mismatch' | 'invalid-type' | 'prefab-conflict' | 'invalid-prefab-format' | 'invalid-override' | 'override-position-error' | 'prefab-missing' | 'override-node-missing' | 'parent-node-missing';
+            errorMessage: string;
+        }
+
+        export interface IHierarchyValidator {
+            /**
+             * Validate the hierarchy data.
+             * @param data The hierarchy data.
+             * @returns The list of validation errors.
+             */
+            validate(data: any): ValidationError[];
+        }
         export interface IHandle {
             get valueChanged(): boolean;
         }
@@ -2782,6 +2800,11 @@ declare global {
              * Whether to load the subpackage on startup.
              */
             autoLoad?: boolean;
+
+            /**
+             * If true, add all assets in the specified folder to this subpackage.
+             */
+            packAllAssets?: boolean;
         }
 
         export interface IExportAssetToolOptions {
@@ -5199,6 +5222,10 @@ declare global {
              * This is usually used to determine whether the prefab property is overridden.
              */
             affectBy?: string;
+            /**
+             * The property is only effective in the editor and will not be stripped in the build.
+             */
+            stripInBuild?: boolean;
 
             /**
              * Whether the text input is multiline. Default is false.
@@ -7141,6 +7168,14 @@ declare global {
             getNodeBaseType(type: string): string;
 
             /**
+             * Check whether two types share the same base type.
+             * @param type1 The first type name.
+             * @param type2 The second type name.
+             * @returns Whether the two types share the same base type. 
+             */
+            hasSameBase(type1: string, type2: string): boolean
+
+            /**
              * Whether a type is deprecated. If an new type descriptor is registered with the same name, the original type descriptor will be marked as deprecated.
              * @param type The type descriptor.
              * @returns Whether the type is deprecated.
@@ -9039,6 +9074,11 @@ declare global {
          * `HierarchyWriter` is a helper class for serializing nodes and components.
          */
         const HierarchyWriter: typeof IHierarchyWriter;
+
+        /**
+         * `HierarchyValidator` is a helper class for validating hierarchy data.
+         */
+        const HierarchyValidator: new () => IHierarchyValidator;
 
         /**
          * `SerializeUtil` is a helper class for serializing and deserializing objects.

@@ -939,6 +939,14 @@ declare global {
             getNodeBaseType(type: string): string;
 
             /**
+             * Check whether two types share the same base type.
+             * @param type1 The first type name.
+             * @param type2 The second type name.
+             * @returns Whether the two types share the same base type. 
+             */
+            hasSameBase(type1: string, type2: string): boolean
+
+            /**
              * Whether a type is deprecated. If an new type descriptor is registered with the same name, the original type descriptor will be marked as deprecated.
              * @param type The type descriptor.
              * @returns Whether the type is deprecated.
@@ -7232,6 +7240,31 @@ declare global {
              */
             limit?: number;
         }
+        export interface IAssetDependencyTool {
+            /**
+             * Query the dependencies of the given assets.
+             * @param assetIds The asset IDs or paths to query.
+             * @param includeIndirectLinks Whether to include indirect dependencies.
+             * @param noSubAsset Whether to exclude sub-assets and only return their parent assets.
+             * @returns A promise that resolves to a tuple containing an array of asset info objects representing the dependencies and an array of asset IDs or paths that were not found.
+             */
+            queryDependency(assetIds: ReadonlyArray<string>, includeIndirectLinks?: boolean, noSubAsset?: boolean): Promise<[Array<IAssetInfo>, Array<string>]>;
+
+            /**
+             * Query the assets that reference the given asset IDs or paths.
+             * @param assetIdOrPaths The asset IDs or paths to query.
+             * @returns A promise that resolves to an array of asset info objects representing the referencing assets. 
+             */
+            queryReference(assets: ReadonlyArray<string>): Promise<Array<IAssetInfo>>;
+
+            /**
+             * Replace references in assets based on the given replacements mapping.
+             * @param replacements A mapping of original asset IDs or paths to new asset IDs or paths. 
+             * @param targetAssets An optional set of assets to limit the replacement operation to.
+             * @returns A promise that resolves to an array of asset ids representing the assets that were modified.
+             */
+            replaceReference(replacements: Record<string, string>, targetAssets?: ReadonlySet<IAssetInfo>): Promise<Array<string>>;
+        }
         /**
          * Interface for an asset database.
          */
@@ -7632,6 +7665,11 @@ declare global {
             readonly storeToken: string;
 
             /**
+             * The main login token.
+             */
+            readonly token: string;
+
+            /**
              * Log in.
              */
             login(): Promise<void>;
@@ -7823,6 +7861,10 @@ declare global {
              * This is usually used to determine whether the prefab property is overridden.
              */
             affectBy?: string;
+            /**
+             * The property is only effective in the editor and will not be stripped in the build.
+             */
+            stripInBuild?: boolean;
 
             /**
              * Whether the text input is multiline. Default is false.
@@ -8476,6 +8518,11 @@ declare global {
              * Save all scenes.
              */
             saveAll(): void;
+
+            /**
+             * Discard changes of the current scene.
+             */
+            discardChanges(): void;
 
             /**
              * Save all scenes with confirmation.
@@ -9483,6 +9530,8 @@ declare global {
          * The `DataComponent` class is used to create a data component.
          * @param type The type of the data component.
          * @param data The data of the component.
+         * @param noInitialLoading Whether to skip the initial loading of data. Defaults to false.
+         * @param hasTypeField Whether the object includes a type field, ie. "_$type". Defaults to false.
          * @example
          * ```
          * ＠IEditor.regClass()
@@ -9504,7 +9553,7 @@ declare global {
          * dc.props.name = "Test"; //Output: Set name: Test
          * ```
          */
-        const DataComponent: new (type: string | Function, data?: any) => IDataComponent;
+        const DataComponent: new (type: string | Function, data?: any, noInitialLoading?: boolean, hasTypeField?: boolean) => IDataComponent;
 
         /**
          * The `InspectorRegistry` class is used to register inspector fields.
@@ -9581,6 +9630,11 @@ declare global {
          * The `JsonBin` object is used to serialize and deserialize objects into binary data.
          */
         const JsonBin: IJsonBin;
+
+        /**
+         * The `AssetDependencyTool` object is used to query asset dependencies and references.
+         */
+        const AssetDependencyTool: IAssetDependencyTool;
 
         /**
          * References a commonjs module. You can import built-in Node.js modules such as: path, fs, child_process, etc. 
@@ -9686,6 +9740,9 @@ declare global {
          * 
          *     ＠IEditor.property({ type: String, enumSource: [ { name: "A", value: "a" }, { name: "B", value: "b" } ] })
          *     enumName: string = "a";
+         * 
+         *    ＠IEditor.property({ type: CustomClass }) //CustomClass must have been registered using IEditor.regClass()
+         *    custom: CustomClass = new CustomClass();
          * }
          * ```
          */

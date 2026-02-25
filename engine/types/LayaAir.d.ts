@@ -7272,7 +7272,6 @@ declare namespace Laya {
      * @zh 用来描述动画层遮罩。
      */
     class AvatarMask {
-        /**@internal */
         private _avatarPathMap;
         /**
          * @en Constructor, initialize mask information.
@@ -10335,7 +10334,6 @@ declare namespace Laya {
     class DirectionLightCom extends Light {
         /**@internal */
         _dataModule: IDirectLightData;
-        /** @internal */
         private _direction;
         /** @internal */
         _shadowTwoCascadeSplits: number;
@@ -10399,11 +10397,9 @@ declare namespace Laya {
      * @zh LightSprite 类用于创建灯光的父类。
      */
     class Light extends Component {
-        /**@internal 下沉数据集合 */
+        /**下沉数据集合 */
         protected _dataModule: IDirectLightData | ISpotLightData | IPointLightData;
-        /** @internal */
         protected _shadowMode: ShadowMode;
-        /** @internal */
         private _isAlternate;
         /** @internal */
         _intensityColor: Vector3;
@@ -10512,7 +10508,7 @@ declare namespace Laya {
         protected _onDisable(): void;
     }
     /**
-     * @internal
+     * @ignore
      * @en The `LightQueue` class manages a queue of lights.
      * @zh `LightQueue` 类管理一个灯光队列
      */
@@ -15538,7 +15534,10 @@ declare namespace Laya {
         private _simpleAnimatorTextureSize;
         /**  x simpleAnimation offset,y simpleFrameOffset*/
         private _simpleAnimatorOffset;
-        /**@internal */
+        /**
+         * @en The number of bones.
+         * @zh 骨骼数量
+         */
         _bonesNums: number;
         private _ownerSimpleRenderNode;
         /**
@@ -16819,7 +16818,6 @@ declare namespace Laya {
     class SphericalHarmonicsL2 {
         /** @internal */
         static _default: SphericalHarmonicsL2;
-        /** @internal */
         private _coefficients;
         /**
          * @en Gets the coefficient for a specific color channel.
@@ -19981,38 +19979,38 @@ declare namespace Laya {
         _cloneTo(dest: PhysicsColliderComponent): void;
     }
     /**
-     * @en The PhysicsSettings class is used to create physics configuration information.
      * @zh PhysicsSettings 类用于创建物理配置信息。
+     * @en The PhysicsSettings class is used to create physics configuration information.
      */
     class PhysicsSettings {
         /**
-         * @en Flags that determine the behavior of the physics engine.
          * @zh 标志位，用于确定物理引擎的行为。
+         * @en Flags that determine the behavior of the physics engine.
          */
         flags: number;
         /**
-         * @en Used in the physics engine to specify the maximum number of substeps allowed per frame to improve the accuracy and stability of the physics simulation.
-         * @zh 最大子步数,在物理引擎中用于指定每一帧允许的最大子步骤数，以提高物理模拟的精度和稳定性。
+         * @zh 单帧最大追帧步数限制一帧内最多执行的物理步数量，用于在掉帧时控制 CPU 峰值并防止物理追赶过度。数值越大，物理跟随时间越准确，但负载也越高。
+         * @en maxSubSteps limits the maximum number of physics steps executed in a single frame. It helps control CPU spikes during frame drops. Higher values keep physics closer to real time but increase computational load.
          */
         maxSubSteps: number;
         /**
-         * @en The time step of the physics simulation.
-         * @zh 固定时间步长，物理模拟器帧的间隔时间。
+         * @zh 固定模拟步长用于定义物理世界中每个模拟步（Step）的时间长度（秒），保证物理计算在不同帧率下具有一致性和稳定性。步长越小，物理精度越高，但 CPU 开销增加。
+         * @en fixedTimeStep defines the duration of a single physics simulation step (in seconds), ensuring consistent and stable physics results across different frame rates. Smaller values increase simulation accuracy at the cost of higher CPU usage.
          */
         fixedTimeStep: number;
         /**
-         * @en Whether to enable continuous collision detection.
-         * @zh 是否开启连续碰撞检测
+         * @zh 连续碰撞检测全局开关用于指示物理系统是否允许使用 CCD 机制，以减少高速物体穿透。开启表示允许 CCD，但是否生效还需结合刚体模式及 CCD 相关参数。
+         * @en enableCCD specifies whether the physics system allows the use of Continuous Collision Detection (CCD) to reduce high-speed object penetration. Enabling it permits CCD, but actual effect depends on rigid body settings and CCD parameters.
          */
         enableCCD: boolean;
         /**
-         * @en The threshold for Continuous Collision Detection (CCD).
-         * @zh 连续碰撞检测的阈值。
+         * @zh CCD 启动位移阈值定义物体在单个物理步内位移超过多少时触发 CCD，从而降低不必要的高成本计算。建议根据物体尺寸和速度设置。
+         * @en ccdThreshold defines the displacement within a single physics step that triggers CCD. It prevents unnecessary high-cost calculations. Recommended to set based on object size and velocity.
          */
         ccdThreshold: number;
         /**
-         * @en The radius of the sphere used for Continuous Collision Detection.
-         * @zh 连续碰撞检测的球体半径。
+         * @zh CCD 扫掠球半径用于近似物体在单步运动路径上的体积，用于检测高速穿透。半径应接近物体最小厚度或有效半径，以保证碰撞检测可靠性。
+         * @en ccdSphereRadius approximates the object’s volume along its motion path in a single physics step, used to detect high-speed penetration. The radius should be close to the object’s minimum thickness or effective radius for reliable collision detection.
          */
         ccdSphereRadius: number;
     }
@@ -25214,8 +25212,8 @@ declare namespace Laya {
          */
         sizeGrid: number[];
         /**
-         * @en Color tint for the texture (default: 0xffffffff)
-         * @zh 纹理的颜色色调（默认值：0xffffffff）
+         * @en Color tint for the texture (default: 0xffffffff). The format is ABGR.
+         * @zh 纹理的颜色色调（默认值：0xffffffff）。格式是ABGR。
          */
         color: number;
         /**
@@ -26116,7 +26114,7 @@ declare namespace Laya {
         height: number;
         /**
          * @en The fill color
-         * @zh 填充颜色
+         * @zh 填充颜色.
          */
         fillColor: any;
         /**
@@ -26371,8 +26369,8 @@ declare namespace Laya {
          */
         alpha: number;
         /**
-         * @en (Optional) Color filter.
-         * @zh （可选）颜色滤镜。
+         * @en (Optional) Color filter. The format is ABGR.
+         * @zh （可选）颜色滤镜。格式是ABGR。
          */
         color: number;
         /**
@@ -26826,8 +26824,8 @@ declare namespace Laya {
          */
         percent: boolean;
         /**
-         * @en (Optional) Drawing color
-         * @zh （可选）绘图颜色
+         * @en (Optional) Drawing color. The format is ABGR.
+         * @zh （可选）绘图颜色。格式是ABGR。
          */
         color: number;
         /**
@@ -27334,11 +27332,25 @@ declare namespace Laya {
         private _alphaArray;
         private _matrix;
         constructor(matrix?: number[]);
+        /**
+         * @en The color matrix.
+         * @zh 颜色矩阵。
+         */
         get colorMat(): Matrix4x4;
         set colorMat(value: Matrix4x4);
+        /**
+         * @en Sets the filter to a grayscale filter.
+         * @zh 将滤镜设置为灰度滤镜。
+         * @returns The current ColorEffect2D instance.
+         */
         gray(): ColorEffect2D;
+        /**
+         * @en The alpha value.
+         * @zh Alpha 值。
+         */
         get alpha(): Vector4;
         set alpha(value: Vector4);
+        /** @ignore */
         effectInit(postprocess: PostProcess2D): void;
         /**
          * @en Sets the matrix data.
@@ -30027,34 +30039,94 @@ declare namespace Laya {
         _setUnBelongScene(): void;
         protected _findOwnerArea(): void;
         private _zoom;
+        /**
+         * @en Zoom factor of the camera
+         * @zh 相机的缩放系数
+         */
         get zoom(): Vector2;
         set zoom(value: Vector2);
         /** @internal min_x max_x min_y max_y */
         _rect: Vector4;
+        /**
+         * @en The left boundary of the camera position limit range
+         * @zh 相机位置的限制范围的左边界
+         */
         get limit_Left(): number;
         set limit_Left(value: number);
+        /**
+         * @en The right boundary of the camera position limit range
+         * @zh 相机位置的限制范围的右边界
+         */
         get limit_Right(): number;
         set limit_Right(value: number);
+        /**
+         * @en The bottom boundary of the camera position limit range
+         * @zh 相机位置的限制范围的下边界
+         */
         get limit_Bottom(): number;
         set limit_Bottom(value: number);
+        /**
+         * @en The top boundary of the camera position limit range
+         * @zh 相机位置的限制范围的上边界
+         */
         get limit_Top(): number;
         set limit_Top(value: number);
+        /**
+         * @en Whether to enable position smoothing
+         * @zh 是否启用位置平滑
+         */
         get positionSmooth(): boolean;
         set positionSmooth(value: boolean);
+        /**
+         * @en The speed of position smoothing, the larger the value, the faster the speed
+         * @zh 位置平滑的速度，值越大，速度越快
+         */
         get positionSpeed(): number;
         set positionSpeed(value: number);
+        /**
+         * @en Whether to enable rotation smoothing
+         * @zh 是否启用旋转平滑
+         */
         rotationSmooth: boolean;
+        /**
+         * @en The speed of rotation smoothing, the larger the value, the faster the speed. The value range is 0-1
+         * @zh 旋转平滑的速度，值越大，速度越快。取值范围0-1
+         */
         rotationSpeed: number;
+        /**
+         * @en Whether to enable horizontal drag
+         * @zh 是否启用水平拖拽
+         */
         get dragHorizontalEnable(): boolean;
         set dragHorizontalEnable(value: boolean);
+        /**
+         * @en Whether to enable vertical drag
+         * @zh 是否启用垂直拖拽
+         */
         get dragVerticalEnable(): boolean;
         set dragVerticalEnable(value: boolean);
+        /**
+         * @en Left drag boundary. The value range is 0-1
+         * @zh 左拖拽边界。取值范围0-1
+         */
         get drag_Left(): number;
         set drag_Left(value: number);
+        /**
+         * @en Right drag boundary. The value range is 0-1
+         * @zh 右拖拽边界。取值范围0-1
+         */
         get drag_Right(): number;
         set drag_Right(value: number);
+        /**
+         * @en Top drag boundary. The value range is 0-1
+         * @zh 上拖拽边界。取值范围0-1
+         */
         get drag_Top(): number;
         set drag_Top(value: number);
+        /**
+         * @en Bottom drag boundary. The value range is 0-1
+         * @zh 下拖拽边界。取值范围0-1
+         */
         get drag_Bottom(): number;
         set drag_Bottom(value: number);
         /**
@@ -31308,8 +31380,8 @@ declare namespace Laya {
         get pivotY(): number;
         set pivotY(value: number);
         /**
-         * @en The anchor point's x-coordinate, ranging from 0 to 1. Setting anchorX will ultimately change the node's pivot point through the pivotX value.
-         * @zh X 轴锚点,值为 0-1。设置 anchorX 值最终会通过 pivotX 值来改变节点的轴心点。
+         * @en The anchor point's x-coordinate, ranging from 0 to 1. Setting anchorX will ultimately change the node's pivot point through the pivotX value. The anchor point affects the object's position, scaling center, and rotation center. The object's position calculation within the parent element is based on the anchor point. However, the position calculation of the object's child nodes is still based on the top-left corner.
+         * @zh X 轴锚点,值为 0-1。设置 anchorX 值最终会通过 pivotX 值来改变节点的轴心点。锚点会影响对象的位置、缩放中心和旋转中心。对象在父元件中的位置计算是基于锚点的。但对象的子节点位置计算仍然是基于左上角。
          */
         get anchorX(): number;
         set anchorX(value: number);
@@ -41026,43 +41098,35 @@ declare namespace Laya {
         get maxColorRGBKeysCount(): number;
         private _colorRGBKeysCount;
         /**
-         * @en Get the count of color RGB keys.
-         * @returns The count of color RGB keys.
-         * @zh 获取颜色 RGB 数量。
-         * @returns 颜色 RGB 数量。
+         * @en The count of color RGB keys.
+         * @zh 颜色 RGB 数量。
          */
         get colorRGBKeysCount(): number;
         /**@internal */
         _rgbElementDatas: Float32Array;
         /**
-         * @internal
-         * rgb 数据 保存设置值
+         * @ignore
+         * @en RGB data storage settings. The first is the key, and the second, third, and fourth are the R, G, and B values, forming a group, and so on.
+         * @zh RGB数据 保存设置值。第一个为键，第二、第三、第四为R、G、B值，组成一组，以此类推。
          */
         get _rgbElements(): Float32Array;
-        /**
-         * @internal
-         * rgb 数据 保存设置值
-         */
         set _rgbElements(value: Float32Array);
         private _maxColorAlphaKeysCount;
         get maxColorAlphaKeysCount(): number;
         private _colorAlphaKeysCount;
         /**
-         * 获取颜色Alpha数量。
-         * @return 颜色Alpha数量。
+         * @en The count of color Alpha keys.
+         * @zh 颜色 Alpha 数量。
          */
         get colorAlphaKeysCount(): number;
-        /**@internal */
+        /** @internal */
         _alphaElementDatas: Float32Array;
         /**
-         * @internal
-         * alpha 保存设置值
+         * @ignore
+         * @en Alpha data storage settings. The first is the key, and the second is the value, forming a pair, and so on.
+         * @zh 透明度数据 保存设置值。第一个为键，第二个为值，组成一对，以此类推。
          */
         get _alphaElements(): Float32Array;
-        /**
-         * @internal
-         * alpha 保存设置值
-         */
         set _alphaElements(value: Float32Array);
         get maxColorKeysCount(): number;
         /**
@@ -41080,18 +41144,10 @@ declare namespace Laya {
          */
         _keyRanges: Vector4;
         /**
-         * @en Get the gradient mode.
-         * @returns The gradient mode.
-         * @zh 获取梯度模式。
-         * @returns 梯度模式。
+         * @en Gradient mode. 0: Blend mode, 1: Fixed mode.
+         * @zh 渐变模式。0：混合模式，1：固定模式。
          */
         get mode(): number;
-        /**
-         * @en Set the gradient mode.
-         * @param value The gradient mode.
-         * @zh 设置梯度模式。
-         * @param value 梯度模式。
-         */
         set mode(value: number);
         /**
          * @ignore
@@ -49413,8 +49469,12 @@ declare namespace Laya {
          */
         get layer(): number;
         set layer(value: number);
-        set lightReceive(value: boolean);
+        /**
+         * @en Whether to receive light
+         * @zh 是否接受灯光。
+         */
         get lightReceive(): boolean;
+        set lightReceive(value: boolean);
         _resetUpdateMark(): void;
         _updateLight(): void;
         /**
@@ -49459,22 +49519,28 @@ declare namespace Laya {
          * @returns 包含常数值的 GradientDataNumber 实例。
          */
         static createConstantData(constantValue: number): GradientDataNumber;
-        private _currentLength;
         /**
-         * @internal
+         * @en The current length of the gradient data.
+         * @zh 渐变数据的当前长度。
          */
+        _currentLength: number;
+        /** @internal */
         _dataBuffer: Float32Array;
         /**
-         * @internal
+         * @en The gradient elements.
+         * @zh 渐变元素。
          */
         get _elements(): Float32Array;
-        /**
-         * @internal
-         */
         set _elements(value: Float32Array);
-        /**@internal 曲线编辑范围*/
+        /**
+         * @en Curve editing range
+         * @zh 曲线编辑范围
+         */
         _curveMin: number;
-        /**@internal 曲线编辑范围*/
+        /**
+         * @en Curve editing range
+         * @zh 曲线编辑范围
+         */
         _curveMax: number;
         /**
          * @en The number of gradient floats.
@@ -50827,21 +50893,22 @@ declare namespace Laya {
      * @zh GradientDataInt 类用于创建整形渐变。
      */
     class GradientDataInt implements IClone {
-        private _currentLength;
         /**
-         * @internal
+         * @en The current length of the gradient data.
+         * @zh 渐变数据的当前长度。
+         */
+        _currentLength: number;
+        /**
          * @en Developers are prohibited from modifying this.
          * @zh 开发者禁止修改。
          */
         _elements: Float32Array;
         /**
-         * @internal
          * @en Curve editing range (minimum).
          * @zh 曲线编辑范围（最小值）。
          */
         _curveMin: number;
         /**
-         * @internal
          * @en Curve editing range (maximum).
          * @zh 曲线编辑范围（最大值）。
          */
@@ -56099,68 +56166,72 @@ declare namespace Laya {
         destroy(): void;
     }
     /**
-     * @en Physics2DOption is used to configure default parameters for 2D physics
      * @zh Physics2DOption 用于配置2D物理的默认参数
+     * @en Physics2DOption is used to configure default parameters for 2D physics
      */
     class Physics2DOption {
         /**
-         * @en Sets whether sleeping is allowed. Allowing sleep can improve stability and performance, but it usually comes at the cost of accuracy.The default is false.
          * @zh 设置是否允许休眠。允许休眠可以提高稳定性和性能，但通常会牺牲准确性。默认为否。
+         * @en Sets whether sleeping is allowed. Allowing sleep can improve stability and performance, but it usually comes at the cost of accuracy.The default is false.
          */
         static allowSleeping: boolean;
         /**
-         * @en Gravity acceleration, with a default value of 9.8, corresponding to 9.8 meters per second squared (m/s²) in the real world.
          * @zh 重力加速度，默认的重力加速度值为 9.8，对应于现实世界中的 9.8米/秒²（m/s²） 。
+         * @en Gravity acceleration, with a default value of 9.8, corresponding to 9.8 meters per second squared (m/s²) in the real world.
          */
         static gravity: {
             x: number;
             y: number;
         };
         /**
-         * @en Indicates whether the update is performed externally.The default is false.
          * @zh 表示更新是否由外部执行。默认为否。
+         * @en Indicates whether the update is performed externally.The default is false.
          */
         static customUpdate: boolean;
         /**
-         * @en The number of velocity iterations. Increasing this number will improve accuracy but reduce performance.The default is 8.
-         * @zh 旋转迭代次数。增大此数字会提高精度，但会降低性能。默认为8。
+         * @zh 速度迭代次数，用于控制每个物理时间步中，速度约束求解阶段的迭代次数。该参数影响碰撞响应、摩擦效果以及关节稳定性，数值越高，物理结果越稳定，但计算开销也越大。通常推荐使用默认值 8，在性能受限场景可适当降低，在高精度需求场景可适当提高。
+         * @en Specifies the number of iterations used to solve velocity constraints in each physics step. This parameter affects collision response, friction behavior, and joint stability. Higher values improve simulation stability at the cost of performance. A default value of 8 is commonly recommended, with lower values for performance-critical scenarios and higher values for accuracy-critical cases.
          */
         static velocityIterations: number;
         /**
-         * @en The number of position iterations. Increasing this number will improve accuracy but reduce performance.The default is 3.
-         * @zh 位置迭代次数。增大此数字会提高精度，但会降低性能。默认为3。
+         * @zh 位置迭代次数，用于控制 2D 物理系统在每个模拟步中，对碰撞、堆叠和关节约束所产生的位置误差进行修正的迭代次数。数值越高，位置约束收敛越充分，通常可减少穿透与下陷、提升堆叠和关节稳定性，但会增加 CPU 开销。该参数应与时间步、子步（subStep）及速度迭代次数（velocityIterations）配合调整，默认值 3 在多数场景下能兼顾性能与效果。
+         * @en Specifies the number of iterations used to correct positional constraint errors caused by collisions, stacking, and joints in each physics step. Higher values improve positional stability (less penetration and sinking, more stable stacks and joints) at the cost of performance. This parameter should be tuned together with the time step, sub-steps, and velocity iterations. A default value of 3 provides a good balance for most scenarios.
          */
         static positionIterations: number;
         /**
-         * @en The conversion ratio between rendering pixels and physical units. By default, 1 length unit in the physics engine corresponds to 50 pixels. Modifying this value changes the number of pixels that correspond to 1 length unit in the physics engine.
          * @zh 渲染像素和物理单位的转换比率，物理引擎中的1长度单位默认转换为50个像素，修改此处可改变物理引擎1长度单位对应的渲染像素值。
+         * @en The conversion ratio between rendering pixels and physical units. By default, 1 length unit in the physics engine corresponds to 50 pixels. Modifying this value changes the number of pixels that correspond to 1 length unit in the physics engine.
          */
         static pixelRatio: number;
         /**
-         * @en Whether to enable physics drawing.The default is true.
          * @zh 是否开启物理绘制。默认为是。
+         * @en Whether to enable physics drawing.The default is true.
          */
         static debugDraw: boolean;
         /**
-         * @en Whether to draw shapes.The default is true.
          * @zh 是否绘制形状。默认为是。
+         * @en Whether to draw shapes.The default is true.
          */
         static drawShape: boolean;
         /**
-         * @en Whether to draw joints.The default is true.
          * @zh 是否绘制关节。默认为是。
+         * @en Whether to draw joints.The default is true.
          */
         static drawJoint: boolean;
         /**
-         * @en Whether to draw the Bounding Box.The default is false.
          * @zh 是否绘制包围盒。默认为否。
+         * @en Whether to draw the Bounding Box.The default is false.
          */
         static drawAABB: boolean;
         /**
-         * @en Whether to draw the center of mass.The default is false.
          * @zh 是否绘制质心。默认为否。
+         * @en Whether to draw the center of mass.The default is false.
          */
         static drawCenterOfMass: boolean;
+        /**
+         * @zh 子步数，用于定义物理世界中每个模拟步（Step）的时间长度（秒），保证物理计算在不同帧率下具有一致性和稳定性。步长越小，物理精度越高，但 CPU 开销增加。
+         * @en Specifies the duration of a single physics simulation step (in seconds), ensuring consistent and stable physics results across different frame rates. Smaller values increase simulation accuracy at the cost of higher CPU usage.
+         */
         static subStep: number;
     }
     /**
@@ -73495,6 +73566,3253 @@ declare namespace Laya {
         orphanStorage(): void;
         destroy(): void;
     }
+    class WebGPUSetRendertarget2DCMD extends SetRendertarget2DCMD {
+        constructor();
+        apply(context: IRenderContext2D): void;
+    }
+    class WebGPUDraw2DElementCMD extends Draw2DElementCMD {
+        private _elements;
+        constructor();
+        setRenderelements(value: WebGPURenderElement2D[]): void;
+        apply(context: IRenderContext2D): void;
+    }
+    class WebGPUBlit2DQuadCMD extends Blit2DQuadCMD {
+        static SCREENTEXTURE_ID: number;
+        static SCREENTEXTUREOFFSETSCALE_ID: number;
+        static MAINTEXTURE_TEXELSIZE_ID: number;
+        static __init__(): void;
+        private _sourceTexelSize;
+        type: RenderCMDType;
+        constructor();
+        set source(value: InternalTexture);
+        apply(context: WebGPURenderContext2D): void;
+    }
+    class WebGPUPrimitiveRenderElement2D extends WebGPURenderElement2D implements IPrimitiveRenderElement2D {
+        private _sprite2DGraphicUBOs;
+        private _primitiveShaderData;
+        get primitiveShaderData(): WebGPUShaderData;
+        set primitiveShaderData(value: WebGPUShaderData);
+        protected _updateNodeUBO(): void;
+        constructor();
+    }
+    class WebGPURender2DProcess implements I2DRenderPassFactory {
+        createGraphic2DBufferBlock(): IGraphics2DBufferBlock;
+        createGraphic2DVertexBlock(): IGraphics2DVertexBlock;
+        create2DGraphicVertexDataView(wholeBuffer: I2DGraphicWholeBuffer, elementOffset: number, elementSize: number, stride: number): I2DGraphicVertexDataView;
+        create2DGraphicIndexDataView(wholeBuffer: I2DGraphicWholeBuffer, elementSize: number): I2DGraphicIndexDataView;
+        create2DGraphicVertexBuffer(): I2DGraphicWholeBuffer;
+        create2DGraphicIndexBuffer(): I2DGraphicWholeBuffer;
+        createPrimitiveRenderElement2D(): IPrimitiveRenderElement2D;
+        createRender2DPassManager(): IRender2DPassManager;
+        create2DGlobalRenderDataHandle(): I2DGlobalRenderData;
+        createSpineRenderDataHandle(): ISpineRenderDataHandle;
+        createRender2DPass(): IRender2DPass;
+        createRenderStruct2D(): IRenderStruct2D;
+        create2D2DPrimitiveDataHandle(): I2DPrimitiveDataHandle;
+        create2DBaseRenderDataHandle(): I2DBaseRenderDataHandle;
+        createMesh2DRenderDataHandle(): IMesh2DRenderDataHandle;
+        createSetRenderDataCMD(): SetRenderDataCMD;
+        createSetShaderDefineCMD(): SetShaderDefineCMD;
+        createBlit2DQuadCMDData(): Blit2DQuadCMD;
+        createDraw2DElementCMDData(): Draw2DElementCMD;
+        createSetRendertarget2DCMD(): SetRendertarget2DCMD;
+        createRenderElement2D(): IRenderElement2D;
+        createRenderContext2D(): IRenderContext2D;
+    }
+    /**
+     * WebGPU渲染上下文（2D）
+     */
+    class WebGPURenderContext2D implements IRenderContext2D {
+        static _instance: WebGPURenderContext2D;
+        static _globalConfigShaderData: WebDefineDatas;
+        private _globalComkeyCounter;
+        private _globalComkeyNameMap;
+        private _globalRendercacheInfoMap;
+        private _passData;
+        private _offscreenWidth;
+        private _offscreenHeight;
+        private _needClearColor;
+        private _needStart;
+        private _viewport;
+        private _clearColor;
+        private renderCommand;
+        private _passUniformBuffer;
+        _cacheGlobalDefines: WebDefineDatas;
+        _destRT: WebGPUInternalRT;
+        invertY: boolean;
+        pipelineMode: string;
+        device: GPUDevice;
+        _passBindGroup: WebGPUBindGroup;
+        _curRenderCacheInfo: WebGPUGlobalPipeLineCacheInfo;
+        _curRenderGlobalKey: number;
+        _curDefineChangeFlag: Vector2;
+        _pipelineChange: Vector2;
+        get passData(): WebGPUShaderData;
+        set passData(value: WebGPUShaderData);
+        constructor();
+        private globalComkeyToID;
+        private _getPassCacheKey;
+        private _getRenderPipeLine;
+        private _prepareContext;
+        /**
+     * 提交渲染命令
+     */
+        private _submit;
+        /**
+         * 设置屏幕渲染目标
+         */
+        private _setScreenRT;
+        /**
+         * 准备录制渲染命令
+         */
+        private _start;
+        /**@internal */
+        _needGlobalData(): boolean;
+        getRenderTarget(): InternalRenderTarget;
+        drawRenderElementList(list: FastSinglelist<WebGPURenderElement2D>): number;
+        setOffscreenView(width: number, height: number): void;
+        setRenderTarget(value: WebGPUInternalRT, clear: boolean, clearColor: Color): void;
+        drawRenderElementOne(node: WebGPURenderElement2D): void;
+        runOneCMD(cmd: IRenderCMD): void;
+        runCMDList(cmds: IRenderCMD[]): void;
+    }
+    class WebGPURenderElement2D implements IRenderElement2D, IRenderPipelineInfo {
+        static _matChangeFlagMap: Map<string, Map<number, Vector2[]>>;
+        static _compileDefine: WebDefineDatas;
+        protected _nodeCommonMap: string[];
+        protected depthStencilParam: DepthStencilParam;
+        protected _geometryID: number;
+        protected _materialShaderData: WebGPUShaderData;
+        protected _value2DShaderData: WebGPUShaderData;
+        protected _subShader: SubShader;
+        protected _bindGroupMap: Map<number, WebGPUBindGroup>;
+        protected _materialRenderDataChange: boolean;
+        protected _value2DRenderDataChange: boolean;
+        protected _passRenderInfo: Map<number, OneDrawPassCacheInfo>;
+        protected _drawPassInfo: OneDrawPassCacheInfo;
+        protected _drawCacheArray: OneDrawCacheInfo[];
+        protected _matChangeFlag: Vector2;
+        protected _pipelineChangeFlag: Vector2;
+        protected _valueChangeFlag: Vector2;
+        protected _cacheGeometryStateID: number;
+        protected _matDefChangeFlag: Vector2;
+        protected _matBindGroupChangeFlag: Vector2;
+        protected _matBindGroupLayoutFlag: Vector2;
+        protected _materialUBO: WebGPUUniformBufferBase;
+        protected _value2DDefChangeFlag: Vector2;
+        protected _value2DBindGroupChangeFlag: Vector2;
+        protected _value2DBindGroupLayoutFlag: Vector2;
+        protected _value2DUBOs: WebGPUUniformBufferBase[];
+        protected _cacheMatBlendStateID: number;
+        protected _cacheMatDepthStencilID: string;
+        protected _cacheMatCullMode: CullMode;
+        protected _additionShaderData: Map<string, WebGPUShaderData>;
+        protected _additinalArray: Set<string>;
+        blendState: WebGPUBlendStateCache;
+        depthStencilState: WebGPUDepthStencilStateCache;
+        cullMode: CullMode;
+        frontFace: FrontFace;
+        type: number;
+        owner: IRenderStruct2D;
+        renderStateIsBySprite: boolean;
+        geometry: WebGPURenderGeometry;
+        get materialShaderData(): WebGPUShaderData;
+        set materialShaderData(value: WebGPUShaderData);
+        get subShader(): SubShader;
+        set subShader(value: SubShader);
+        get value2DShaderData(): WebGPUShaderData;
+        set value2DShaderData(value: WebGPUShaderData);
+        get nodeCommonMap(): string[];
+        set nodeCommonMap(value: string[]);
+        private _globalShaderData;
+        private _globalUboBuffer;
+        get globalShaderData(): WebGPUShaderData;
+        set globalShaderData(value: WebGPUShaderData);
+        constructor();
+        /** @internal */
+        protected _needUpdatePipeline(): void;
+        protected getGlobalShaderData(): ShaderData;
+        protected _getShaderInstanceDefines(context: WebGPURenderContext2D): WebDefineDatas;
+        /**
+         * 编译着色器
+         * @param context
+         */
+        protected _compileShader(context: WebGPURenderContext2D): void;
+        /**
+         * 获取混合状态
+         * @param shaderInstance
+         */
+        private _getBlendState;
+        private _getRenderStateBlendByShader;
+        private _getRenderStateBlendByMaterial;
+        /**
+         * 获取深度缓存状态
+         * @param shaderInstance
+         * @param dest
+         */
+        private _getDepthStencilState;
+        private _getRenderStateDepthByShader;
+        private _getRenderStateDepthByMaterial;
+        private _getCullFrontMode;
+        /**
+         * 绑定资源组
+         * @param shaderInstance
+         * @param command
+         */
+        protected _bindGroup(context: WebGPURenderContext2D, info: OneDrawCacheInfo, command: WebGPURenderCommandEncoder | WebGPURenderBundle): void;
+        /**
+         * 上传几何数据
+         * @param command
+         */
+        protected _uploadGeometry(command: WebGPURenderCommandEncoder | WebGPURenderBundle): number;
+        /**
+         * 用于创建渲染管线的函数
+         * @param index
+         * @param context
+         * @param shaderInstance
+         * @param command
+         * @param stateKey
+         */
+        protected _getWebGPURenderPipeline(shaderInstance: WebGPUShaderInstance, dest: WebGPUInternalRT, context: WebGPURenderContext2D): GPURenderPipeline;
+        protected _updateMatChangeFlag(): void;
+        protected _handleMatChange(): void;
+        protected _updateNodeUBO(): void;
+        /**
+         * 准备渲染
+         * @param context
+         */
+        _prepare(context: WebGPURenderContext2D): void;
+        /**
+         * 渲染
+         * @param context
+         * @param command
+         */
+        _render(context: WebGPURenderContext2D, command: WebGPURenderCommandEncoder | WebGPURenderBundle): number;
+        protected _renderByShaderInstance(drawInfo: OneDrawCacheInfo, context: WebGPURenderContext2D, command: WebGPURenderCommandEncoder | WebGPURenderBundle): void;
+        /**
+         * 销毁
+         */
+        destroy(): void;
+    }
+    class WebGPU3DRenderPass implements IRender3DProcess {
+        private _renderPass;
+        private _defaultShadowMap;
+        private _defaultDepthTex;
+        constructor();
+        render3DManager: WebSceneRenderManager;
+        /**
+         * 初始化渲染流程
+         * @param camera
+         * @param context
+         */
+        private _initRenderPass;
+        /**
+         * 渲染深度图设置
+         * @param camera
+         */
+        private _renderDepth;
+        /**
+         * 前向渲染流程
+         * @param context
+         * @param renderPass
+         * @param list
+         * @param count
+         */
+        private _renderForwardAddCameraPass;
+        /**
+         * 渲染命令
+         * @param cmds
+         * @param context
+         */
+        private _renderCmd;
+        /**
+         * 渲染后处理效果
+         * @param postprocessCMD
+         * @param context
+         */
+        private _renderPostProcess;
+        /**
+         * 前向渲染
+         * @param context
+         * @param camera
+         */
+        fowardRender(context: WebGPURenderContext3D, camera: Camera): void;
+        /**
+         * 销毁
+         */
+        destroy(): void;
+    }
+    /**
+     * WebGPU渲染工厂类
+     */
+    class WebGPU3DRenderPassFactory implements I3DRenderPassFactory {
+        createInstanceBatch(): IInstanceRenderBatch;
+        createRender3DProcess(): IRender3DProcess;
+        createRenderContext3D(): IRenderContext3D;
+        createRenderElement3D(): IRenderElement3D;
+        createInstanceRenderElement3D(): WebGPUInstanceRenderElement3D;
+        createSkinRenderElement(): ISkinRenderElement3D;
+        createSceneRenderManager(): ISceneRenderManager;
+        createDrawNodeCMDData(): DrawNodeCMDData;
+        createBlitQuadCMDData(): BlitQuadCMDData;
+        createDrawElementCMDData(): DrawElementCMDData;
+        createSetViewportCMD(): SetViewportCMD;
+        createSetRenderTargetCMD(): SetRenderTargetCMD;
+        createSetRenderDataCMD(): SetRenderDataCMD;
+        createSetShaderDefineCMD(): SetShaderDefineCMD;
+        createComputeCommandAppatchCMD?(): ComputeCommandAppatchCMD;
+    }
+    class WebGPUBaseRenderNode extends WebBaseRenderNode {
+        bindGroupChangeFlag: Vector2;
+        bindGroupLayoutChangeFlag: Vector2;
+        defineDataChangeFlag: Vector2;
+        spriteUBOs: WebGPUUniformBufferBase[];
+        spriteUBO0: WebGPUUniformBufferBase;
+        additionalUBOs: WebGPUUniformBufferBase[];
+        additionalUBO0: WebGPUUniformBufferBase;
+        protected _shaderData: WebGPUShaderData;
+        protected _additionShaderData: Map<string, WebGPUShaderData>;
+        get shaderData(): WebGPUShaderData;
+        set shaderData(value: WebGPUShaderData);
+        set additionShaderData(value: Map<string, WebGPUShaderData>);
+        get additionShaderData(): Map<string, WebGPUShaderData>;
+        setCommonUniformMap(value: string[]): void;
+    }
+    /**
+     * 线性光源阴影渲染流程
+     */
+    class WebGPUDirectLightShadowRP {
+        /**@internal 最大cascade*/
+        private static _maxCascades;
+        /**@internal */
+        shadowCastMode: ShadowCascadesMode;
+        camera: WebCameraNodeData;
+        destTarget: InternalRenderTarget;
+        private _shadowCasterCommanBuffer;
+        get shadowCasterCommanBuffer(): CommandBuffer[];
+        set shadowCasterCommanBuffer(value: CommandBuffer[]);
+        /**@internal */
+        private _light;
+        /**@internal */
+        private _lightUp;
+        /**@internal */
+        private _lightSide;
+        /**@internal */
+        private _lightForward;
+        /** @internal 分割distance*/
+        private _cascadesSplitDistance;
+        /** @internal */
+        private _frustumPlanes;
+        /** @internal */
+        private _shadowMatrices;
+        /**@internal */
+        private _splitBoundSpheres;
+        /** @internal */
+        private _shadowSliceDatas;
+        /** @internal */
+        private _shadowMapSize;
+        /** @internal */
+        private _shadowBias;
+        /** @internal */
+        private _cascadeCount;
+        /** @internal */
+        private _shadowMapWidth;
+        /** @internal */
+        private _shadowMapHeight;
+        /** @internal */
+        private _shadowTileResolution;
+        /** @internal */
+        private _shadowCullInfo;
+        /** @internal */
+        private _renderQueue;
+        set light(value: WebDirectLight);
+        get light(): WebDirectLight;
+        constructor();
+        /**
+         * 更新
+         * @param context
+         */
+        update(context: WebGPURenderContext3D): void;
+        /**
+         * 渲染
+         * @param context
+         * @param list
+         * @param count
+         */
+        render(context: WebGPURenderContext3D, list: WebBaseRenderNode[], count: number): void;
+        /**
+         * 设置渲染数据
+         * @param sceneData
+         * @param cameraData
+         */
+        private _applyRenderData;
+        /**
+         * 应用阴影渲染命令
+         * @param context
+         */
+        private _applyCasterPassCommandBuffer;
+        /**
+         * 获取阴影偏移
+         * @param shadowProjectionMatrix
+         * @param shadowResolution
+         * @param out
+         */
+        private _getShadowBias;
+        /**
+         * 设置阴影级联数据模式
+         * @param shaderData
+         * @param shadowSliceData
+         * @param lightParam
+         * @param shadowBias
+         */
+        private _setupShadowCasterShaderValues;
+    }
+    /**
+     * WebGPU前向渲染流程
+     */
+    class WebGPUForwardAddClusterRP extends ForwardAddClusterRP {
+        constructor();
+        /**
+         * 主渲染流程
+         * @param context
+         */
+        protected _mainPass(context: IRenderContext3D): void;
+    }
+    class WebGPUForwardAddRP {
+        /**是否开启阴影 */
+        shadowCastPass: boolean;
+        /**@internal */
+        _afterAllRenderCMDS: Array<CommandBuffer>;
+        /**@internal */
+        _beforeImageEffectCMDS: Array<CommandBuffer>;
+        enablePostProcess: boolean;
+        /**@internal */
+        postProcess: CommandBuffer;
+        /**main pass */
+        renderPass: WebGPUForwardAddClusterRP;
+        /**directlight shadow */
+        directLightShadowPass: WebGPUDirectLightShadowRP;
+        shadowMap: RenderTexture;
+        /**enable directlight */
+        enableDirectLightShadow: boolean;
+        /**spot shadow */
+        spotLightShadowPass: WebGPUSpotLightShadowRP;
+        spotShadowMap: RenderTexture;
+        /**enable spot */
+        enableSpotLightShadowPass: boolean;
+        shadowParams: Vector4;
+        finalize: CommandBuffer;
+        constructor();
+        /**
+         * 设置后处理之前绘制的渲染命令
+         * @param value
+         */
+        setBeforeImageEffect(value: CommandBuffer[]): void;
+        /**
+         * 设置所有渲染都结束后绘制的渲染命令
+         * @param value
+         */
+        setAfterEventCmd(value: CommandBuffer[]): void;
+    }
+    /**
+     * 动态合批
+     */
+    class WebGPUInstanceRenderBatch implements IInstanceRenderBatch {
+        static MAX_INSTANCE_COUNT: number;
+        private _recoverList;
+        private _batchOpaqueMarks;
+        private _updateCountMark;
+        /**
+         * @ignore
+         */
+        constructor();
+        getBatchMark(element: IRenderElement3D): BatchMark;
+        batch(elements: SingletonList<IRenderElement3D>): void;
+        clearRenderData(): void;
+        recoverData(): void;
+    }
+    interface WebGPUInstanceStateInfo {
+        state: WebGPUBufferState;
+        worldInstanceVB?: WebGPUVertexBuffer;
+        simpleAnimatorVB?: WebGPUVertexBuffer;
+        lightmapScaleOffsetVB?: WebGPUVertexBuffer;
+    }
+    class WebGPUInstanceRenderElement3D extends WebGPURenderElement3D implements IInstanceRenderElement3D {
+        static getInstanceBufferState(stateinfo: WebGPUInstanceStateInfo, geometry: WebGPURenderGeometry, renderType: number, spriteDefine: WebDefineDatas): WebGPUInstanceStateInfo;
+        static MaxInstanceCount: number;
+        private static _pool;
+        static create(): WebGPUInstanceRenderElement3D;
+        private static _bufferPool;
+        static _instanceBufferCreate(length: number): Float32Array;
+        instanceElementList: SingletonList<IRenderElement3D>;
+        private _vertexBuffers;
+        private _updateData;
+        private _updateDataNum;
+        private _instanceStateInfo;
+        drawCount: number;
+        updateNums: number;
+        constructor();
+        addUpdateBuffer(vb: WebGPUVertexBuffer, length: number): void;
+        getUpdateData(index: number, length: number): Float32Array;
+        /**
+         * 着色器数据是否改变
+         * @param context
+         */
+        protected _isShaderDataChange(context: WebGPURenderContext3D): boolean;
+        protected _compileShader(context: WebGPURenderContext3D): void;
+        _preUpdatePre(context: WebGPURenderContext3D): void;
+        private _updateInstanceData;
+        oriBufferStateCacheID: number;
+        /**
+         * 设置几何对象
+         * @param value
+         */
+        setGeometry(value: WebGPURenderGeometry): void;
+        /**
+         * 上传几何数据
+         * @param command
+         */
+        protected _uploadGeometry(command: WebGPURenderCommandEncoder | WebGPURenderBundle): number;
+        /**
+         * 清理单次渲染生成的数据
+         */
+        clearRenderData(): void;
+        /**
+         * 回收
+         */
+        recover(): void;
+    }
+    class WebGPUBlitQuadCMDData extends BlitQuadCMDData {
+        type: RenderCMDType;
+        private _sourceTexelSize;
+        protected _dest: WebGPUInternalRT;
+        protected _viewport: Viewport;
+        protected _source: InternalTexture;
+        protected _scissor: Vector4;
+        protected _offsetScale: Vector4;
+        protected _element: WebGPURenderElement3D;
+        get dest(): WebGPUInternalRT;
+        set dest(value: WebGPUInternalRT);
+        get viewport(): Viewport;
+        set viewport(value: Viewport);
+        get scissor(): Vector4;
+        set scissor(value: Vector4);
+        get source(): InternalTexture;
+        set source(value: InternalTexture);
+        get offsetScale(): Vector4;
+        set offsetScale(value: Vector4);
+        get element(): WebGPURenderElement3D;
+        set element(value: WebGPURenderElement3D);
+        constructor();
+        apply(context: WebGPURenderContext3D): void;
+    }
+    class WebGPUDrawElementCMDData extends DrawElementCMDData {
+        type: RenderCMDType;
+        private _elemets;
+        constructor();
+        setRenderelements(value: WebGPURenderElement3D[]): void;
+        apply(context: WebGPURenderContext3D): void;
+    }
+    class WebGPUDrawNodeCMDData extends DrawNodeCMDData {
+        type: RenderCMDType;
+        protected _node: WebBaseRenderNode;
+        protected _destShaderData: WebGPUShaderData;
+        protected _destSubShader: SubShader;
+        protected _subMeshIndex: number;
+        get node(): WebBaseRenderNode;
+        set node(value: WebBaseRenderNode);
+        get destShaderData(): WebGPUShaderData;
+        set destShaderData(value: WebGPUShaderData);
+        get destSubShader(): SubShader;
+        set destSubShader(value: SubShader);
+        get subMeshIndex(): number;
+        set subMeshIndex(value: number);
+        constructor();
+        apply(context: WebGPURenderContext3D): void;
+    }
+    class WebGPUSetRenderTargetCMD extends SetRenderTargetCMD {
+        type: RenderCMDType;
+        protected _rt: WebGPUInternalRT;
+        protected _clearFlag: number;
+        protected _clearColorValue: Color;
+        protected _clearDepthValue: number;
+        protected _clearStencilValue: number;
+        get rt(): WebGPUInternalRT;
+        set rt(value: WebGPUInternalRT);
+        get clearFlag(): number;
+        set clearFlag(value: number);
+        get clearColorValue(): Color;
+        set clearColorValue(value: Color);
+        get clearDepthValue(): number;
+        set clearDepthValue(value: number);
+        get clearStencilValue(): number;
+        set clearStencilValue(value: number);
+        constructor();
+        apply(context: WebGPURenderContext3D): void;
+    }
+    class WebGPUSetViewportCMD extends SetViewportCMD {
+        type: RenderCMDType;
+        protected _viewport: Viewport;
+        protected _scissor: Vector4;
+        get viewport(): Viewport;
+        set viewport(value: Viewport);
+        get scissor(): Vector4;
+        set scissor(value: Vector4);
+        constructor();
+        apply(context: WebGPURenderContext3D): void;
+    }
+    /**
+     * WebGPU渲染上下文
+     */
+    class WebGPURenderContext3D implements IRenderContext3D {
+        static _instance: WebGPURenderContext3D;
+        private _globalComkeyCounter;
+        private _globalComkeyNameMap;
+        private _globalRendercacheInfoMap;
+        private _globalShaderData;
+        private _sceneData;
+        private _sceneModuleData;
+        private _cameraModuleData;
+        private _cameraData;
+        private _viewPort;
+        private _scissor;
+        private _sceneUpdataMask;
+        private _cameraUpdateMask;
+        private _pipelineMode;
+        private _invertY;
+        private _clearFlag;
+        private _clearColor;
+        private _clearDepth;
+        private _clearStencil;
+        private _needStart;
+        private _blitFrameCount;
+        private _blitScreen;
+        private _viewScissorSaved;
+        private _viewPortSave;
+        private _scissorSave;
+        private _renderCommand;
+        _cacheGlobalDefines: WebDefineDatas;
+        _globalConfigShaderData: WebDefineDatas;
+        _preDrawUniformMaps: Set<string>;
+        _cameraBindGroup: WebGPUBindGroup;
+        _sceneBindGroup: WebGPUBindGroup;
+        _curRenderCacheInfo: WebGPUGlobalPipeLineCacheInfo;
+        _curRenderGlobalKey: number;
+        _curDefineChangeFlag: Vector2;
+        _pipelineChange: Vector2;
+        device: GPUDevice;
+        destRT: WebGPUInternalRT;
+        get sceneData(): WebGPUShaderData;
+        set sceneData(value: WebGPUShaderData);
+        get cameraData(): WebGPUShaderData;
+        set cameraData(value: WebGPUShaderData);
+        get sceneModuleData(): WebSceneNodeData;
+        set sceneModuleData(value: WebSceneNodeData);
+        get cameraModuleData(): WebCameraNodeData;
+        set cameraModuleData(value: WebCameraNodeData);
+        get globalShaderData(): WebGPUShaderData;
+        set globalShaderData(value: WebGPUShaderData);
+        get sceneUpdataMask(): number;
+        set sceneUpdataMask(value: number);
+        get cameraUpdateMask(): number;
+        set cameraUpdateMask(value: number);
+        get pipelineMode(): PipelineMode;
+        set pipelineMode(value: PipelineMode);
+        get invertY(): boolean;
+        set invertY(value: boolean);
+        rtNeedClear: boolean;
+        constructor();
+        private globalComkeyToID;
+        private _getRenderPipeLine;
+        private _getSceneCameraCacheKey;
+        private _prepareContext;
+        /**
+         * 设置屏幕渲染目标
+         */
+        private _setScreenRT;
+        /**
+         * 准备录制渲染命令
+         * @param viewPortAndScissor
+         */
+        private _start;
+        /**
+         * 提交渲染命令
+         */
+        private _submit;
+        /**
+         * 设置渲染目标
+         * @param rt
+         * @param clearFlag
+         */
+        setRenderTarget(rt: WebGPUInternalRT, clearFlag: RenderClearFlag): void;
+        /**
+         * 设置视口
+         * @param value
+         */
+        setViewPort(value: Viewport): void;
+        /**
+         * 设置裁剪
+         * @param value
+         */
+        setScissor(value: Vector4): void;
+        /**
+         * TODO 挪到外面
+         * 保存视口
+         */
+        saveViewPortAndScissor(): void;
+        /**
+         * TODO 挪到外面
+         * 恢复视口
+         */
+        restoreViewPortAndScissor(): void;
+        /**
+         * 设置清除参数
+         * @param flag
+         * @param color
+         * @param depth
+         * @param stencil
+         */
+        setClearData(flag: number, color: Color, depth: number, stencil: number): number;
+        /**
+         * 渲染一组节点
+         * @param list
+         */
+        drawRenderElementList(list: FastSinglelist<WebGPURenderElement3D>): number;
+        /**
+         * 渲染一个节点
+         * @param node
+         */
+        drawRenderElementOne(node: WebGPURenderElement3D): number;
+        /**
+         * 执行命令列表
+         * @param cmds
+         */
+        runCMDList(cmds: IRenderCMD[]): void;
+        /**
+         * 执行单个命令
+         * @param cmd
+         */
+        runOneCMD(cmd: IRenderCMD): void;
+        /**
+         * 清除渲染目标（空白绘制，用于清除颜色或深度缓存）
+         */
+        clearRenderTarget(): void;
+        /**
+         * 销毁
+         */
+        destroy(): void;
+    }
+    /**
+     * 基本渲染单元
+     */
+    class WebGPURenderElement3D implements IRenderElement3D, IRenderPipelineInfo {
+        static _matChangeFlagMap: Map<string, Map<number, Vector2[]>>;
+        static _compileDefine: WebDefineDatas;
+        protected _materialUBO: WebGPUUniformBufferBase;
+        protected _materialRenderDataChange: boolean;
+        protected _spriteRenderDataChange: boolean;
+        protected _materialShaderData: WebGPUShaderData;
+        protected _renderShaderData: WebGPUShaderData;
+        protected _subShader: SubShader;
+        protected _invertFrontFace: boolean;
+        protected _bindGroupMap: Map<number, WebGPUBindGroup>;
+        materialRenderQueue: number;
+        materialId: number;
+        transform: Transform3D;
+        canDynamicBatch: boolean;
+        isRender: boolean;
+        owner: WebGPUBaseRenderNode;
+        blendState: WebGPUBlendStateCache;
+        depthStencilState: WebGPUDepthStencilStateCache;
+        cullMode: CullMode;
+        frontFace: FrontFace;
+        geometry: WebGPURenderGeometry;
+        protected depthStencilParam: DepthStencilParam;
+        protected _passRenderInfo: Map<number, OneDrawPassCacheInfo>;
+        protected _drawPassInfo: OneDrawPassCacheInfo;
+        protected _drawCacheArray: OneDrawCacheInfo[];
+        protected _matChangeFlag: Vector2;
+        protected _renderNodeChangeFlag: Vector2;
+        protected _pipelineChangeFlag: Vector2;
+        protected _cacheGeometryStateID: number;
+        protected _matDefChangeFlag: Vector2;
+        protected _matBindGroupChangeFlag: Vector2;
+        protected _matBindGroupLayoutFlag: Vector2;
+        protected _cacheMatBlendStateID: number;
+        protected _cacheMatDepthStencilID: string;
+        protected _cacheMatCullMode: CullMode;
+        get materialShaderData(): WebGPUShaderData;
+        set materialShaderData(value: WebGPUShaderData);
+        get renderShaderData(): WebGPUShaderData;
+        set renderShaderData(value: WebGPUShaderData);
+        get subShader(): SubShader;
+        set subShader(value: SubShader);
+        constructor();
+        /** @internal */
+        protected _needUpdatePipeline(): void;
+        /**
+         * 是否反转面片
+         */
+        protected _getInvertFront(): boolean;
+        protected _getShaderInstanceDefines(context: WebGPURenderContext3D): WebDefineDatas;
+        /**
+         * 编译着色器
+         * @param context
+         */
+        protected _compileShader(context: WebGPURenderContext3D): void;
+        protected _updateMatChangeFlag(): void;
+        protected _handleMaterialChange(): void;
+        protected _updateNodeUBO(): void;
+        /**
+         * 渲染前更新,更新所有Buffer
+         * @param context
+         */
+        _preUpdatePre(context: WebGPURenderContext3D): void;
+        /**
+         * 提交渲染指令
+         * @param context
+         * @param command
+         */
+        _render(context: WebGPURenderContext3D, command: WebGPURenderCommandEncoder | WebGPURenderBundle): 1 | 0;
+        /**
+         * 获取渲染管线
+         * @param shaderInstance
+         * @param dest
+         * @param context
+         * @param entries
+         * @param stateKey
+         */
+        protected _getWebGPURenderPipeline(shaderInstance: WebGPUShaderInstance, dest: WebGPUInternalRT, context: WebGPURenderContext3D): GPURenderPipeline;
+        /**
+         * 获取混合状态
+         * @param shaderInstance
+         */
+        private _getBlendState;
+        private _getRenderStateBlendByShader;
+        /**
+         * 获取深度缓存状态
+         * @param shaderInstance
+         * @param dest
+         */
+        private _getDepthStencilState;
+        private _getRenderStateDepthByShader;
+        private _getRenderStateDepthByMaterial;
+        private _getCullFrontMode;
+        /**
+         * 绑定资源组
+         * @param context
+         * @param shaderInstance
+         * @param command
+         */
+        protected _bindGroup(context: WebGPURenderContext3D, info: OneDrawCacheInfo, command: WebGPURenderCommandEncoder | WebGPURenderBundle): void;
+        /**
+         * 上传几何数据
+         * @param command
+         */
+        protected _uploadGeometry(command: WebGPURenderCommandEncoder | WebGPURenderBundle): number;
+        protected _uploadGeometryIndex(command: WebGPURenderCommandEncoder | WebGPURenderBundle, index: number): number;
+        /**
+         * 销毁
+         */
+        destroy(): void;
+    }
+    /**
+     * 带骨骼的基本渲染单元
+     */
+    class WebGPUSkinRenderElement3D extends WebGPURenderElement3D implements ISkinRenderElement3D {
+        skinnedData: Float32Array[];
+        objectName: string;
+        skinnedBuffer: WebGPUSubUniformBuffer;
+        skinnedUniformMap: Map<number, UniformProperty>;
+        _skinnedDataSize: number;
+        _skinnedBufferOffsetAlignment: number;
+        constructor();
+        protected _updateNodeUBO(): void;
+        _preUpdatePre(context: WebGPURenderContext3D): void;
+        protected _bindGroup(context: WebGPURenderContext3D, info: OneDrawCacheInfo, command: WebGPURenderCommandEncoder | WebGPURenderBundle): void;
+        /**
+         * 渲染
+         * @param context
+         * @param command
+         */
+        _render(context: WebGPURenderContext3D, command: WebGPURenderCommandEncoder | WebGPURenderBundle): 1 | 0;
+        destroy(): void;
+    }
+    /**
+     * 聚光灯阴影渲染流程
+     */
+    class WebGPUSpotLightShadowRP {
+        protected static _invertYScaleMatrix: Matrix4x4;
+        destTarget: InternalRenderTarget;
+        /**@internal */
+        shadowCasterCommanBuffer: CommandBuffer[];
+        /**@internal */
+        private _light;
+        /**@internal */
+        private _lightPos;
+        /**@internal */
+        private _lightWorldMatrix;
+        /**@internal */
+        private _shadowResolution;
+        /**@internal */
+        private _spotAngle;
+        /**@internal */
+        private _spotRange;
+        /**@internal */
+        private _shadowStrength;
+        /**@internal */
+        private _shadowDepthBias;
+        /**@internal */
+        private _shadowNormalBias;
+        /**@internal */
+        private _shadowMode;
+        /** @internal */
+        private _shadowSpotData;
+        /** @internal */
+        private _shadowSpotMapSize;
+        /** @internal */
+        private _shadowSpotMatrices;
+        /** @internal */
+        private _shadowBias;
+        /** @internal */
+        private _renderQueue;
+        set light(value: WebSpotLight);
+        get light(): WebSpotLight;
+        constructor();
+        /**
+         * 更新阴影数据
+         * @param context
+         */
+        update(context: WebGPURenderContext3D): void;
+        /**
+         * 渲染
+         * @param context
+         * @param list
+         * @param count
+         */
+        render(context: WebGPURenderContext3D, list: WebBaseRenderNode[], count: number): void;
+        /**
+         * @internal
+         */
+        private _getSpotLightShadowData;
+        /**
+         * get shadow bias
+         * @param shadowResolution
+         * @param out
+         */
+        private _getShadowBias;
+        /**
+         * 设置阴影级联数据模式
+         * @param shaderData
+         * @param shadowSliceData
+         * @param shadowParams
+         * @param shadowBias
+         */
+        private _setupShadowCasterShaderValues;
+        /**
+         * 应用阴影渲染命令
+         * @param context
+         */
+        private _applyCasterPassCommandBuffer;
+        /**
+         * 设置聚光接受阴影的模式
+         * @param shaderData 渲染数据
+         * @param cameraData 相机数据
+         */
+        private _applyRenderData;
+    }
+    /**
+     * WebGPU计算上下文，用于缓存和管理一系列计算命令
+     */
+    class WebGPUComputeContext implements IComputeContext {
+        private device;
+        private commands;
+        private _computeEncoder;
+        private _commandEncoder;
+        private _cacheShader;
+        bindGroupMap: Map<number, WebGPUBindGroup>;
+        constructor();
+        /**
+         * 清空所有命令
+         */
+        clearCMDs(): void;
+        /**
+         * 添加计算调度命令
+         * @param cmd 计算调度命令信息
+         */
+        addDispatchCommand(cmd: IComputeCMD_Dispatch): void;
+        /**
+         * 添加设置着色器数据命令
+         * @param shaderData 着色器数据
+         * @param propertyID 属性ID
+         * @param shaderDataType 着色器数据类型
+         * @param value 数据值
+         */
+        addSetShaderDataCommand(shaderData: ShaderData, propertyID: number, shaderDataType: ShaderDataType, value: ShaderDataItem): void;
+        /**
+         * 添加缓冲区到缓冲区的复制命令
+         * @param src 源缓冲区
+         * @param dest 目标缓冲区
+         * @param sourceOffset 源缓冲区偏移量
+         * @param destinationOffset 目标缓冲区偏移量
+         * @param size 复制大小
+         */
+        addBufferToBufferCommand(src: IGPUBuffer, dest: IGPUBuffer, sourceOffset?: number, destinationOffset?: number, size?: number): void;
+        /**
+         * 添加缓冲区到纹理的复制命令
+         * @param src 源缓冲区
+         * @param srcTextureInfo 源纹理信息
+         * @param destTextureInfo 目标纹理信息
+         * @param copySize 复制大小
+         */
+        addBufferToTextureCommand(src: IGPUBuffer, srcTextureInfo: any, destTextureInfo: any, copySize: GPUExtent3D): void;
+        /**
+         * 添加纹理到缓冲区的复制命令
+         * @param srcTextureInfo 源纹理信息
+         * @param dest 目标缓冲区
+         * @param destTextureInfo 目标纹理信息
+         * @param copySize 复制大小
+         */
+        addTextureToBufferCommand(srcTextureInfo: any, dest: IGPUBuffer, destTextureInfo: any, copySize: Iterable<number>): void;
+        /**
+         * 添加纹理到纹理的复制命令
+         * @param srcTextureInfo 源纹理信息
+         * @param destTextureInfo 目标纹理信息
+         * @param copySize 复制大小
+         */
+        addTextureToTextureCommand(srcTextureInfo: CopyTextureInfo, destTextureInfo: CopyTextureInfo, copySize: Iterable<number>): void;
+        /**
+        * 清理buffer数据
+        * @param dest 清理数据的buffer
+        * @param destoffset 位置
+        * @param destCount 长度
+        */
+        addClearBufferCommand(dest: WebGPUDeviceBuffer, destoffset: number, destCount: number): void;
+        private _bindGroup;
+        private _startComputePass;
+        private _endComputePass;
+        /**
+         * 执行所有缓存的命令
+         */
+        executeCMDs(): void;
+        /**
+         * 销毁计算上下文，清空所有命令
+         */
+        destroy(): void;
+    }
+    class WebGPUComputeShaderInstance implements IComputeShader {
+        static idCounter: number;
+        private _device;
+        private _shaderModule;
+        private _pipelineCache;
+        private _gpuPipelineLayout;
+        private _entryPoints;
+        _id: number;
+        name: string;
+        uniformSetMap: Map<number, WebGPUUniformPropertyBindingInfo[]>;
+        uniformCommandMap: WebGPUCommandUniformMap[];
+        compilete: boolean;
+        constructor(name: string);
+        HasKernel(kernel: string): boolean;
+        /**
+         * 序列化着色器
+         * @returns 序列化后的着色器
+         */
+        _serializeShader(): ArrayBuffer;
+        /**
+         * 反序列化着色器
+         * @param buffer 序列化后的着色器
+         * @returns 是否反序列化成功
+         */
+        _deserialize(buffer: ArrayBuffer): boolean;
+        /**
+         * 编译计算着色器
+         * @param info 着色器编译信息
+         */
+        compile(info: ComputeShaderProcessInfo): void;
+        getPipelineDescriptor(entryPoint: string): GPUComputePipelineDescriptor;
+    }
+    interface IDeviceBufferCacheData {
+        gpudata: WebGPUShaderData;
+        propertyID: number;
+    }
+    class WebGPUDeviceBuffer implements IDeviceBuffer, IGPUBuffer {
+        private _buffer;
+        private _GPUBindGroupEntry;
+        private _cacheShaderData;
+        _destroyed: boolean;
+        objectName: string;
+        globalId: number;
+        constructor(type: EDeviceBufferUsage);
+        private _reSetBindGroupEntry;
+        _addCacheShaderData(shaderData: WebGPUShaderData, propertyID: number): void;
+        _removeCacheShaderData(shaderData: WebGPUShaderData): void;
+        getNativeBuffer(): WebGPUBuffer;
+        getBindGroupEntry(binding: number): GPUBindGroupEntry;
+        setData(buffer: ArrayBuffer, bufferOffset: number, dataStartIndex: number, dataCount: number): void;
+        setDataLength(byteLength: number): void;
+        copyToBuffer(buffer: WebGPUVertexBuffer | WebGPUDeviceBuffer, sourceOffset: number, destoffset: number, bytelength: number): void;
+        copyToTexture(): void;
+        readData(dest: ArrayBuffer, destOffset: number, srcOffset: number, byteLength: number): Promise<void>;
+        destroy(): void;
+    }
+    /**
+     * attribute列表
+     */
+    type WebGPUAttributeMapType = {
+        [key: string]: [
+            number,
+            ShaderDataType
+        ];
+    };
+    /**
+     * @internal
+     * generate glsl for vulkan
+     */
+    class GLSLForVulkanGenerator {
+        /**
+         *
+         * @param defines
+         * @param attributeMap //0:useAttributeMap  1:nouseAttributeMap
+         * @param uniformMap
+         * @param shaderPassName
+         * @param materialMap
+         * @param VS
+         * @param FS
+         * @param useTexArray
+         * @param checkSetNumber
+         * @param appendSet
+         * @returns
+         */
+        static process(defines: string[], attributeMap: WebGPUAttributeMapType[], uniformMap: Map<number, WebGPUUniformPropertyBindingInfo[]>, shaderPassName: string, materialMap: Map<number, UniformProperty>, VS: ShaderNode, FS: ShaderNode, useTexArray: Set<string>, checkSetNumber: number, appendSet: number): {
+            vertex: string;
+            fragment: string;
+            appendNewUniform: boolean;
+        };
+    }
+    /** @internal */
+    function getTypeString(type: ShaderDataType): "" | "int" | "bool" | "float" | "vec2" | "vec3" | "vec4" | "mat4" | "mat3" | "sampler2D" | "samplerCube" | "sampler2DArray" | "sampler3D";
+    /** @internal */
+    function getTypeDefaultString(type: ShaderDataType): "" | "0" | "false" | "0.0" | "vec2(0.0)" | "vec3(0.0)" | "vec4(0.0)";
+    /** @internal */
+    function isSamplerType(type: ShaderDataType): boolean;
+    class WebGPU_GLSLCommon {
+        /**
+         * 替换字符串的一部分
+         * @param str 输入字符串
+         * @param replace 替换项
+         * @param start 替换开始位置（包含）
+         * @param end 替换结束位置（不包含）
+         */
+        static replaceStringPart(str: string, replace: string, start: number, end: number): string;
+        /**
+         * 在第一对括号内查找参数，查找以逗号分割的参数，括号可以嵌套，不在第一对括号内的逗号不会被分割
+         * @param input 输入字符串（带括号）
+         * @param start 从哪个位置开始查找
+         * @param bracket 指定括号（默认为小括号）
+         */
+        static findParamInBracket(input: string, start: number, bracket?: string): {
+            full: string;
+            elements: string[];
+            index: number;
+        } | null;
+        /**
+         * 根据函数类型替换指定实参
+         * @param code 要替换的代码
+         * @param variableName 要查找的变量名
+         * @param functionNames 包含特定函数名称的数组
+         * @param replacementInCategory 替换字符串，如果函数名称在提供的数组中
+         * @param replacementOutOfCategory 替换字符串，如果函数名称不在提供的数组中
+         * @return 返回替换后的代码
+         */
+        static replaceArgumentByFunctionCategory(code: string, variableName: string, functionNames: string[], replacementInCategory: string, replacementOutOfCategory: string): string;
+        /**
+         * 移除括号内的空格
+         * @param str 输入字符串
+         * @param bracket 指定括号（默认为小括号）
+         */
+        static removeSpacesInBracket(str: string, bracket?: string): string;
+    }
+    /**
+     * 函数参数
+     */
+    interface Parameter {
+        name: string;
+        type: string;
+        inout?: string;
+        precision?: string;
+        isArray: boolean;
+        arrayLength?: number;
+        isStruct: boolean;
+    }
+    /**
+     * 函数调用
+     */
+    interface FunctionCall {
+        name: string;
+        params: string[];
+    }
+    /**
+     * GLSL函数定义
+     */
+    class WebGPU_GLSLFunction {
+        name: string;
+        return: string;
+        precision: string;
+        all: string;
+        head: string;
+        body: string;
+        params: Parameter[];
+        calls: FunctionCall[];
+        samplerProcessed: boolean;
+        samplerParams: Parameter[];
+        samplerBody: string;
+        samplerOutput: string;
+        static variableType: string[];
+        constructor(all: string);
+        /**
+         * 获取函数头和函数体
+         */
+        private _getHeadAndBody;
+        /**
+         * 解析函数定义
+         */
+        private _parse;
+        /**
+         * 查找函数调用
+         * @param glslCode
+         */
+        private _findFunctionCalls;
+        /**
+         * 对函数进行处理，将sampler转换为texture和sampler
+         * @param textureNames
+         */
+        processSampler(textureNames: string[]): void;
+    }
+    /**
+     * GLSL宏定义
+     */
+    class WebGPU_GLSLMacro {
+        all: string;
+        name: string;
+        params?: string[];
+        replace?: string;
+        constructor(all: string);
+        /**
+         * 解析
+         */
+        private _parse;
+        /**
+         * 替换GLSL代码中的宏
+         * @param glslCode 原始GLSL代码
+         * @returns 替换后的GLSL代码
+         */
+        replaceMacros(glslCode: string): string;
+    }
+    /**
+     * GLSL代码处理
+     */
+    class WebGPU_GLSLProcess {
+        glInter: string[];
+        globals: string[];
+        macros: WebGPU_GLSLMacro[];
+        structs: WebGPU_GLSLStruct[];
+        uniforms: WebGPU_GLSLUniform[];
+        functions: WebGPU_GLSLFunction[];
+        textureNames: string[];
+        glslCode: string;
+        haveVertexID: boolean;
+        /**
+         * 处理GLSL代码
+         * @param glslCode GLSL代码
+         * @param textureNames 所有的贴图名称
+         */
+        process(glslCode: string, textureNames: string[]): void;
+        /**
+         * 获取Uniform信息
+         * @param glslCode
+         */
+        getUniforms(glslCode: string): WebGPU_GLSLUniform[];
+        /**
+         * 移除注释
+         * @param glslCode
+         */
+        private _removeComments;
+        /**
+         * 移除不必要的空格
+         * @param glslCode
+         */
+        private _removeSpaces;
+        /**
+         * 提取宏定义
+         * @param glslCode
+         */
+        private _extractMacros;
+        /**
+         * 执行宏替换
+         * @param glslCode
+         */
+        private _replaceMacros;
+        /**
+         * 提取内置变量
+         * @param glslCode
+         */
+        private _extractInternals;
+        /**
+         * 提取全局变量
+         * @param glslCode
+         */
+        private _extractGlobals;
+        /**
+         * 提取结构体定义
+         * @param glslCode
+         */
+        private _extractStructs;
+        /**
+         * 提取Uniform定义
+         * @param glslCode
+         */
+        private _extractUniforms;
+        /**
+         * 提取函数定义
+         * @param glslCode
+         */
+        private _extractFunctions;
+        /**
+         * 查找被使用的函数
+         */
+        private _findUsedFunctions;
+        /**
+         * 输出处理后的GLSL代码
+         */
+        private _outputGLSL;
+        /**
+         * 获取一个变量
+         * @param name
+         * @param isArray
+         */
+        private _getVariable;
+        /**
+         * 打印调试信息
+         */
+        debugInfo(): void;
+    }
+    /**
+     * 结构体字段
+     */
+    interface StructField {
+        type: string;
+        name: string;
+        precision?: string;
+        isArray?: boolean;
+        arrayLength?: number;
+    }
+    /**
+     * GLSL结构体定义
+     */
+    class WebGPU_GLSLStruct {
+        all: string;
+        name: string;
+        fields: StructField[];
+        constructor(all: string);
+        /**
+         * 解析结构体定义
+         * @param all
+         */
+        private _parse;
+        /**
+         * 获取字段
+         * @param name 字段名称
+         * @param isArray 是否是数组
+         * @returns 字段
+         */
+        getArrayField(name: string, isArray?: boolean): StructField;
+    }
+    /**
+     * uniform字段
+     */
+    interface UniformField {
+        type: string;
+        name: string;
+        precision?: string;
+        isArray: boolean;
+        arrayLength?: number;
+    }
+    /**
+     * GLSLUniform块定义
+     */
+    class WebGPU_GLSLUniform {
+        all: string;
+        name: string;
+        fields: UniformField;
+        constructor(all: string);
+        /**
+         * 解析uniform定义
+         * @param all
+         */
+        private _parse;
+    }
+    interface GlslangCompiler {
+        glsl450_to_spirv(glslSource: string, stage: "vertex" | "fragment" | "compute"): {
+            spirv: Uint32Array;
+            info_log: string;
+            success: boolean;
+        };
+        glsl300es_preprocess(glslSource: string, stage: "vertex" | "fragment" | "compute"): {
+            preprocessed_code: string;
+            info_log: string;
+            success: boolean;
+        };
+    }
+    interface NagaCompiler {
+        spirv_to_wgsl(spv: Uint8Array, validation: boolean): string;
+        glsl_to_wgsl(source: string, stage: "vertex" | "fragment" | "compute", validation: boolean): string;
+        wgsl_to_spirv(source: string, stage: "vertex" | "fragment" | "compute", validation: boolean): Uint32Array;
+    }
+    class WebGPUShaderCompiler {
+        glslang: GlslangCompiler;
+        naga: NagaCompiler;
+        constructor();
+        init(): Promise<[
+            void,
+            void
+        ]>;
+        destroy(): void;
+    }
+    /**
+     * Converts a `GPUExtent3D` into an array of numbers
+     *
+     * `GPUExtent3D` has two forms `[width, height?, depth?]` or
+     * `{width: number, height?: number, depthOrArrayLayers?: number}`
+     *
+     * You pass one of those in here and it returns an array of 3 numbers
+     * so that your code doesn't have to deal with multiple forms.
+     *
+     * @param size
+     * @returns an array of 3 numbers, [width, height, depthOrArrayLayers]
+     */
+    function normalizeGPUExtent3D(size: GPUExtent3D): number[];
+    /**
+     * Given a GPUExtent3D returns the number of mip levels needed
+     *
+     * @param size
+     * @returns number of mip levels needed for the given size
+     */
+    function numMipLevels(size: GPUExtent3D, dimension?: GPUTextureDimension): number;
+    /**
+     * Generates mip levels from level 0 to the last mip for an existing texture
+     *
+     * The texture must have been created with TEXTURE_BINDING and RENDER_ATTACHMENT
+     * and been created with mip levels
+     *
+     * @param device A GPUDevice
+     * @param texture The texture to create mips for
+     * @param textureBindingViewDimension This is only needed in compatibility mode
+     *   and it is only needed when the texture is going to be used as a cube map.
+     */
+    function genMipmap(device: GPUDevice, texture: GPUTexture, textureBindingViewDimension?: GPUTextureViewDimension): void;
+    /**
+     * 对贴图中的像素做预乘处理
+     *
+     * @param device A GPUDevice
+     * @param tex The texture to premultiply Alpha
+     * @param xOffset horizon offset
+     * @param yOffset vertical offset
+     * @param width
+     * @param height
+     */
+    function doPremultiplyAlpha(device: GPUDevice, tex: WebGPUInternalTex, xOffset: number, yOffset: number, width: number, height: number): void;
+    class WebGPUBindGroupLayoutInfo {
+        private static _idCounter;
+        readonly id: number;
+        entries: GPUBindGroupLayoutEntry[];
+        properties: number[];
+        values: string[];
+        textureStates: number;
+        textureExits: number;
+        layout: GPUBindGroupLayout;
+        constructor(entries: GPUBindGroupLayoutEntry[], properties: number[], values: string[], textureStates: number, textureExits: number);
+    }
+    class WebGPUBindGroup {
+        info: WebGPUBindGroupLayoutInfo;
+        layout: GPUBindGroupLayout;
+        gpuRS: GPUBindGroup;
+        constructor(info: WebGPUBindGroupLayoutInfo);
+    }
+    class WebGPUBindGroupCache {
+        static emptyBindGroup: WebGPUBindGroup;
+        private layoutCache;
+        private bindGroupCache;
+        clearCache(): void;
+        private getInfoCacheKey;
+        getLayoutInfo(commands: string[], shaderData: WebGPUShaderData, addition: Map<string, ShaderData>, resources: WebGPUUniformPropertyBindingInfo[], textureExitsMask: number): WebGPUBindGroupLayoutInfo;
+        private getBindGroupLayout;
+        getBindGroup(commands: string[], shaderData: WebGPUShaderData, addition: Map<string, ShaderData>, resource: WebGPUUniformPropertyBindingInfo[], textureExitsMask: number): WebGPUBindGroup;
+        getBindGroupByNode(resource: WebGPUUniformPropertyBindingInfo[], node: WebBaseRenderNode, textureExitsMask: number): WebGPUBindGroup;
+    }
+    /**
+     * 绑定类型（uniformBlock，texture或sampler）
+     */
+    enum WebGPUBindingInfoType {
+        buffer = 0,
+        texture = 1,
+        sampler = 2,
+        storageBuffer = 3,
+        storageTexture = 4
+    }
+    /**
+     * uniform详细内容（可能是uniformBlock，texture或sampler）
+     */
+    interface WebGPUUniformPropertyBindingInfo {
+        id: number;
+        set: number;
+        binding: number;
+        name: string;
+        propertyId: number;
+        visibility: GPUShaderStageFlags;
+        type: WebGPUBindingInfoType;
+        uniform?: any;
+        buffer?: GPUBufferBindingLayout;
+        texture?: GPUTextureBindingLayout;
+        sampler?: GPUSamplerBindingLayout;
+        storageTexture?: GPUStorageTextureBindingLayout;
+    }
+    class WebGPUBindGroupHelper {
+        private static BindGroupPropertyInfoMap;
+        /** internal */
+        static CacheBindGroupPropertyInfo(key: string, infos: WebGPUUniformPropertyBindingInfo[]): void;
+        private static _getBindGroupID;
+        static _getBindGroupPropertyID(bindGroupID: number, array: string[]): string;
+        /**
+         * 获取纹理类型
+         * @param uniformType
+         * @returns
+         */
+        private static _getTextureType;
+        /**
+         * 根据unfiformCommandMapArray获得绑定信息
+         * @param groupID
+         * @param unifromCommandMapArray
+         * @returns
+         */
+        static createBindPropertyInfoArrayByCommandMap(groupID: number, unifromCommandMapArray: string[], isComputeShader?: boolean): WebGPUUniformPropertyBindingInfo[];
+        static createBindGroupInfosByUniformMap(groupID: number, name: string, cacheName: string, uniformMap: Map<number, UniformProperty>): WebGPUUniformPropertyBindingInfo[];
+    }
+    class WebGPUBuffer {
+        _source: GPUBuffer;
+        _usage: GPUBufferUsageFlags;
+        _size: number;
+        private _isCreate;
+        private _mappedAtCreation;
+        private _statistics_M_Buffer;
+        private _statistics_RC_Buffer;
+        private _statistics_BufferUpload;
+        private _isIndirectDraw;
+        private _isStorageBuffer;
+        globalId: number;
+        constructor(usage: GPUBufferUsageFlags, byteSize?: number, mappedAtCreation?: boolean);
+        private _memorychange;
+        /**
+         * @param length
+         */
+        setDataLength(length: number): void;
+        private _create;
+        setData(srcData: ArrayBuffer | ArrayBufferView, srcOffset: number): void;
+        setDataEx(srcData: ArrayBuffer | ArrayBufferView, srcOffset: number, byteLength: number, dstOffset?: number): void;
+        private copyArrayBuffer;
+        readDataFromBuffer(dest: ArrayBuffer, destOffset: number, srcOffset: number, byteLength: number): Promise<void>;
+        readFromBuffer(buffer: GPUBuffer, offset: number, byteLength: number): Promise<Float32Array>;
+        writeFromBuffer(srcBuffer: ArrayBuffer, srcOffset: number, byteLength: number, dstOffset: number): Promise<void>;
+        private _releaseResource;
+        release(): void;
+    }
+    enum WebGPUVertexStepMode {
+        vertex = "vertex",
+        instance = "instance"
+    }
+    class WebGPUBufferState implements IBufferState {
+        private static _bufferStatetConterMap;
+        private static _bufferStateIDConter;
+        stateCacheKey: string;
+        stateCacheID: number;
+        vertexState: GPUVertexBufferLayout[];
+        _bindedIndexBuffer: WebGPUIndexBuffer;
+        _vertexBuffers: WebGPUVertexBuffer[];
+        vb0: WebGPUVertexBuffer;
+        _attriLocArray: Set<number>;
+        applyState(vertexBuffers: WebGPUVertexBuffer[], indexBuffer: WebGPUIndexBuffer): void;
+        constructor();
+        private _getCacheInfo;
+        destroy(): void;
+    }
+    /**
+     * 渲染指令缓存
+     * 用于缓存渲染指令，提高渲染效率
+     * 一个渲染指令缓存对象缓存了若干个渲染节点的渲染指令
+     * 如果下一帧渲染流程中，缓存的渲染节点命中率高于一定的程度，则可以直接使用缓存的渲染指令
+     */
+    class WebGPURenderBundle extends WebGPURenderEncoder {
+        static bundleDescriptorMap: Map<number, GPURenderBundleEncoderDescriptor>;
+        static getBundleDescriptor(rt: WebGPUInternalRT): GPURenderBundleEncoderDescriptor;
+        private _engine;
+        private _device;
+        _gpuBundle: GPURenderBundle;
+        encoder: GPURenderBundleEncoder;
+        createMask: number;
+        constructor();
+        isNeedReCreate(resourceUpdateMask: number): boolean;
+        startRender(destRT: WebGPUInternalRT, lable: string, depthReadOnly?: boolean, stencilReadOnly?: boolean): void;
+        finish(lable: string): void;
+        /**
+         * 销毁
+         */
+        destroy(): void;
+    }
+    /**
+     * 渲染指令缓存管理器
+     */
+    class WebGPURenderBundleManager {
+        elementsMaxPerBundleStatic: number;
+        elementsMaxPerBundleDynamic: number;
+        bundles: WebGPURenderBundle[];
+        renderTimeStamp: number;
+        private _triangles;
+        private _elementsMap;
+        private _renderBundles;
+        private _needUpdateRenderBundles;
+        /**
+         * 提交缓存渲染命令
+         * @param passEncoder
+         */
+        renderBundles(passEncoder: GPURenderPassEncoder): void;
+        /**
+         * 渲染元素是否在缓存中
+         * @param elementId
+         */
+        has(elementId: number): void;
+        /**
+         * 根据渲染元素id查找渲染缓存对象
+         * @param elementId
+         */
+        getBundle(elementId: number): void;
+        /**
+         * 通过渲染元素组创建渲染缓存对象
+         * @param context
+         * @param elements
+         * @param shotRateSet
+         */
+        createBundle(context: WebGPURenderContext3D, elements: WebGPURenderElement3D[], shotRateSet: number): void;
+        /**
+         * 移除渲染缓存对象
+         * @param bundle
+         */
+        removeBundle(bundle: WebGPURenderBundle): void;
+        /**
+         * 通过指定元素id移除渲染缓存对象
+         * @param elementId
+         */
+        removeBundleByElement(elementId: number): void;
+        /**
+         * 清除所有渲染缓存对象
+         */
+        clearBundle(): void;
+        /**
+         * 清除所有渲染缓存对象的命中计数
+         */
+        clearShot(): void;
+        /**
+         * 移除命中率低的渲染缓存对象
+         */
+        removeLowShotBundle(): void;
+        /**
+         * 销毁
+         */
+        destroy(): void;
+    }
+    class WebGPURenderBundleManagerSet {
+        key: string;
+        bundleManager: WebGPURenderBundleManager;
+        elementsToBundleStatic: WebGPURenderElement3D[];
+        elementsToBundleDynamic: WebGPURenderElement3D[];
+        /**
+         * 清除渲染指令缓存
+         */
+        clearBundle(): void;
+    }
+    class WebGPUCapable {
+        /**@internal */
+        private _capabilityMap;
+        constructor(descriptor: GPUDeviceDescriptor);
+        initCapable(descriptor: GPUDeviceDescriptor): void;
+        getCapable(type: RenderCapable): boolean;
+    }
+    class WebGPUCommandUniformMap extends CommandUniformMap {
+        /** @internal */
+        _idata: Map<number, UniformProperty>;
+        /** @internal */
+        _defaultData: Map<number, BaseTexture>;
+        /** @internal */
+        _hasUniformBuffer: boolean;
+        /** @internal */
+        _stateName: string;
+        _stateID: number;
+        /**
+         * @internal
+         * map 中包含的纹理数量
+         * 不包括 storage texture
+         */
+        _textureCount: number;
+        /** @internal */
+        _textureBits: Map<number, number>;
+        /** @internal */
+        _textureExits: number;
+        constructor(stateName: string);
+        hasPtrID(propertyID: number): boolean;
+        /**
+         * 增加一个Uniform参数，如果Uniform属性是Array，请使用addShaderUniformArray
+         * @internal
+         */
+        addShaderUniform(propertyID: number, propertyName: string, uniformtype: ShaderDataType): void;
+        addShaderUniformArray(propertyID: number, propertyName: string, uniformtype: ShaderDataType, arrayLength: number): void;
+    }
+    type OffsetAndSize = {
+        offset: number;
+        size: number;
+    };
+    type NameAndType = {
+        name: string;
+        type: string;
+        set: number;
+    };
+    type NameStringMap = Record<string, string>;
+    type NameNumberMap = Record<string, number>;
+    type NameBooleanMap = Record<string, boolean>;
+    class WebGPUIndexBuffer implements IIndexBuffer, IGPUBuffer {
+        source: WebGPUBuffer;
+        indexType: IndexFormat;
+        indexCount: number;
+        globalId: number;
+        objectName: string;
+        constructor(targetType: BufferTargetType, bufferUsageType: BufferUsage);
+        getNativeBuffer(): WebGPUBuffer;
+        _setIndexDataLength(length: number): void;
+        setData(buffer: ArrayBuffer, bufferOffset?: number, dataStartIndex?: number, dataCount?: number): void;
+        _setIndexData(data: Uint8Array | Uint16Array | Uint32Array, bufferOffset: number): void;
+        destroy(): void;
+    }
+    class WebGPUInternalRT implements InternalRenderTarget {
+        private static _formatCounter;
+        private static _pipelineAttachIDCounter;
+        _isCube: boolean;
+        _samples: number;
+        _generateMipmap: boolean;
+        _textures: WebGPUInternalTex[];
+        _texturesResolve: WebGPUInternalTex[];
+        _depthTexture: WebGPUInternalTex;
+        colorFormat: RenderTargetFormat;
+        depthStencilFormat: RenderTargetFormat;
+        isSRGB: boolean;
+        gpuMemory: number;
+        private _stateCacheKey;
+        stateCacheID: number;
+        _colorStates: GPUColorTargetState[];
+        _depthState: GPUColorTargetState;
+        _renderPassDescriptor: GPURenderPassDescriptor;
+        constructor(colorFormat: RenderTargetFormat, depthStencilFormat: RenderTargetFormat, isCube: boolean, generateMipmap: boolean, samples: number, sRGB: boolean);
+        /**
+         * @internal
+         * 获取附件格式ID
+         * @returns 基于颜色和深度格式的唯一标识符
+         */
+        _getCacheInfo(): void;
+        dispose(): void;
+    }
+    class WebGPUInternalTex implements InternalTexture {
+        static _idCounter: number;
+        private _resource;
+        get resource(): GPUTexture;
+        set resource(value: GPUTexture);
+        dimension: TextureDimension;
+        width: number;
+        height: number;
+        depth: number;
+        isPotSize: boolean;
+        mipmap: boolean;
+        mipmapCount: number;
+        baseMipmapLevel: number;
+        maxMipmapLevel: number;
+        useSRGBLoad: boolean;
+        gammaCorrection: number;
+        multiSamplers: number;
+        mipmapLoaded: boolean;
+        format: TextureFormat | RenderTargetFormat;
+        _webGPUFormat: WebGPUTextureFormat;
+        private _engine;
+        private _statistics_M_TextureX;
+        private _statistics_M_TextureA;
+        private _statistics_RC_TextureX;
+        globalId: number;
+        objectName: string;
+        /** @internal */
+        shaderDatas: Map<WebGPUShaderData, number>;
+        private _onStateChange;
+        private _filterMode;
+        get filterMode(): FilterMode;
+        set filterMode(value: FilterMode);
+        private _wrapU;
+        get wrapU(): WrapMode;
+        set wrapU(value: WrapMode);
+        private _wrapV;
+        get wrapV(): WrapMode;
+        set wrapV(value: WrapMode);
+        private _wrapW;
+        get wrapW(): WrapMode;
+        set wrapW(value: WrapMode);
+        private _anisoLevel;
+        get anisoLevel(): number;
+        set anisoLevel(value: number);
+        private _compareMode;
+        get compareMode(): TextureCompareMode;
+        set compareMode(value: TextureCompareMode);
+        private _webGPUSamplerParams;
+        private _webgpuSampler;
+        private _changeSampler;
+        get sampler(): WebGPUSampler;
+        private _gpuMemory;
+        get gpuMemory(): number;
+        set gpuMemory(value: number);
+        constructor(width: number, height: number, depth: number, dimension: TextureDimension, mipmap: boolean, multiSamples: number, useSRGBLoader: boolean, gammaCorrection: number);
+        _getGPUTextureBindingLayout(layout: GPUTextureBindingLayout): void;
+        _getSampleBindingLayout(layout: GPUSamplerBindingLayout): void;
+        _getStorageBindingLayout(layout: GPUStorageTextureBindingLayout): void;
+        statisAsRenderTexture(): void;
+        _gpuView: GPUTextureView;
+        getTextureView(): GPUTextureView;
+        private _changeTexMemory;
+        dispose(): void;
+    }
+    class WebGPUPipelineLayout {
+        private static _idCounter;
+        readonly id: number;
+        layout: GPUPipelineLayout;
+        constructor(layout: GPUPipelineLayout);
+    }
+    class WebGPUPipelineCache {
+        private pipelineLayoutCache;
+        private pipelineCache;
+        private pipelineDecCache;
+        private computePipelineCache;
+        clearCache(): void;
+        private getPipelineLayoutCacheKey;
+        getPipelinelayout(bindGroups: Map<number, WebGPUBindGroup>): WebGPUPipelineLayout;
+        getPipeline(bindGroups: Map<number, WebGPUBindGroup>, info: IRenderPipelineInfo, shaderInstance: WebGPUShaderInstance, renderTarget: WebGPUInternalRT): GPURenderPipeline;
+        getComputePipeline(bindGroups: Map<number, WebGPUBindGroup>, shaderInstance: WebGPUComputeShaderInstance, kernal: string): GPUComputePipeline;
+    }
+    interface IGPURenderEncoder extends GPUObjectBase, GPUCommandsMixin, GPUDebugCommandsMixin, GPUBindingCommandsMixin, GPURenderCommandsMixin {
+    }
+    class BindGroupBindingInfo {
+        private _bindGroup;
+        get bindGroup(): WebGPUBindGroup;
+        private _dynamicOffsetsData;
+        get dynamicOffsetsData(): Uint32Array;
+        private _active;
+        get active(): boolean;
+        private hasDynamicOffsets;
+        constructor(bindGroup: WebGPUBindGroup, dynamicOffsetsData: Uint32Array, dynamicOffsetsDataStart: GPUSize64, dynamicOffsetsDataLength: GPUSize32);
+        update(bindGroup: WebGPUBindGroup, dynamicOffsetsData: Uint32Array, dynamicOffsetsDataStart: GPUSize64, dynamicOffsetsDataLength: GPUSize32): void;
+        equal(bindGroup: WebGPUBindGroup, dynamicOffsetsData?: Uint32Array, dynamicOffsetsDataStart?: number, dynamicOffsetsDataLength?: number): boolean;
+        clear(): void;
+        destroy(): void;
+    }
+    abstract class WebGPURenderEncoder {
+        readonly isBundle: boolean;
+        encoder: IGPURenderEncoder;
+        protected currentBindGroups: Map<number, BindGroupBindingInfo>;
+        protected currentPipeline: GPURenderPipeline;
+        constructor(isBundle?: boolean);
+        /**
+        * 设置渲染管线
+        * @param pipeline
+        */
+        setPipeline(pipeline: GPURenderPipeline): void;
+        /**
+        * 设置绑定组
+        * @param index
+        * @param bindGroup
+        */
+        setBindGroup(index: GPUIndex32, bindGroup: WebGPUBindGroup): void;
+        setBindGroupByDataOffaset(index: GPUIndex32, bindGroup: WebGPUBindGroup, dynamicOffsetsData: Uint32Array, dynamicOffsetsDataStart: GPUSize64, dynamicOffsetsDataLength: GPUSize32): void;
+        applyGeometry(geometry: WebGPURenderGeometry): number;
+        applyGeometryIndex(geometry: WebGPURenderGeometry, index: number): number;
+        protected onFinish(): void;
+        abstract finish(lable: string): any;
+    }
+    /**
+     * GPU渲染指令编码器
+     */
+    class WebGPURenderCommandEncoder extends WebGPURenderEncoder {
+        private _engine;
+        private _device;
+        encoder: GPURenderPassEncoder;
+        private _commandEncoder;
+        renderPassDesc: GPURenderPassDescriptor;
+        constructor();
+        startRender(renderPassDesc: GPURenderPassDescriptor): void;
+        setViewport(x: number, y: number, width: number, height: number, minDepth: number, maxDepth: number): void;
+        setScissorRect(x: GPUIntegerCoordinate, y: GPUIntegerCoordinate, width: GPUIntegerCoordinate, height: GPUIntegerCoordinate): void;
+        setStencilReference(ref: number): void;
+        end(): void;
+        finish(): GPUCommandBuffer;
+        /**
+         * 执行缓存绘图指令
+         * @param bundles
+         */
+        excuteBundle(bundles: GPURenderBundle[]): void;
+        /**
+         * 销毁
+         */
+        destroy(): void;
+    }
+    class WebGPUGlobalPipeLineCacheInfo {
+        globalDefineData: WebDefineDatas;
+        globalPipelineCacheKey: string;
+        globalDefineChangeFlag: Vector2;
+        pipeLineChangeFlag: Vector2;
+        constructor();
+    }
+    function compareCahceFlag(changeFlag: Vector2, cacheFlag: Vector2): boolean;
+    function coverCahceFlag(coverFlag: Vector2, oldFlag: Vector2): void;
+    class OneDrawPassCacheInfo {
+        matCacheFlag: Vector2;
+        nodeCacheFlag: Vector2;
+        passDefineCacheFlag: Vector2;
+        geometryStateID: number;
+        drawInfos: OneDrawCacheInfo[];
+    }
+    class OneDrawCacheInfo {
+        shaderInstance: WebGPUShaderInstance;
+        pipeline: GPURenderPipeline;
+        shaderChange: boolean;
+        pipeLineCacheFlag: Vector2;
+        defineCacheFlag: Vector2;
+        nodeBindGroup: WebGPUBindGroup;
+        renderNodeBindGroupCacheFlag: Vector2;
+        matBindGroup: WebGPUBindGroup;
+        matBindGroupCacheFlag: Vector2;
+    }
+    class WebGPURenderDeviceFactory implements IRenderDeviceFactory {
+        createShaderInstance(shaderProcessInfo: ShaderProcessInfo, shaderPass: ShaderPass): IShaderInstance;
+        createIndexBuffer(bufferUsage: BufferUsage): IIndexBuffer;
+        createVertexBuffer(bufferUsageType: BufferUsage): IVertexBuffer;
+        createDeviceBuffer(type: EDeviceBufferUsage): IDeviceBuffer;
+        createBufferState(): IBufferState;
+        createRenderGeometryElement(mode: MeshTopology, drawType: DrawType): IRenderGeometryElement;
+        createEngine(config: Config, canvas: HTMLCanvas): Promise<void>;
+        static globalBlockMap: {
+            [key: string]: WebGPUCommandUniformMap;
+        };
+        createGlobalUniformMap(blockName: string): WebGPUCommandUniformMap;
+        createShaderData(ownerResource?: Resource): ShaderData;
+        createComputeContext(): WebGPUComputeContext;
+        createComputeShader(info: ComputeShaderProcessInfo): WebGPUComputeShaderInstance;
+    }
+    class WebGPUConfig {
+        /**
+         * Defines the category of adapter to use.
+         */
+        powerPreference: GPUPowerPreference;
+        /**
+         * Defines the device descriptor used to create a device.
+         */
+        deviceDescriptor?: GPUDeviceDescriptor;
+        /**
+         * context params
+         */
+        swapChainFormat?: WebGPUTextureFormat;
+        /**
+         * canvans alpha mode
+         */
+        alphaMode: GPUCanvasAlphaMode;
+        /**
+         * attach canvans usage
+         */
+        usage?: GPUTextureUsageFlags;
+        /**
+         * color space
+         */
+        colorSpace?: string;
+        /**
+         * depth and stencil
+         */
+        depthStencilFormat: WebGPUTextureFormat;
+        /**
+         * multi sample（msaa = 4x）
+         */
+        msaa: boolean;
+    }
+    /**
+     * WebGPU渲染引擎
+     */
+    class WebGPURenderEngine extends EventDispatcher implements IRenderEngine {
+        static _instance: WebGPURenderEngine;
+        _isShaderDebugMode: boolean;
+        private _canvas;
+        _config: WebGPUConfig;
+        _context: GPUCanvasContext;
+        _preferredFormat: GPUTextureFormat;
+        _screenResized: boolean;
+        _screenRT: WebGPUInternalRT;
+        _remapZ: boolean;
+        _screenInvertY: boolean;
+        _lodTextureSample: boolean;
+        _breakTextureSample: boolean;
+        _framePassCount: number;
+        private _timingCount;
+        private _timingAverage;
+        private _timingQuerySum;
+        private _timingQueryStart;
+        private _adapter;
+        private _device;
+        private _supportCapatable;
+        private _textureContext;
+        private _adapterSupportedExtensions;
+        private _deviceEnabledExtensions;
+        gpuBufferMgr: WebGPUBufferManager;
+        useSPRIV: boolean;
+        globalId: number;
+        objectName: string;
+        shaderCompiler: WebGPUShaderCompiler;
+        bindGroupCache: WebGPUBindGroupCache;
+        pipelineCache: WebGPUPipelineCache;
+        /**
+         * 实例化一个webgpuEngine
+         */
+        constructor(config: WebGPUConfig, canvas: any);
+        /**
+         * 获取适配器
+         */
+        private _getAdapter;
+        /**
+         * 初始化适配器
+         * @param adapter
+         */
+        private _initAdapter;
+        /**
+         * 获取WebGPU设备
+         * @param deviceDescriptor
+         */
+        private _getGPUdevice;
+        /**
+         * 显示错误信息
+         * @param event
+         */
+        private _unCapturedErrorCall;
+        /**
+         * 设备丢失
+         * @param info
+         */
+        private _deviceLostCall;
+        /**
+         * 初始化WebGPU设备
+         * @param device
+         */
+        private _initDevice;
+        /**
+         * 初始化WebGPU
+         */
+        _initAsync(): Promise<any>;
+        /**
+         * 画布尺寸改变
+         * @param width
+         * @param height
+         */
+        resizeOffScreen(width: number, height: number): void;
+        getDevice(): GPUDevice;
+        /**
+         * 上传数据
+         */
+        upload(): void;
+        /**
+         * 设置WebGPU画图上下文
+         */
+        private _initContext;
+        /**
+         * 初始化渲染引擎
+         */
+        initRenderEngine(): Promise<void>;
+        copySubFrameBuffertoTex(texture: InternalTexture, level: number, xoffset: number, yoffset: number, x: number, y: number, width: number, height: number): void;
+        /**@internal */
+        private _propertyNameMap;
+        /**@internal */
+        private _propertyNameCounter;
+        propertyNameToID(name: string): number;
+        propertyIDToName(id: number): string;
+        /**@internal */
+        private _defineMap;
+        /**@internal */
+        private _defineCounter;
+        /**@internal */
+        private _maskMap;
+        getDefineByName(name: string): ShaderDefine;
+        getNamesByDefineData(defineData: IDefineDatas, out: string[]): void;
+        _texGammaDefine: {
+            [key: number]: ShaderDefine;
+        };
+        addTexGammaDefine(key: number, value: ShaderDefine): void;
+        /**获得各个参数 */
+        getParams(params: RenderParams): number;
+        /**获得是否支持某种能力 */
+        getCapable(capatableType: RenderCapable): boolean;
+        getTextureContext(): ITextureContext;
+        /**
+         * 创建屏幕渲染目标
+         */
+        private _createScreenRT;
+        /** @internal  */
+        hasScreenCleared: boolean;
+        /**
+         * 开始一帧
+         */
+        startFrame(): void;
+        /**
+         * 结束一帧
+         */
+        endFrame(): void;
+    }
+    enum WebGPUPrimitiveTopology {
+        point_list = "point-list",
+        line_list = "line-list",
+        line_strip = "line-strip",
+        triangle_list = "triangle-list",
+        triangle_strip = "triangle-strip"
+    }
+    interface WebGPUDrawIndirectInfo {
+        buffer: WebGPUDeviceBuffer;
+        offset: number;
+    }
+    class WebGPURenderGeometry implements IRenderGeometryElement {
+        private static _geometryConterMap;
+        private static _geometryIDConter;
+        private static _idCounter;
+        _id: number;
+        private _indexFormat;
+        private _mode;
+        private _instanceCount;
+        _bufferState: WebGPUBufferState;
+        /**@internal WebGPUDrawArrayInfo array  1 start 2 count*/
+        _drawArrayInfo: SingletonList<number>;
+        /**@internal  WebGPUDrawElementInfo array 1 elementStart 2 elementStart 2 elementCount*/
+        _drawElementInfo: SingletonList<number>;
+        /**@internal */
+        _drawElementInfo0: boolean;
+        /**@internal */
+        _drawIndirectInfo: WebGPUDrawIndirectInfo[];
+        private _drawType;
+        set drawType(v: DrawType);
+        get drawType(): DrawType;
+        gpuIndexFormat: GPUIndexFormat;
+        gpuIndexByte: number;
+        stateCacheKey: string;
+        private stateCacheID;
+        private _cacheBufferStateID;
+        isNeedReCreateCacheInfo(): boolean;
+        getStateCacheID(): number;
+        get instanceCount(): number;
+        set instanceCount(value: number);
+        get mode(): MeshTopology;
+        set mode(value: MeshTopology);
+        get bufferState(): WebGPUBufferState;
+        set bufferState(value: WebGPUBufferState);
+        get indexFormat(): IndexFormat;
+        set indexFormat(value: IndexFormat);
+        /**@internal */
+        constructor(mode: MeshTopology, drawType: DrawType);
+        drawParams: FastSinglelist<number>;
+        private _getCacheInfo;
+        getDrawDataParams(out: FastSinglelist<number>): void;
+        setDrawArrayParams(first: number, count: number): void;
+        setDrawElemenParams(count: number, offset: number): void;
+        setInstanceRenderOffset(offset: number, instanceCount: number): void;
+        setIndirectDrawBuffer(buffer: WebGPUDeviceBuffer, offset: number): void;
+        clearRenderParams(): void;
+        cloneTo(obj: WebGPURenderGeometry): void;
+        applyToEncoder(encoder: IGPURenderEncoder): number;
+        destroy(): void;
+    }
+    class WebGPURenderPassHelper {
+        static getDescriptor(rt: WebGPUInternalRT, clearflag: RenderClearFlag, clearColor?: Color, clearDepthValue?: number, clearStencilValue?: number): GPURenderPassDescriptor;
+    }
+    interface WebGPUBlendStateCache {
+        state: GPUBlendState;
+        key: number;
+        id: number;
+    }
+    class WebGPUBlendState {
+        private static _idCounter;
+        private static _pointer_BlendType;
+        private static _pointer_OperationRGB_BlendEquationSeparate;
+        private static _pointer_OperationAlpha_BlendEquationSeparate;
+        private static _pointer_srcBlendRGB_BlendFactor;
+        private static _pointer_dstBlendRGB_BlendFactor;
+        private static _pointer_srcBlendAlpha_BlendFactor;
+        private static _pointer_dstBlendAlpha_BlendFactor;
+        private static _cache;
+        static getBlendState(blend: BlendType, operationRGB: BlendEquationSeparate, srcBlendRGB: BlendFactor, dstBlendRGB: BlendFactor, operationAlpha: BlendEquationSeparate, srcBlendAlpha: BlendFactor, dstBlendAlpha: BlendFactor): WebGPUBlendStateCache;
+        private static _getBlendStateCacheID;
+        private static _createBlendState;
+        private static _getFactor;
+        private static _getComponent;
+    }
+    interface WebGPUDepthStencilStateCache {
+        state: GPUDepthStencilState;
+        key: string;
+        id: number;
+    }
+    class DepthStencilParam {
+        depthWrite: boolean;
+        depthTest: CompareFunction;
+        depthBias: boolean;
+        depthBiasConstant: number;
+        depthBiasSlopeScale: number;
+        depthBiasClamp: number;
+        stencilEnable: boolean;
+        stencilTest: CompareFunction;
+        stencilWrite: boolean;
+        stencilRef: number;
+        stencilReadMask: number;
+        stencilWriteMask: number;
+        stencilOp: {
+            x: StencilOperation;
+            y: StencilOperation;
+            z: StencilOperation;
+        };
+    }
+    class WebGPUDepthStencilState {
+        private static _idCounter;
+        private static _cache;
+        static getDepthStencilState(format: RenderTargetFormat, depthStencilParam: DepthStencilParam): WebGPUDepthStencilStateCache;
+        static getDepthStencilParamCacheID(depthStencilParam: DepthStencilParam): string;
+        private static _getDepthStencilCacheID;
+        private static _createDepthStencilState;
+    }
+    interface WebGPUPrimitiveStateCache {
+        state: GPUPrimitiveState;
+        key: number;
+        id: number;
+    }
+    class WebGPUPrimitiveState {
+        private static _idCounter;
+        private static _pointer_Topology;
+        private static _pointer_FrontFace;
+        private static _pointer_CullMode;
+        private static _cache;
+        static getGPUPrimitiveState(topology: MeshTopology, frontFace: FrontFace, cullMode: CullMode): WebGPUPrimitiveStateCache;
+        private static _getGPUPrimitiveStateID;
+        private static _createPrimitiveState;
+    }
+    class IRenderPipelineInfo {
+        geometry: WebGPURenderGeometry;
+        blendState: WebGPUBlendStateCache;
+        depthStencilState: WebGPUDepthStencilStateCache;
+        cullMode: CullMode;
+        frontFace: FrontFace;
+    }
+    function getDepthStencilParamFromShader(shaderData: WebGPUShaderData, shaderInstance: WebGPUShaderInstance, dest: WebGPUInternalRT, depthStencilParam: DepthStencilParam): void;
+    function getDepthStencilParamFromMaterial(shaderData: WebGPUShaderData, dest: WebGPUInternalRT, depthStencilParam: DepthStencilParam): void;
+    /**
+     * WebGPU内存回收（需要延迟一帧回收的内存）
+     */
+    class WebGPUResourceRecover {
+        private _recoverList;
+        private _frameCount;
+        needRecover(res: WebGPUBuffer): void;
+        recover(): void;
+    }
+    interface WebGPUSamplerParams {
+        comparedMode: TextureCompareMode;
+        wrapU: WrapMode;
+        wrapV: WrapMode;
+        wrapW: WrapMode;
+        mipmapFilter: FilterMode;
+        filterMode: FilterMode;
+        anisoLevel: number;
+    }
+    class WebGPUSampler {
+        static pointer_wrapU: number;
+        static pointer_wrapV: number;
+        static pointer_wrapW: number;
+        static pointer_filterMode: number;
+        static pointer_mipmapFilter: number;
+        static pointer_comparedMode: number;
+        static pointer_anisoLevel: number;
+        private static _cacheMap;
+        private _descriptor;
+        source: GPUSampler;
+        globalId: number;
+        objectName: string;
+        constructor(obj: WebGPUSamplerParams);
+        static getWebGPUSampler(params: WebGPUSamplerParams): WebGPUSampler;
+        private static _getCacheSamplerKey;
+        private _createGPUSampler;
+        private _getSamplerDescriptor;
+        private _getSamplerAddressMode;
+        private _getFilterMode;
+        private _getGPUCompareFunction;
+    }
+    class WebGPUSetRenderData extends SetRenderDataCMD {
+        type: RenderCMDType;
+        protected _dataType: ShaderDataType;
+        protected _propertyID: number;
+        protected _dest: WebGPUShaderData;
+        protected _value: ShaderDataItem;
+        data_v2: Vector2;
+        data_v3: Vector3;
+        data_v4: Vector4;
+        data_mat3: Matrix3x3;
+        data_mat4: Matrix4x4;
+        data_color: Color;
+        data_number: number;
+        data_texture: BaseTexture;
+        data_buffer: Float32Array;
+        get dataType(): ShaderDataType;
+        set dataType(value: ShaderDataType);
+        get propertyID(): number;
+        set propertyID(value: number);
+        get dest(): WebGPUShaderData;
+        set dest(value: WebGPUShaderData);
+        get value(): ShaderDataItem;
+        set value(value: ShaderDataItem);
+        constructor();
+        apply(context: any): void;
+    }
+    class WebGPUSetShaderDefine extends SetShaderDefineCMD {
+        type: RenderCMDType;
+        protected _define: ShaderDefine;
+        protected _dest: WebGPUShaderData;
+        protected _add: boolean;
+        get define(): ShaderDefine;
+        set define(value: ShaderDefine);
+        get dest(): WebGPUShaderData;
+        set dest(value: WebGPUShaderData);
+        get add(): boolean;
+        set add(value: boolean);
+        constructor();
+        apply(context: any): void;
+    }
+    class WebGPUComputeCommandAppatchCMD extends ComputeCommandAppatchCMD {
+        type: RenderCMDType;
+        computeContext: WebGPUComputeContext;
+        constructor();
+        apply(context: any): void;
+    }
+    /**
+     * 着色器数据
+     */
+    class WebGPUShaderData extends ShaderData {
+        private static pointerCount;
+        /**
+         * 全局初始化
+         */
+        static __init__(): void;
+        /**
+        * 帧结束时做一些处理
+        */
+        static endFrame(): void;
+        private _gammaColorMap;
+        /**@internal */
+        _data: any;
+        /**@internal */
+        _defineDatas: WebDefineDatas;
+        /**@internal UBO Buffer Module*/
+        _uniformBuffers: Map<string, WebGPUUniformBuffer>;
+        /**@internal */
+        _subUniformBuffers: Map<string, WebGPUSubUniformBuffer>;
+        /**@internal */
+        _uniformBuffersPropertyMap: Map<number, WebGPUUniformBufferBase>;
+        _id: number;
+        private _subUboBufferNumber;
+        private _textureStatesMap;
+        /** @internal */
+        get textureStatesMap(): ReadonlyMap<string, number>;
+        _textureData: {
+            [key: number]: BaseTexture;
+        };
+        private _needUpdateBlendStateCache;
+        private _blendStateCache;
+        get blendStateCache(): WebGPUBlendStateCache;
+        private updateBlendStateCache;
+        private _needUpdateDepthStencilStateCache;
+        private _depthStencilParam;
+        private _depthStencilStateKey;
+        get depthStencilStateKey(): string;
+        set depthStencilStateKey(value: string);
+        private updateDepthStencilStateCache;
+        private _checkRenderState;
+        private _clearRenderStateCheck;
+        /**
+         * 不允许直接创建，只能通过对象池
+         * @param ownerResource
+         */
+        constructor(ownerResource?: Resource);
+        private nearEqual;
+        private _BindGroupFlagMap;
+        private _BindGroupLayoutFlagMap;
+        private _propertyLinkBindGroupMap;
+        addBindGroupChangeLink(commandMapID: string, uniformMap: Map<number, UniformProperty>): void;
+        removeBindGroupChangeLink(commandMapID: string, uniformMap: Map<number, UniformProperty>): void;
+        addBindGroupChangeFlag(commandMapID: string, flag: Vector2, layoutFlag: Vector2): void;
+        removeBindGroupChangeFlag(commandMapID: string, flag: Vector2, layoutFlag: Vector2): void;
+        private _initBufferData;
+        createUniformBuffer(name: string, uniformMap: WebGPUCommandUniformMap): WebGPUUniformBuffer;
+        /** @internal */
+        _cacheSubUniformBuffer(buffer: WebGPUSubUniformBuffer, name: string, cacheName: string, uniformMap: Map<number, UniformProperty>): void;
+        createSubUniformBuffer(name: string, cacheName: string, uniformMap: Map<number, UniformProperty>): WebGPUSubUniformBuffer;
+        /**
+         * 获取数据对象
+         */
+        getData(): any;
+        /**
+         * 获取宏定义数据
+         */
+        getDefineData(): WebDefineDatas;
+        /**
+         * @ignore
+         */
+        addDefine(define: ShaderDefine): void;
+        /**
+         * @ignore
+         */
+        addDefines(define: WebDefineDatas): void;
+        /**
+         * @ignore
+         */
+        removeDefine(define: ShaderDefine): void;
+        removeDefines(defines: WebDefineDatas): void;
+        /**
+         * @ignore
+         */
+        hasDefine(define: ShaderDefine): boolean;
+        /**
+         * @ignore
+         */
+        clearDefine(): void;
+        /**
+         * 获取布尔
+         * @param index shader索引
+         * @return 布尔
+         */
+        getBool(index: number): boolean;
+        /**
+         * 设置布尔
+         * @param index shader索引
+         * @param value 布尔
+         */
+        setBool(index: number, value: boolean): void;
+        /**
+         * 获取整型
+         * @param index shader索引
+         * @return 整型
+         */
+        getInt(index: number): number;
+        /**
+         * 设置整型
+         * @param index shader索引
+         * @param value 整型
+         */
+        setInt(index: number, value: number): void;
+        /**
+         * 获取浮点
+         * @param index shader索引
+         * @return 浮点
+         */
+        getNumber(index: number): number;
+        /**
+         * 设置浮点
+         * @param index shader索引
+         * @param value 浮点
+         */
+        setNumber(index: number, value: number): void;
+        /**
+         * 获取Vector2向量
+         * @param index shader索引
+         * @return Vector2向量
+         */
+        getVector2(index: number): Vector2;
+        /**
+         * 设置Vector2向量
+         * @param index shader索引
+         * @param value Vector2向量
+         */
+        setVector2(index: number, value: Vector2): void;
+        /**
+         * 获取Vector3向量
+         * @param index shader索引
+         * @return Vector3向量
+         */
+        getVector3(index: number): Vector3;
+        /**
+         * 设置Vector3向量
+         * @param index shader索引
+         * @param value Vector3向量
+         */
+        setVector3(index: number, value: Vector3): void;
+        /**
+         * 获取向量
+         * @param index shader索引
+         * @return 向量
+         */
+        getVector(index: number): Vector4;
+        /**
+         * 设置向量
+         * @param index shader索引
+         * @param value 向量
+         */
+        setVector(index: number, value: Vector4): void;
+        /**
+         * 获取颜色
+         * @param index 索引
+         * @returns 颜色
+         */
+        getColor(index: number): Color;
+        /**
+         * 设置颜色
+         * @param index 索引
+         * @param value 颜色值
+         */
+        setColor(index: number, value: Color): void;
+        /**
+         * @internal
+         * @param index
+         */
+        getLinearColor(index: number): Vector4;
+        /**
+         * 获取矩阵
+         * @param index
+         * @returns
+         */
+        getMatrix3x3(index: number): Matrix3x3;
+        /**
+         * 设置矩阵
+         * @param index
+         * @param value
+         */
+        setMatrix3x3(index: number, value: Matrix3x3): void;
+        /**
+         * 获取矩阵
+         * @param index shader索引
+         * @return 矩阵
+         */
+        getMatrix4x4(index: number): Matrix4x4;
+        /**
+         * 设置矩阵
+         * @param index shader索引
+         * @param value 矩阵
+         */
+        setMatrix4x4(index: number, value: Matrix4x4): void;
+        /**
+         * 获取Buffer
+         * @param index shader索引
+         * @return
+         */
+        getBuffer(index: number): Float32Array;
+        /**
+         * 设置Buffer
+         * @param index shader索引
+         * @param value buffer数据
+         */
+        setBuffer(index: number, value: Float32Array): void;
+        /**
+         * 设置纹理
+         * @param index shader索引
+         * @param value 纹理
+         */
+        setTexture(index: number, value: BaseTexture): void;
+        private _updateTextureState;
+        bindGroupUpdateBuffer(index: number, value: WebGPUUniformBufferBase): void;
+        bindGroupUpdateTex(index: number, value: WebGPUInternalTex): void;
+        /**
+         * 设置内部纹理
+         * @param index shader索引
+         * @param value 纹理
+         */
+        _setInternalTexture(index: number, value: WebGPUInternalTex): void;
+        setDeviceBuffer(index: number, value: WebGPUDeviceBuffer): void;
+        /**
+         * 获取纹理
+         * @param index shader索引
+         * @return 纹理
+         */
+        getTexture(index: number): BaseTexture;
+        /**
+         * 克隆（仅克隆数据）
+         * @param dest
+         */
+        cloneTo(dest: WebGPUShaderData): void;
+        /**
+         * 克隆（仅克隆数据）
+         */
+        clone(): WebGPUShaderData;
+        clearUBO(): void;
+        /**
+         * 清理数据
+         */
+        clearData(): void;
+        /**
+         * 销毁转回收
+         */
+        destroy(): void;
+    }
+    /**
+     * WebGPU着色器实例
+     */
+    class WebGPUShaderInstance implements IShaderInstance {
+        static idCounter: number;
+        private _vsShader;
+        get vertexModule(): GPUShaderModule;
+        private _fsShader;
+        get fragmentModule(): GPUShaderModule;
+        private _destroyed;
+        private _commanMap;
+        /**
+         * @internal
+         */
+        _id: number;
+        /**
+         * @internal
+         */
+        _shaderPass: ShaderPass;
+        name: string;
+        complete: boolean;
+        uniformSetMap: Map<number, WebGPUUniformPropertyBindingInfo[]>;
+        private uniformResourcesCacheKey;
+        /** @internal */
+        uniformTextureExits: Map<number, number>;
+        constructor(name: string);
+        _serializeShader(): ArrayBuffer;
+        _deserialize(buffer: ArrayBuffer): boolean;
+        /**
+         * 创建ShaderInstance
+         * @param shaderProcessInfo
+         * @param shaderPass
+         */
+        _create(shaderProcessInfo: ShaderProcessInfo, shaderPass: ShaderPass): void;
+        private _generateMaterialCommandMap;
+        private _create2D;
+        private _create3D;
+        /**
+         * 销毁
+         */
+        _disposeResource(): void;
+    }
+    class WebGPUGlobal {
+        private static _idCounter;
+        private static _uniformInfoIdCounter;
+        private static _uniformBufferIdCounter;
+        static getUniformInfoId(): number;
+        static getUniformBufferId(): number;
+        static getId(object?: any): number;
+        static reset(): void;
+        static get idCounter(): number;
+    }
+    enum WebGPUTextureDimension {
+        D1D = "1d",
+        D2D = "2d",
+        D3D = "3d"
+    }
+    enum WebGPUTextureFormat {
+        r8unorm = "r8unorm",
+        r8snorm = "r8snorm",
+        r8uint = "r8uint",
+        r8sint = "r8sint",
+        r16uint = "r16uint",
+        r16sint = "r16sint",
+        r16float = "r16float",
+        rg8unorm = "rg8unorm",
+        rg8snorm = "rg8snorm",
+        rg8uint = "rg8uint",
+        rg8sint = "rg8sint",
+        r32uint = "r32uint",
+        r32sint = "r32sint",
+        r32float = "r32float",
+        rg16uint = "rg16uint",
+        rg16sint = "rg16sint",
+        rg16float = "rg16float",
+        rgba8unorm = "rgba8unorm",
+        rgba8unorm_srgb = "rgba8unorm-srgb",
+        rgba8snorm = "rgba8snorm",
+        rgba8uint = "rgba8uint",
+        rgba8sint = "rgba8sint",
+        bgra8unorm = "bgra8unorm",
+        bgra8unorm_srgb = "bgra8unorm-srgb",
+        rgb9e5ufloat = "rgb9e5ufloat",
+        rgb10a2unorm = "rgb10a2unorm",
+        rg11b10ufloat = "rg11b10ufloat",
+        rg32uint = "rg32uint",
+        rg32sint = "rg32sint",
+        rg32float = "rg32float",
+        rgba16uint = "rgba16uint",
+        rgba16sint = "rgba16sint",
+        rgba16float = "rgba16float",
+        rgba32uint = "rgba32uint",
+        rgba32sint = "rgba32sint",
+        rgba32float = "rgba32float",
+        stencil8 = "stencil8",
+        depth16unorm = "depth16unorm",
+        depth24plus = "depth24plus",
+        depth24plus_stencil8 = "depth24plus-stencil8",
+        depth32float = "depth32float",
+        depth32float_stencil8 = "depth32float-stencil8",
+        bc1_rgba_unorm = "bc1-rgba-unorm",
+        bc1_rgba_unorm_srgb = "bc1-rgba-unorm-srgb",
+        bc2_rgba_unorm = "bc2-rgba-unorm",
+        bc2_rgba_unorm_srgb = "bc2-rgba-unorm-srgb",
+        bc3_rgba_unorm = "bc3-rgba-unorm",
+        bc3_rgba_unorm_srgb = "bc3-rgba-unorm-srgb",
+        bc4_r_unorm = "bc4-r-unorm",
+        bc4_r_snorm = "bc4-r-snorm",
+        bc5_rg_unorm = "bc5-rg-unorm",
+        bc5_rg_snorm = "bc5-rg-snorm",
+        bc6h_rgb_ufloat = "bc6h-rgb-ufloat",
+        bc6h_rgb_float = "bc6h-rgb-float",
+        bc7_rgba_unorm = "bc7-rgba-unorm",
+        bc7_rgba_unorm_srgb = "bc7-rgba-unorm-srgb",
+        etc2_rgb8unorm = "etc2-rgb8unorm",
+        etc2_rgb8unorm_srgb = "etc2-rgb8unorm-srgb",
+        etc2_rgb8a1unorm = "etc2-rgb8a1unorm",
+        etc2_rgb8a1unorm_srgb = "etc2-rgb8a1unorm-srgb",
+        etc2_rgba8unorm = "etc2-rgba8unorm",
+        etc2_rgba8unorm_srgb = "etc2-rgba8unorm-srgb",
+        astc_4x4_unorm = "astc-4x4-unorm",
+        astc_4x4_unorm_srgb = "astc-4x4-unorm-srgb",
+        astc_5x4_unorm = "astc-5x4-unorm",
+        astc_5x4_unorm_srgb = "astc-5x4-unorm-srgb",
+        astc_5x5_unorm = "astc-5x5-unorm",
+        astc_5x5_unorm_srgb = "astc-5x5-unorm-srgb",
+        astc_6x5_unorm = "astc-6x5-unorm",
+        astc_6x5_unorm_srgb = "astc-6x5-unorm-srgb",
+        astc_6x6_unorm = "astc-6x6-unorm",
+        astc_6x6_unorm_srgb = "astc-6x6-unorm-srgb",
+        astc_8x5_unorm = "astc-8x5-unorm",
+        astc_8x5_unorm_srgb = "astc-8x5-unorm-srgb",
+        astc_8x6_unorm = "astc-8x6-unorm",
+        astc_8x6_unorm_srgb = "astc-8x6-unorm-srgb",
+        astc_8x8_unorm = "astc-8x8-unorm",
+        astc_8x8_unorm_srgb = "astc-8x8-unorm-srgb",
+        astc_10x5_unorm = "astc-10x5-unorm",
+        astc_10x5_unorm_srgb = "astc-10x5-unorm-srgb",
+        astc_10x6_unorm = "astc-10x6-unorm",
+        astc_10x6_unorm_srgb = "astc-10x6-unorm-srgb",
+        astc_10x8_unorm = "astc-10x8-unorm",
+        astc_10x8_unorm_srgb = "astc-10x8-unorm-srgb",
+        astc_10x10_unorm = "astc-10x10-unorm",
+        astc_10x10_unorm_srgb = "astc-10x10-unorm-srgb",
+        astc_12x10_unorm = "astc-12x10-unorm",
+        astc_12x10_unorm_srgb = "astc-12x10-unorm-srgb",
+        astc_12x12_unorm = "astc-12x12-unorm",
+        astc_12x12_unorm_srgb = "astc-12x12-unorm-srgb"
+    }
+    class WebGPUTextureContext implements ITextureContext {
+        private _engine;
+        needBitmap: boolean;
+        constructor(engine: WebGPURenderEngine);
+        createTexture3DInternal(dimension: TextureDimension, width: number, height: number, depth: number, format: TextureFormat, generateMipmap: boolean, sRGB: boolean, premultipliedAlpha: boolean): InternalTexture;
+        setTexture3DImageData(texture: InternalTexture, source: HTMLImageElement[] | HTMLCanvasElement[] | ImageBitmap[], depth: number, premultiplyAlpha: boolean, invertY: boolean): Promise<void>;
+        setTexture3DPixelsData(texture: WebGPUInternalTex, source: ArrayBufferView, depth: number, premultiplyAlpha: boolean, invertY: boolean): void;
+        setTexture3DSubPixelsData(texture: WebGPUInternalTex, source: ArrayBufferView, mipmapLevel: number, generateMipmap: boolean, xOffset: number, yOffset: number, zOffset: number, width: number, height: number, depth: number, premultiplyAlpha: boolean, invertY: boolean): void;
+        private _getGPUTexturePixelByteSize;
+        private _getGPURenderTexturePixelByteSize;
+        private _getGPUTextureFormat;
+        private _getGPURenderTargetFormat;
+        private _isCompressTexture;
+        /**
+         * https://www.w3.org/TR/webgpu/#plain-color-formats
+         *
+         * 检测是否支持 write-only
+         */
+        private _supportStorage;
+        private _getFormatPixelsParams;
+        private _getGPUTextureDescriptor;
+        /**
+         * 检查指定的纹理格式是否支持生成 Mipmap
+         * @param format - 纹理格式
+         * @returns 如果支持生成 Mipmap 返回 true，否则返回 false
+         */
+        private _canGenerateMipmapByFormat;
+        /**
+         * 纹理是否需要生成mipmap像素
+         * @param texture
+         */
+        private _isTextureNeedGenMipmap;
+        createTextureInternal(dimension: TextureDimension, width: number, height: number, format: TextureFormat, generateMipmap: boolean, sRGB: boolean, premultipliedAlpha: boolean): InternalTexture;
+        setTextureImageData(texture: WebGPUInternalTex, source: HTMLCanvasElement | HTMLImageElement | ImageBitmap, premultiplyAlpha: boolean, invertY: boolean): Promise<void>;
+        setTextureSubImageData(texture: InternalTexture, source: HTMLCanvasElement | HTMLImageElement | ImageBitmap, x: number, y: number, premultiplyAlpha: boolean, invertY: boolean): void;
+        /**@internal */
+        private _getBlockInformationFromFormat;
+        setTexturePixelsData(texture: WebGPUInternalTex, source: ArrayBufferView, premultiplyAlpha: boolean, invertY: boolean): void;
+        setTextureSubPixelsData(texture: WebGPUInternalTex, source: ArrayBufferView, mipmapLevel: number, generateMipmap: boolean, xOffset: number, yOffset: number, width: number, height: number, premultiplyAlpha: boolean, invertY: boolean): void;
+        setTextureDDSData(texture: WebGPUInternalTex, ddsInfo: DDSTextureInfo): void;
+        setTextureKTXData(texture: WebGPUInternalTex, ktxInfo: KTXTextureInfo): void;
+        setTextureHDRData(texture: WebGPUInternalTex, hdrInfo: HDRTextureInfo): void;
+        setCubeImageData(texture: InternalTexture, source: (HTMLCanvasElement | HTMLImageElement | ImageBitmap)[], premultiplyAlpha: boolean, invertY: boolean): void;
+        setCubePixelsData(texture: WebGPUInternalTex, source: ArrayBufferView[], premultiplyAlpha: boolean, invertY: boolean): void;
+        setCubeSubPixelData(texture: WebGPUInternalTex, source: ArrayBufferView[], mipmapLevel: number, generateMipmap: boolean, xOffset: number, yOffset: number, width: number, height: number, premultiplyAlpha: boolean, invertY: boolean): void;
+        setCubeKTXData(texture: WebGPUInternalTex, ktxInfo: KTXTextureInfo): void;
+        setCubeDDSData(texture: WebGPUInternalTex, ddsInfo: DDSTextureInfo): void;
+        setTextureCompareMode(texture: InternalTexture, compareMode: TextureCompareMode): TextureCompareMode;
+        /**
+         * 判断 纹理格式 本身是否是 SRGB格式
+         * @param format
+         * @returns
+         */
+        private _isSRGBFormat;
+        private _supportSRGB;
+        createRenderTargetInternal(width: number, height: number, colorFormat: RenderTargetFormat, depthStencilFormat: RenderTargetFormat, generateMipmap: boolean, sRGB: boolean, multiSamples: number, storage: boolean): InternalRenderTarget;
+        createRenderTargetDepthTexture(renderTarget: WebGPUInternalRT, dimension: TextureDimension, width: number, height: number): WebGPUInternalTex;
+        createRenderTargetCubeInternal(size: number, colorFormat: RenderTargetFormat, depthStencilFormat: RenderTargetFormat, generateMipmap: boolean, sRGB: boolean, multiSamples: number): InternalRenderTarget;
+        bindRenderTarget(renderTarget: InternalRenderTarget, faceIndex?: number): void;
+        bindoutScreenTarget(): void;
+        unbindRenderTarget(renderTarget: InternalRenderTarget): void;
+        /**
+         * @deprecated 请使用readRenderTargetPixelDataAsync函数代替
+         * @param renderTarget
+         * @param xOffset
+         * @param yOffset
+         * @param width
+         * @param height
+         * @param out
+         */
+        readRenderTargetPixelData(renderTarget: InternalRenderTarget, xOffset: number, yOffset: number, width: number, height: number, out: ArrayBufferView): ArrayBufferView;
+        readRenderTargetPixelDataAsync(renderTarget: InternalRenderTarget, xOffset: number, yOffset: number, width: number, height: number, out: ArrayBufferView): Promise<ArrayBufferView>;
+        initVideoTextureData(texture: WebGPUInternalTex): void;
+        updateVideoTexture(texture: InternalTexture, video: HTMLVideoElement, premultiplyAlpha: boolean, invertY: boolean): Promise<void>;
+        getRenderTextureDataAsync(internalTex: InternalRenderTarget, x: number, y: number, width: number, height: number): Promise<ArrayBufferView>;
+    }
+    /**
+     * GPU时间戳类
+     * 每个CommandEncoder分配一个本类，GPU在执行renderPass时会写入两个纳秒级时间戳
+     * 分别代表renderPass开始时刻和结束时刻，这两个时刻的差值就是renderPass的执行时间
+     * 要统计GPU每帧消耗的时间，只要把同一帧内所有的renderPass执行时间累加即可
+     */
+    class WebGPUTimingHelper {
+        private _canTimestamp;
+        private _device;
+        private _querySet;
+        private _resolveBuffer;
+        private _resultBuffer;
+        private _resultBufferPool;
+        private _state;
+        constructor(device: GPUDevice);
+        private _beginTimestampPass;
+        /**
+         * 开始带时间戳的渲染流程
+         * @param encoder
+         * @param descriptor
+         */
+        beginRenderPass(encoder: GPUCommandEncoder, descriptor: GPURenderPassDescriptor): GPURenderPassEncoder;
+        /**
+         * 开始带时间戳的计算流程
+         * @param encoder
+         * @param descriptor
+         */
+        beginComputePass(encoder: GPUCommandEncoder, descriptor: GPUComputePassDescriptor): GPUComputePassEncoder;
+        /**
+         * 解析时间戳
+         * @param encoder
+         */
+        private _resolveTiming;
+        /**
+         * 异步获取结果
+         */
+        getResult(): Promise<number>;
+        /**
+         * 当前是否空闲
+         */
+        isFree(): boolean;
+    }
+    /** use Doc
+     * const { view, buffer, struct } = new wgsl.StructBuffer({
+      ambient: 'vec3f', // vec{2,3,4}{f,h,u,i}
+      lightCount: 'u32', // f32, f16, u32, i32
+      lights: [
+        {
+          position: 'vec3f',
+          range: 'f32',
+          color: 'vec3f',
+          intensity: 'f32',
+        },
+        4,
+      ],
+    });
+    view.ambient.set([0, 0, 0]);
+    view.lightCount = 4;
+    view.lights.forEach(light => {
+      light.position.set([1, 2, 3]);
+      light.color.set([1, 1, 1]);
+      light.range = 10;
+      light.intensity = 0.8;
+    });
+    console.log(buffer);
+    console.log(wgsl.stringifyStruct('LightInfo', struct));
+    /** output
+    struct LightInfo_lights {
+      position: vec3f,
+      range: f32,
+      color: vec3f,
+      intensity: f32,
+    };
+    struct LightInfo {
+      ambient: vec3f,
+      lightCount: u32,
+      lights: array<LightInfo_lights, 4>,
+    };
+    */
+    type NoEmptyRecord<T> = T & (keyof T extends never ? 'No empty object' : {});
+    /**
+     * Uniform内存块管理
+     */
+    class WebGPUBufferManager extends UniformBufferManager {
+        constructor(engine: WebGPURenderEngine, useBigBuffer: boolean);
+        /**
+         * 销毁
+         */
+        destroy(): boolean;
+        /**
+         * 创建GPU内存对象
+         * @param size 字节长度
+         * @param name 名称
+         */
+        createGPUBuffer(size: number, name?: string): GPUBuffer;
+        /**
+         * 将数据写入GPU内存
+         * @param buffer GPU内存对象
+         * @param data CPU数据对象
+         * @param offset 数据在大内存中的偏移量（字节）
+         * @param size 写入的数据长度（字节）
+         */
+        writeBuffer(buffer: any, data: ArrayBuffer, offset: number, size: number): void;
+        /**
+         * 统计GPU内存使用量
+         * @param bytes 字节
+         */
+        statisGPUMemory(bytes: number): void;
+    }
+    class WebGPUSubUniformBuffer extends WebGPUUniformBufferBase implements IUniformBufferUser {
+        bufferBlock: UniformBufferBlock;
+        bufferAlone: UniformBufferAlone;
+        manager: WebGPUBufferManager;
+        offset: number;
+        private _owner;
+        uniformName: string;
+        constructor(lable: string, uniformMap: Map<number, UniformProperty>, owner: WebGPUShaderData);
+        private _reSetBindGroupEntry;
+        getBindGroupEntry(binding: number): GPUBindGroupEntry;
+        upload(): void;
+        notifyGPUBufferChange(info?: string): void;
+        updateOver(): void;
+        destroy(): void;
+    }
+    class WebGPUUniformBuffer extends WebGPUUniformBufferBase {
+        lable: string;
+        private _data;
+        uniformName: string;
+        constructor(lable: string, uniformMap: Map<number, UniformProperty>);
+        getBindGroupEntry(binding: number): GPUBindGroupEntry;
+        upload(): void;
+        destroy(): void;
+    }
+    type WebGPUUnifrom = {
+        index: number;
+        /**
+         * byte offset
+         */
+        offset: number;
+        dataView: TypedArrayConstructor;
+        view: TypedArrayType;
+        /**
+         * element size (eg: vec2: 2, vec4: 4, mat4: 16)
+         */
+        size: number;
+        alignStride: number;
+        viewByteLength: number;
+        /**
+         * 0: not array
+         */
+        arrayLength: number;
+    };
+    class WebGPUUniformBufferDescriptor {
+        lable: string;
+        uniforms: Map<number, WebGPUUnifrom>;
+        private _byteLength;
+        constructor(lable: string);
+        get byteLength(): number;
+        private _getPrimitive;
+        private _getsize;
+        setUniforms(uniforms: Map<number, UniformProperty>): void;
+        destroy(): void;
+    }
+    abstract class WebGPUUniformBufferBase {
+        static device: GPUDevice;
+        objectName: string;
+        descriptor: WebGPUUniformBufferDescriptor;
+        bytelength: number;
+        needUpload: boolean;
+        globalId: number;
+        protected _GPUBindGroupEntry: GPUBindGroupEntry;
+        protected _gpuBuffer: GPUBuffer;
+        abstract uniformName: string;
+        abstract getBindGroupEntry(binding: number): GPUBindGroupEntry;
+        abstract upload(): void;
+        abstract destroy(): void;
+        setInt(index: number, value: number): void;
+        setFloat(index: number, value: number): void;
+        setVector2(index: number, value: Vector2): void;
+        setVector3(index: number, value: Vector3): void;
+        setVector4(index: number, value: Vector4): void;
+        setMatrix3x3(index: number, value: Matrix3x3): void;
+        setMatrix4x4(index: number, value: Matrix4x4): void;
+        setBuffer(index: number, value: Float32Array): void;
+        setArrayBuffer(index: number, value: Float32Array): void;
+        private setMatrix3x3Array;
+        setUniformData(index: number, type: ShaderDataType, data: any): void;
+    }
+    class WebGPUVertexBuffer implements IVertexBuffer, IGPUBuffer {
+        private static _bufferLayoutConterMap;
+        private static _bufferLayoutIDConter;
+        private _vertexDeclaration;
+        source: WebGPUBuffer;
+        private _instanceBuffer;
+        get instanceBuffer(): boolean;
+        set instanceBuffer(value: boolean);
+        buffer: ArrayBuffer;
+        verteBufferLayout: GPUVertexBufferLayout;
+        stateCacheKey: string;
+        stateCacheID: number;
+        constructor(targetType: BufferTargetType, bufferUsageType: BufferUsage);
+        getNativeBuffer(): WebGPUBuffer;
+        get vertexDeclaration(): VertexDeclaration;
+        set vertexDeclaration(value: VertexDeclaration);
+        private _getCacheInfo;
+        private _getvertexAttributeFormat;
+        setData(buffer: ArrayBuffer, bufferOffset?: number, dataStartIndex?: number, dataCount?: number): void;
+        setDataLength(byteLength: number): void;
+        destroy(): void;
+    }
+    enum enumInOut {
+        in = 0,
+        out = 1,
+        inout = 2
+    }
+    enum enumDescribe {
+        uniform = 0,
+        varying = 1,
+        const = 2,
+        mediump = 3,
+        highp = 4,
+        lowp = 5,
+        attribute = 6
+    }
+    enum enumOperator {
+        "!=" = 0,
+        "==" = 1,
+        "<=" = 2,
+        ">=" = 3,
+        "||" = 4,
+        "&&" = 5,
+        ">>" = 6,
+        "<<" = 7,
+        "++" = 8,
+        "^^" = 9,
+        "--" = 10,
+        "!" = 11,
+        "+" = 12,
+        "-" = 13,
+        "*" = 14,
+        "/" = 15,
+        "=" = 16,
+        "<" = 17,
+        ">" = 18,
+        "&" = 19,
+        "|" = 20,
+        "^" = 21,
+        "%" = 22
+    }
+    const boolCheck: string[];
+    const _clearCR: RegExp;
+    type TypeOut = {
+        type: string;
+        struct?: WebGPUShaderToken;
+        length?: number[];
+        blockName?: string;
+    };
+    type TypeOutData = {
+        uniform?: Record<string, TypeOut>;
+        varying?: Record<string, TypeOut>;
+        attribute?: Record<string, TypeOut>;
+        variable?: Set<String>;
+    };
+    class WebGPUShaderCompileCode {
+        /**如果parameterNode有值，则代表当前正在解析参数，可能是函数也可能是函数调用 */
+        private static _parameterNode;
+        /**当前的父节点，一般都是往父节点里面添加节点 */
+        private static _parentNode;
+        /**是否当前正在检测Type */
+        private static _isCheckType;
+        /**当前正在处理中的Node节点，一般是parameterNode的child的最后一个或者——parentNode的child最后一个节点 */
+        private static __currNode;
+        /**当前刚刚设置过名字的Node，如果后面发现是个函数的话，直接给該node这是parameter属性 */
+        private static _currNameNode;
+        /**当前的函数参数，或者函数调用的参数 */
+        private static _currParame;
+        /**用户当前checkBodyName的函数体，如果未写大括号会临时放到这里面 */
+        private static _currTmpBody;
+        private static _isCheckBody3;
+        private static _uniform;
+        private static _attribute;
+        private static _varying;
+        private static _variable;
+        private static _struct;
+        private static _varUniform;
+        /**宏替换参数 */
+        private static _define;
+        static compile(code: string): WebGPUShaderToken;
+        private static get _currNode();
+        private static set _currNode(value);
+        private static get isCheckType();
+        private static set isCheckType(value);
+        private static get currNode();
+        /**
+         * 当退出一个函数参数，需要更新currNode为当前_parentNode的最后一个或者_parameterNode的最后一个节点
+         */
+        private static updateCurrNode;
+        /**
+         * @param parameterType 0为(),1为[]
+         */
+        private static newParameterNode;
+        static isEmptyNode(node: WebGPUShaderToken, isCheckParent?: boolean): boolean;
+        /**
+         *
+         * @param isForceCreate 设置force以后，自动会给当前的_parameterNode节点或者_parentNode节点下面增加一个新的节点并且返回
+         * @returns
+         */
+        private static nextCurrNode;
+        private static _compileToTree;
+        private static _checkStructDef;
+        private static _checkTypeByString;
+        private static get _isFor();
+        private static _parseParameter;
+        private static _addParam;
+        private static _checkParameter;
+        private static _body3Fin;
+        /** 这里是对类似if，for，while没有加{}做判断的逻辑 */
+        private static _checkBody3;
+        private static _checkBody;
+        private static _splitTextCheck;
+        private static _childFin;
+        private static _checkType;
+        /**对于等号的检测 */
+        private static _checkEqual;
+        /**这是给当前节点设置nodeName，一般是在checktype里面调用,也可以确定value里面不会存在表达式的时候直接调用*/
+        private static _setNodeName;
+        /**分解运算符等等,设置函数名，变量名或者常量理论上这里不应该出现函数嵌套,设置node的Name也应该用setNodeName */
+        private static _checkBody2;
+        private static _checkOperator;
+        private static _parseNode;
+        /**
+         * 移除代码中的所有注释
+         * @param text
+         * @returns
+         */
+        private static removeAnnotation;
+    }
+    class WebGPUShaderCompileDef {
+        /**当前的父节点，一般都是往父节点里面添加节点 */
+        private static _parentNode;
+        /**当前正在处理中的Node节点，一般是parameterNode的child的最后一个或者——parentNode的child最后一个节点 */
+        private static _currNode;
+        private static _defs;
+        static compile(code: string, defs?: Set<string>): WebGPUShaderToken;
+        static isEmptyNode(node: WebGPUShaderToken): boolean;
+        /**
+         *
+         * @param isForceCreate 设置force以后，自动会给当前的_parameterNode节点或者_parentNode节点下面增加一个新的节点并且返回
+         * @returns
+         */
+        private static nextCurrNode;
+        private static get currNode();
+        private static _compileToTree;
+        private static _parseNode;
+    }
+    class WebGPUShaderCompileUtil {
+        static checkDef(node: WebGPUShaderToken, _defs: Set<string>): void;
+        /**
+         * 提取宏定义
+         * @param code
+         */
+        static extractMacros(code: string): WebGPU_GLSLMacro[];
+        static macrosToVariable(macros: WebGPU_GLSLMacro[]): Set<string>;
+        static toScript(root: WebGPUShaderToken, def?: Record<string, boolean>, outData?: TypeOutData): string;
+        static removeUniform(code: string): string;
+        static removeVarying(code: string): string;
+        static checkCondition(st: WebGPUShaderToken, def: Record<string, boolean>): boolean;
+        private static _parseChilds;
+    }
+    class WebGPUShaderDefine {
+        /**
+         * 查找代码中的数字宏定义
+         * @param code
+         * @param map
+         */
+        static findNumberDefine(code: string, map?: Map<string, string>): Map<string, string>;
+    }
+    class WebGPUShaderToken {
+        uniform: Record<string, TypeOut>;
+        variable: Set<string>;
+        structs: Record<string, WebGPUShaderToken>;
+        varying: Record<string, TypeOut>;
+        attribute: Record<string, TypeOut>;
+        /**是否是赋值状态 */
+        assign: boolean;
+        /**类似于+=、-=、/=、*=、>>=、<<=这种逻辑 */
+        assignLeft: enumOperator;
+        includefiles: any[];
+        describe: enumDescribe;
+        childs: WebGPUShaderToken[];
+        parent: WebGPUShaderToken;
+        inOrOut: enumInOut;
+        /**如果是函数，这里就是函数名，否则是变量名,或者是精度定义 */
+        name: string;
+        /**原始未解析的代码 */
+        code: string;
+        /**用原始code分析出来的语法树 */
+        root: WebGPUShaderToken;
+        /**节点的类型，例如vec4，float...如果是函数，则是函数的返回值,还有可能是参数的分隔符,或者?或者: */
+        type: string;
+        /**操作符，例如=、+、-、*、/ */
+        operator: enumOperator;
+        /**操作符是在name的左侧还是右侧，通常是用于++和--，但是有时也会用于= */
+        operatorRight: boolean;
+        /**函数类型的话会有这些参数数据 */
+        parameter: WebGPUShaderToken;
+        /**这里是数组参数a[][]这种，支持多维数组 */
+        parameterArr: WebGPUShaderToken[];
+        /**参数数据的数据源 */
+        owner: WebGPUShaderToken;
+        /**ifdef的参数 */
+        defParam: string[] | WebGPUShaderToken;
+        /**这里是uniform或者struct后面默认追加变量定义的地方 */
+        varNames: string[];
+        z: number;
+        constructor(includefiles?: any[]);
+        condition(def: Record<string, boolean>): boolean;
+        addParameterArr(param: WebGPUShaderToken, parent?: WebGPUShaderToken): void;
+        setParameter(param: WebGPUShaderToken, parent?: WebGPUShaderToken): void;
+        addBody(body: WebGPUShaderToken): void;
+        setParent(parent: WebGPUShaderToken): void;
+        private _parseShaderNode;
+        private _getParameter;
+        private _getParameterArr;
+        toscript(def?: Record<string, boolean>, out?: string[]): string[];
+    }
     class BlendState {
         static _blend_All_pool: any;
         static _blend_seperate_pool: any;
@@ -80236,8 +83554,7 @@ declare namespace Laya {
         private _skin;
         private _offset;
         private _renderOffset;
-        /** @internal */
-        _setPreAlphaFlag: boolean;
+        private _setPreAlphaFlag;
         private _premultipliedAlpha;
         /** @ignore */
         constructor();
@@ -82672,7 +85989,10 @@ declare namespace Laya {
      * @zh `TrailRenderer` 类用于创建拖尾渲染器。
      */
     class TrailRenderer extends BaseRender {
-        /**@internal */
+        /**
+         * @en The trail filter.
+         * @zh 拖尾过滤器。
+         */
         _trailFilter: TrailFilter;
         /** @ignore */
         constructor();
@@ -89305,8 +92625,8 @@ declare namespace Laya {
         CenterAndMiddle = 102
     }
     /**
-     * @en Controller class manages a set of pages, allowing for selection and change notifications.
-     * @zh 控制器类管理一组页面，允许选择和更改通知。
+     * @en A controller defines a set of pages, which can be used in conjunction with Gears to switch the properties of nodes between different pages.
+     * @zh 控制器定义了一组页面，通过与齿轮(Gears)配合使用，可以实现节点的属性在不同页面间切换。
      */
     class Controller extends EventDispatcher {
         private _selectedIndex;
@@ -89499,7 +92819,15 @@ declare namespace Laya {
     const ButtonPageAlternatives: Record<number, ButtonStatus>;
     /**
      * @en GButton is a button widget that can display a title and an icon, and supports different modes such as common, check, and radio.
+     * The button itself does not have any visual effects. If you want to display a title, you need to bind a child node (usually a GTextField) through the titleWidget; if you want to display an icon, you bind a child node (usually a GImage or GLoader) through the iconWidget.
+     * If the button needs to have a press-down effect, you can set the effect when pressed through the downEffect property. Currently, three effects are supported: darken, scale down, and scale up.
+     * The button can also achieve advanced visual effects by switching 3-state images. The specific method is to add a controller named "button" to the button. The controller needs to have the following pages: up, over, down, selectedOver.
+     * Then the image can be linked with the controller by GearDisplay, setting which pages the image is displayed on, thereby achieving visual effects in different states.
      * @zh GButton 是一个按钮小部件，可以显示标题和图标，并支持不同的模式，如常规、复选和单选。
+     * 按钮自身不带有任何视觉效果，如果需要显示标题，需要通过titleWidget绑定一个孩子节点（通常是GTextField），如果需要显示图标，则通过iconWidget绑定孩子节点（通常是GImage或者GLoader）。
+     * 如果按钮需要有按下效果，可以通过downEffect属性设置按下时的效果，目前支持变暗、向下缩放和向上缩放三种效果。
+     * 按钮也可以通过切换3态图实现高级视觉效果，具体做法是给按钮添加一个名称为button的控制器，控制器需要有如下页面：up、over、down、selectedOver。
+     * 然后图片可以通过GearDisplay与控制器联动，设置图片在哪些页面下显示，从而实现不同状态下的视觉效果。
      * @blueprintInheritable
      */
     class GButton extends GLabel {
@@ -89723,6 +93051,10 @@ declare namespace Laya {
             [UIEvent.Popup]: () => void;
         };
     }
+    /**
+     * @en Base class for gears that manage property changes based on controller pages.
+     * @zh 管理基于控制器页面的属性更改的齿轮基类。
+     */
     class Gear {
         protected _owner: GWidget;
         protected _controller: ControllerRef;
@@ -89769,17 +93101,41 @@ declare namespace Laya {
         protected doTween(obj: any, key: string, oldValue: any, newValue: any): void;
         protected runGear(initiator: Controller): void;
     }
+    /**
+     * @en Gear class for managing number properties.
+     * @zh 管理数字属性的齿轮类。
+     */
     class GearNumber extends Gear {
     }
+    /**
+     * @en Gear class for managing string properties.
+     * @zh 管理字符串属性的齿轮类。
+     */
     class GearString extends Gear {
     }
+    /**
+     * @en Gear class for managing boolean properties.
+     * @zh 管理布尔属性的齿轮类。
+     */
     class GearBool extends Gear {
     }
+    /**
+     * @en Gear class for managing color properties. The data type is Color object.
+     * @zh 管理颜色属性的齿轮类。数据类型是Color对象。
+     */
     class GearColor extends Gear {
     }
+    /**
+     * @en Gear class for managing string color properties.
+     * @zh 管理字符串颜色属性的齿轮类。
+     */
     class GearStrColor extends Gear {
         protected doTween(obj: any, key: string, oldValue: string, newValue: string): void;
     }
+    /**
+     * @en Gear class for managing hexadecimal color properties. The data type is number.
+     * @zh 管理十六进制颜色属性的齿轮类。数据类型是数字。
+     */
     class GearHexColor extends Gear {
         protected doTween(obj: any, key: string, oldValue: number, newValue: number): void;
     }
@@ -89827,8 +93183,8 @@ declare namespace Laya {
         delay: number;
     }
     /**
-     * @en GImage is a widget that displays an image resource.
-     * @zh GImage 是一个显示图像资源的小部件。
+     * @en GImage is a widget that displays an image resource. Set the image resource URL using the src property. By default, the autoSize property is true, so the node will automatically adjust to the original size of the image when the src is changed; if you want the node size not to change with the image size, you can set the autoSize property to false.
+     * @zh GImage 是一个显示图像资源的小部件。 使用src属性设置图像资源的URL。默认情况下，autoSize属性为true，所以更改src后，节点会自动调整为图像的原始大小；如果希望节点大小不跟随图像大小变化，可以将autoSize属性设置为false。
      * @blueprintInheritable
      */
     class GImage extends GWidget {

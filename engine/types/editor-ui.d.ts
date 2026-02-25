@@ -1494,6 +1494,8 @@ declare namespace gui {
         set mouseWheelDisabled(value: boolean);
         get decelerationRate(): number;
         set decelerationRate(value: number);
+        get fixedGripSize(): boolean;
+        set fixedGripSize(value: boolean);
         get percX(): number;
         set percX(value: number);
         setPercX(value: number, ani?: boolean): void;
@@ -1800,6 +1802,7 @@ declare namespace gui {
         private _fixedGripSize;
         private _dragOffset;
         private _gripDragging;
+        private _scrollingDir;
         constructor();
         setOwner(target: IScroller, vertical: boolean): void;
         setDisplayPerc(value: number): void;
@@ -1809,11 +1812,14 @@ declare namespace gui {
         get fixedGripSize(): boolean;
         set fixedGripSize(value: boolean);
         private _gripTouchBegin;
+        private startDragGrip;
         private _gripTouchMove;
         private _gripTouchEnd;
         private _arrowButton1Click;
         private _arrowButton2Click;
         private _barTouchBegin;
+        private doBarScroll;
+        private _barTouchEnd;
     }
     class Scroller implements IScroller {
         static draggingInst: Scroller;
@@ -1843,6 +1849,7 @@ declare namespace gui {
         private _vScrollBarRes;
         private _footerRes;
         private _headerRes;
+        private _fixedGripSize;
         private _vScrollNone;
         private _hScrollNone;
         private _needRefresh;
@@ -1924,6 +1931,8 @@ declare namespace gui {
         set mouseWheelDisabled(value: boolean);
         get decelerationRate(): number;
         set decelerationRate(value: number);
+        get fixedGripSize(): boolean;
+        set fixedGripSize(value: boolean);
         get isDragged(): boolean;
         get percX(): number;
         set percX(value: number);
@@ -2066,6 +2075,7 @@ declare namespace gui {
         _setup(hBar: Widget, vBar: Widget, grip: Widget, title: Widget, reverse: boolean): void;
         protected _sizeChanged(): void;
         private _gripTouchBegin;
+        private startDragGrip;
         private _gripTouchMove;
         private _barTouchBegin;
         onAfterDeserialize(): void;
