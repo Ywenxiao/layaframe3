@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/Ywenxiao/layaframe3/issues"
   },
-  "homepage": "https://github.com/Ywenxiao/layaframe3#readme"
+  "homepage": "https://github.com/Ywenxiao/layaframe3#readme",
+  "dependencies": {
+    "@types/node": "^25.3.1"
+  }
 }

@@ -1,4 +1,4 @@
-import AssetsMgr from "./AssetsManage";
+import AssetsMgr from "../core/AssetsManage";
 import LogMgr from "./LogMgr";
 
 
