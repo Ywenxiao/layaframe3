@@ -1,5 +1,7 @@
 type InjectClass<T = any> = new () => T;
 
+const injectMap = new Map<number, InjectClass>();
+const instanceMap = new Map<number, any>();
 
 export interface IContext {
 
@@ -13,98 +15,98 @@ export interface IContext {
     onDispose?(): void;
 }
 
-export const ContextEvent = {
-    SHOW: "onShow",
-    HIDE: "onHide",
-    DISPOSE: "onDispose",
+/**脚本类型 */
+export enum ContextType {
+
+    /**UI界面 */
+    UI = 1,
+
+    /**组件，可以定义一些跨页面使用的方法，生命周期自定义 */
+    COMPONENT = 2,
+
+    /**系统，全局存在不会卸载的 */
+    SYSTEM = 3,
 }
 
-export class Context {
 
-    private injectMap = new Map<number, InjectClass>();
-    private instanceMap = new Map<number, any>();
 
-    //注入类
-    INJECT<T>(classConstructor: InjectClass<T>) {
-        const id = this.getGID(classConstructor);
-        if (this.injectMap.has(id)) {
-            this.log("Warning: Class already injected", classConstructor.name);
-            return;
-        }
-
-        this.injectMap.set(id, classConstructor);
+//注入类
+function INJECT<T>(classConstructor: InjectClass<T>) {
+    const id = this.getGID(classConstructor);
+    if (this.injectMap.has(id)) {
+        this.log("Warning: Class already injected", classConstructor.name);
+        return;
     }
 
-    //取消注入
-    UNINJECT<T>(classConstructor: InjectClass<T>) {
-        const id = this.getGID(classConstructor);
-        if (!this.injectMap.has(id)) {
-            this.log("Warning: Class not injected", classConstructor.name);
-            return;
-        }
+    this.injectMap.set(id, classConstructor);
+}
 
+//取消注入
+function UNINJECT<T>(classConstructor: InjectClass<T>) {
+    const id = this.getGID(classConstructor);
+    if (!this.injectMap.has(id)) {
+        this.log("Warning: Class not injected", classConstructor.name);
+        return;
+    }
+
+    this.injectMap.delete(id);
+}
+
+//获取实例
+function GET<T>(classConstructor: InjectClass<T>): T {
+    const id = this.getGID(classConstructor);
+    if (!this.injectMap.has(id)) {
+        throw new Error(`Class not injected: ${classConstructor.name}`);
+    }
+
+    let instance = this.instanceMap.get(id);
+    if (instance) return instance;
+
+    instance = new classConstructor();
+    this.instanceMap.set(id, instance);
+    return instance;
+}
+
+/**清理，参数不传清理所有 */
+function CLEAR(classConstructor?: InjectClass) {
+    if (classConstructor) {
+        const id = this.getGID(classConstructor);
+        // const instance = this.instanceMap.get(id);
+        // if (instance && instance[ContextEvent.DISPOSE]) {
+        //     instance[ContextEvent.DISPOSE]();
+        // }
+        this.instanceMap.delete(id);
         this.injectMap.delete(id);
+        return;
     }
 
-    //获取实例
-    GET<T>(classConstructor: InjectClass<T>): T {
-        const id = this.getGID(classConstructor);
-        if (!this.injectMap.has(id)) {
-            throw new Error(`Class not injected: ${classConstructor.name}`);
-        }
+    // this.EVENT(ContextEvent.DISPOSE);
 
-        let instance = this.instanceMap.get(id);
-        if (instance) return instance;
-
-        instance = new classConstructor();
-        this.instanceMap.set(id, instance);
-        return instance;
-    }
-
-    /**清理，参数不传清理所有 */
-    CLEAR(classConstructor?: InjectClass) {
-        if (classConstructor) {
-            const id = this.getGID(classConstructor);
-            // const instance = this.instanceMap.get(id);
-            // if (instance && instance[ContextEvent.DISPOSE]) {
-            //     instance[ContextEvent.DISPOSE]();
-            // }
-            this.instanceMap.delete(id);
-            this.injectMap.delete(id);
-            return;
-        }
-
-        // this.EVENT(ContextEvent.DISPOSE);
-
-        this.instanceMap.clear();
-        this.injectMap.clear();
-    }
-
-    EVENT(eventName: string, ...args: any[]) {
-        for (const [id, instance] of this.instanceMap) {
-            if (instance[eventName]) {
-                instance[eventName](...args);
-            }
-        }
-    }
-
-    private getGID(classConstructor: InjectClass): number {
-        let id = classConstructor["$__ID"];
-        if (id === undefined || id === null) {
-            id = this.gid();
-            Reflect.defineProperty(classConstructor, "$__ID", { value: id, writable: false, enumerable: false, configurable: false });
-        }
-        return id;
-    }
-
-    private log(...args: any[]) {
-        console.log("[Context]", ...args);
-    }
-
-    private gid = (function () {
-        let id = 0;
-        return function () {
-            return ++id;
-        };
-    });
+    this.instanceMap.clear();
+    this.injectMap.clear();
 }
+
+function EVENT(eventName: string, ...args: any[]) {
+    for (const [id, instance] of this.instanceMap) {
+        if (instance[eventName]) {
+            instance[eventName](...args);
+        }
+    }
+}
+
+function getGID(classConstructor: InjectClass): number {
+    let id = classConstructor["$__ID"];
+    if (id === undefined || id === null) {
+        id = this.gid();
+        Reflect.defineProperty(classConstructor, "$__ID", { value: id, writable: false, enumerable: false, configurable: false });
+    }
+    return id;
+}
+
+
+const gid = (function () {
+    let __id = 0;
+    return function () {
+        return ++__id;
+    };
+}());
