@@ -10,15 +10,11 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
     "paths": {
-      "~/packages/*": [
-        "./library/packages/*"
-      ]
+      "~/packages/*": ["./library/packages/*"],
+      "@SOUND": ["src/platform/sound/LayaSoundAdapter.ts"]
     }
   },
-  "include": [
-    "./assets",
-    "./src",
-    "./engine"
-  ]
+  "include": ["./assets", "./src", "./engine"]
 }

@@ -12,6 +12,7 @@ export class loading extends loadingBase {
     
 
     onOpened(param: any): void {
+        
         console.log("loading opened", param);
     }
 

@@ -31,7 +31,7 @@ export enum ContextType {
 
 
 //注入类
-function INJECT<T>(classConstructor: InjectClass<T>) {
+export function INJECT<T>(classConstructor: InjectClass<T>) {
     const id = this.getGID(classConstructor);
     if (this.injectMap.has(id)) {
         this.log("Warning: Class already injected", classConstructor.name);
