@@ -108,117 +108,8 @@ export class BadgeView {
 
 export class BadgeManage {
 
-    /**图鉴红点 */
-    ACHIEVEMENT = "ACHIEVEMENT";
-
-    /**七日签到 */
-    SIGNIN = "SIGNIN";
-
-    /**建造红点 */
-    BUILD = "BUILD";
-
-    /**活动9009 */
-    ACTION_9009 = "ACTION_9009";
-
-    /**1+1礼包 */
-    ACTION_9002 = "ACTION_9002";
-
-    /**每日任务 */
-    ACTION_EVERY_TASK = "ACTION_EVERY_TASK";
-
-    /**活动20001 */
-    ACTION_20001 = "ACTION_20001";
-
-    /**活动1917 */
-    ACTION_1917 = "ACTION_1917";
-
-    /**活动1926 */
-    ACTION_1926 = "ACTION_1926";
-
-    /**活动1917 */
-    ACTION_1903 = "ACTION_1903";
-
-    /**活动9013 */
-    ACTION_9013 = "ACTION_9013";
-
-    /**活动8003 */
-    ACTION_8003 = "ACTION_8003";
-
-    /**活动8003 */
-    ACTION_1931 = "ACTION_1931";
-
-    /**活动1824 */
-    ACTION_1824 = "ACTION_1824";
-
-    ACTION_1928 = "ACTION_1928";
-
-    /**活动1819 */
-    ACTION_1819 = "ACTION_1819";
-
-    ACTION_8005 = "ACTION_8005";
-
-    /**感恩有你礼包 */
-    ACTION_9004 = "ACTION_9004";
-
-    /**活动9001 */
-    ACTION_9001 = "ACTION_9001";
-
-    /**活动1925 */
-    ACTION_1925 = "ACTION_1925";
-
-    /**活动8009 */
-    ACTION_8009 = "ACTION_8009";
-
-    /**活动8008 */
-    ACTION_8008 = "ACTION_8008";
-
-    /**活动1946 */
-    ACTION_1946 = "ACTION_1946";
-
-    /**活动8010 */
-    ACTION_8010 = "ACTION_8010";
-
-    /**活动20010 */
-    ACTION_20010 = "ACTION_20010";
-
-    /**旋转礼包 */
-    ACTION_1801 = "ACTION_1801";
-
-    /**1+2礼包 */
-    ACTION_20013 = "ACTION_20013";
-
-    /**活动20015 */
-    ACTION_20015 = "ACTION_20015";
-
-    /**邮件 */
-    MAIL = "MAIL";
-
-    //==============================平台相关=======================================
-
-    /**淘宝复访 */
-    TAOBAO_PUSH = "TAOBAO_PUSH";
-
-    /**抖音福利 */
-    TT_FULI = "TT_FULI";
-
-    /**脑洞小游戏 */
-    TT_FULI_2 = "TT_FULI_2";
-
-    /**支付宝PC端登录 */
-    ALI_PC = "ALI_PC";
-
-    /**支付宝福利 */
-    ALI_FULI = "ALI_FULI";
-
-
-    //=====================================================================
-
-
     /**节点池 */
     private _badges = new Map<string, BadgeNode>();
-
-    /**节点组 */
-    // private _badgeGropu = new Map<string, string[]>();
 
     /**绑定节点UI */
     private _bindViews = new Map<Laya.Sprite, BadgeView>();
@@ -235,6 +126,9 @@ export class BadgeManage {
 
     private _lastUpdate: number = 0;
 
+    constructor() {
+
+    }
 
 
     /**开始执行红点逻辑 */
@@ -452,11 +346,9 @@ export class BadgeManage {
 }
 
 function log(...str: any[]) {
-    
+
 }
 
 function warn(...str: any[]) {
     console.warn("[--Badge--]", ...str);
 }
-
-export var badge = new BadgeManage();
