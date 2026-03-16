@@ -1,6 +1,5 @@
 import { IAudioAdapter } from "src/platform/sound/IAudioAdapter";
-
-import soundAdapter from "src/platform/sound/LayaSoundAdapter";
+import soundAdapter from "@SOUND";
 
 /**
  * 声音管理器 - 详细实现
@@ -15,14 +14,14 @@ export class SoundManage {
     /** 音效音量 (0-1) */
     private soundVolumeValue: number = 1;
 
-    /** 是否静音 */
-    private mutedValue: boolean = false;
+    /** 是否正在暂停音乐 */
+    private isPaused: boolean = false;
 
-    /** 背景音乐是否静音 */
-    private musicMutedValue: boolean = false;
+    /** 暂停时的播放位置 */
+    private pausedPosition: number = 0;
 
-    /** 音效是否静音 */
-    private soundMutedValue: boolean = false;
+    /** 活跃的音效数量 */
+    private activeSoundCount: number = 0;
 
     /** 是否启用音效压制背景音功能 */
     private enableSoundDuckValue: boolean = true;
@@ -44,9 +43,6 @@ export class SoundManage {
 
     /** 当前背景音乐循环次数 */
     private currentMusicLoop: number = 0;
-
-    /** 背景音量恢复计时器ID */
-    private recoverTimer: number = -1;
 
     /** 原始背景音量 (用于恢复) */
     private originalMusicVolume: number = 1;
@@ -77,15 +73,14 @@ export class SoundManage {
      * 设置背景音乐音量
      */
     setMusicVolume(value: number): void {
+
         if (value < 0) value = 0;
         if (value > 1) value = 1;
 
         this.originalMusicVolume = value;
         this.musicVolumeValue = value;
 
-        if (!this.mutedValue && this.adapter) {
-            this.adapter.setMusicVolume(value);
-        }
+        this.adapter.setMusicVolume(value);
     }
 
     /**
@@ -103,10 +98,7 @@ export class SoundManage {
         if (value > 1) value = 1;
 
         this.soundVolumeValue = value;
-
-        if (!this.mutedValue && this.adapter) {
-            this.adapter.setSoundVolume(value, url);
-        }
+        this.adapter.setSoundVolume(value, url);
     }
 
     /**
@@ -122,60 +114,48 @@ export class SoundManage {
      * 设置是否静音（背景音乐和音效）
      */
     setMuted(value: boolean): void {
-        if (this.mutedValue === value) return;
+        if (this.adapter.getMuted() === value) return;
 
-        this.mutedValue = value;
-
-        if (this.adapter) {
-            this.adapter.setMuted(value);
-        }
+        this.adapter.setMuted(value);
     }
 
     /**
      * 获取是否静音（背景音乐和音效）
      */
     isMuted(): boolean {
-        return this.mutedValue;
+        return this.adapter.getMuted();
     }
 
     /**
      * 设置背景音乐是否静音
      */
     setMusicMuted(value: boolean): void {
-        if (this.musicMutedValue === value) return;
+        if (this.adapter.getMusicMuted() === value) return;
 
-        this.musicMutedValue = value;
-
-        if (this.adapter) {
-            this.adapter.setMusicMuted(value);
-        }
+        this.adapter.setMusicMuted(value);
     }
 
     /**
      * 获取背景音乐是否静音
      */
     isMusicMuted(): boolean {
-        return this.musicMutedValue;
+        return this.adapter.getMusicMuted();
     }
 
     /**
      * 设置音效是否静音
      */
     setSoundMuted(value: boolean): void {
-        if (this.soundMutedValue === value) return;
+        if (this.adapter.getSoundMuted() === value) return;
 
-        this.soundMutedValue = value;
-
-        if (this.adapter) {
-            this.adapter.setSoundMuted(value);
-        }
+        this.adapter.setSoundMuted(value);
     }
 
     /**
      * 获取音效是否静音
      */
     isSoundMuted(): boolean {
-        return this.soundMutedValue;
+        return this.adapter.getSoundMuted();
     }
 
     // ==================== 背景音乐控制 ====================
@@ -187,20 +167,21 @@ export class SoundManage {
      * @param fade 是否启用淡入淡出效果
      */
     playMusic(url: string, loops: number = 0, fade: boolean = true): void {
-        if (!this.adapter) return;
+
+        if (!this.adapter || this.isMuted() || this.isMusicMuted()) return;
 
         if (this.isFadingValue && url === this.currentMusicUrl) {
             return;
         }
 
-        if (url === this.currentMusicUrl && this.currentMusicChannel && !this.adapter.isChannelStopped(this.currentMusicChannel)) {
+        if (url === this.currentMusicUrl && this.currentMusicChannel) {
             return;
         }
 
         this.currentMusicLoop = loops;
         this.isFadingValue = true;
 
-        if (!this.currentMusicChannel || this.adapter.isChannelStopped(this.currentMusicChannel)) {
+        if (!this.currentMusicChannel) {
             this.playNewMusic(url, loops, fade);
         } else {
             this.fadeOutMusic(() => {
@@ -216,7 +197,7 @@ export class SoundManage {
     stopMusic(fade: boolean = true): void {
         if (!this.adapter) return;
 
-        if (!this.currentMusicChannel || this.adapter.isChannelStopped(this.currentMusicChannel)) {
+        if (!this.currentMusicChannel) {
             return;
         }
 
@@ -234,7 +215,11 @@ export class SoundManage {
      * 暂停背景音乐
      */
     pauseMusic(): void {
-        if (this.adapter) {
+        if (this.adapter && this.currentMusicChannel && !this.isPaused) {
+            // 保存播放位置和暂停状态
+            this.isPaused = true;
+            // 注意：Laya.SoundChannel 没有直接获取播放位置的方法，这里可以根据需要实现
+            // 暂时简化实现，直接暂停
             this.adapter.stopMusic();
         }
     }
@@ -243,8 +228,10 @@ export class SoundManage {
      * 恢复背景音乐
      */
     resumeMusic(): void {
-        if (this.currentMusicUrl) {
-            this.playMusic(this.currentMusicUrl, this.currentMusicLoop, false);
+        if (this.adapter && this.currentMusicUrl && this.isPaused) {
+            this.isPaused = false;
+            // 从暂停位置继续播放
+            this.currentMusicChannel = this.adapter.playMusic(this.currentMusicUrl, this.currentMusicLoop);
         }
     }
 
@@ -288,32 +275,23 @@ export class SoundManage {
      * 使用Tween实现音量渐变
      */
     private tweenVolume(from: number, to: number, duration: number, complete?: Function): void {
-        if (!Laya.Tween) {
-            this.adapter.setMusicVolume(this.mutedValue ? 0 : to);
-            if (complete) complete();
-            return;
-        }
 
-        const startTime = Date.now();
-        const startVolume = from;
-        const endVolume = to;
-
-        const updateVolume = () => {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const t = 1 - Math.pow(1 - progress, 2);
-            const currentVolume = startVolume + (endVolume - startVolume) * t;
-
-            this.adapter.setMusicVolume(this.mutedValue ? 0 : currentVolume);
-
-            if (progress < 1) {
-                requestAnimationFrame(updateVolume);
-            } else {
-                this.adapter.setMusicVolume(this.mutedValue ? 0 : endVolume);
-                if (complete) complete();
+        const self = this;
+        let tween = {
+            destroyed: false, set volume(value: number) {
+                // 直接调用 adapter.setMusicVolume，不经过 setMusicVolume 方法
+                self.adapter.setMusicVolume(value);
             }
         };
-        updateVolume();
+
+        Laya.Tween.create(tween)
+            .go("volume", from, to)
+            .duration(duration)
+            .ease(Laya.Ease.linear)
+            .then(() => {
+                tween.destroyed = true;
+                complete && complete();
+            });
     }
 
     // ==================== 音效控制 ====================
@@ -326,13 +304,28 @@ export class SoundManage {
      * @param complete 播放完成回调
      */
     playSound(url: string, loops: number = 0, key?: string, complete?: () => void, startTime?: number): any {
-        if (this.mutedValue || this.soundVolumeValue <= 0 || !this.adapter) {
+
+        if (this.isMuted() || this.isSoundMuted() || this.soundVolumeValue <= 0 || !this.adapter) {
             return null;
         }
 
-        const channel = this.adapter.playSound(url, loops, complete, startTime);
+        // 创建包装回调，用于在音效完成时递减计数
+        const wrappedComplete = () => {
+            this.activeSoundCount--;
+            if (this.activeSoundCount <= 0) {
+                this.recoverMusicVolume();
+            }
+            if (complete) {
+                complete();
+            }
+        };
+
+        const channel = this.adapter.playSound(url, loops, wrappedComplete, startTime);
 
         if (channel) {
+            // 递增活跃音效计数
+            this.activeSoundCount++;
+
             if (key) {
                 this.soundChannels.set(key, channel);
             } else {
@@ -340,7 +333,7 @@ export class SoundManage {
                 this.cleanupSoundChannels();
             }
 
-            if (this.enableSoundDuckValue && this.currentMusicChannel && !this.adapter.isChannelStopped(this.currentMusicChannel)) {
+            if (this.enableSoundDuckValue && this.currentMusicChannel) {
                 this.startSoundDuck();
             }
         }
@@ -355,7 +348,8 @@ export class SoundManage {
     stopSound(key: string): void {
         const channel = this.soundChannels.get(key);
         if (channel) {
-            this.adapter.stopChannel(channel);
+            // this.adapter.stopChannel(channel);
+            this.adapter.stopSound(key)
             this.soundChannels.delete(key);
         }
     }
@@ -402,22 +396,14 @@ export class SoundManage {
     private startSoundDuck(): void {
         if (!this.adapter) return;
 
-        if (this.recoverTimer > -1) {
-            this.adapter.clearTimer(this, this.recoverMusicVolume);
-            this.recoverTimer = -1;
-        }
-
         const targetVolume = this.duckTargetVolumeValue * this.originalMusicVolume;
         this.tweenVolume(this.getActualMusicVolume(), targetVolume, this.duckDurationValue);
-
-        this.adapter.setTimer(this.duckRecoveryDurationValue, this, this.recoverMusicVolume);
     }
 
     /**
      * 恢复背景音音量
      */
     private recoverMusicVolume(): void {
-        this.recoverTimer = -1;
 
         if (!this.adapter || !this.currentMusicChannel || this.adapter.isChannelStopped(this.currentMusicChannel)) {
             return;
@@ -554,28 +540,24 @@ export class SoundManage {
      * 清理资源
      */
     dispose(): void {
-        if (this.recoverTimer > -1 && this.adapter) {
-            this.adapter.clearTimer(this, this.recoverMusicVolume);
-            this.recoverTimer = -1;
-        }
         this.stopAllSound();
         this.stopMusic(false);
     }
 
-    // ==================== 适配器设置 ====================
+    // // ==================== 适配器设置 ====================
 
-    /**
-     * 设置声音适配器
-     * @param adapter 声音适配器实例
-     */
-    setAdapter(adapter: IAudioAdapter): void {
-        this.adapter = adapter;
-    }
+    // /**
+    //  * 设置声音适配器
+    //  * @param adapter 声音适配器实例
+    //  */
+    // setAdapter(adapter: IAudioAdapter): void {
+    //     this.adapter = adapter;
+    // }
 
-    /**
-     * 获取声音适配器
-     */
-    getAdapter(): IAudioAdapter {
-        return this.adapter;
-    }
+    // /**
+    //  * 获取声音适配器
+    //  */
+    // getAdapter(): IAudioAdapter {
+    //     return this.adapter;
+    // }
 }

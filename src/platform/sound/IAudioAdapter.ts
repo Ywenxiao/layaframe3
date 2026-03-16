@@ -45,6 +45,18 @@ export interface IAudioAdapter {
      */
     stopAllSound(): void;
 
+    /**
+     * 停止指定音频通道
+     * @param channel 音频通道对象 (SoundChannel | any)
+     */
+    stopChannel(channel: any): void;
+
+    /**
+     * 判断指定音频通道是否已经停止
+     * @param channel 音频通道对象 (SoundChannel | any)
+     */
+    isChannelStopped(channel: any): boolean;
+
     // ==================== 音量控制 ====================
 
     /**
@@ -121,5 +133,5 @@ export interface IAudioAdapter {
      * 获取播放速率
      */
     getPlaybackRate(): number;
-  
+
 }

@@ -3,7 +3,7 @@ import { IAudioAdapter } from "./IAudioAdapter";
 export default class LayaSoundAdapter implements IAudioAdapter {
 
     playMusic(url: string, loops?: number, complete?: () => void, startTime?: number) {
-        return Laya.SoundManager.playSound(url, loops, complete, startTime);
+        return Laya.SoundManager.playMusic(url, loops, complete, startTime);
     }
     stopMusic(): void {
         return Laya.SoundManager.stopMusic();
@@ -17,6 +17,22 @@ export default class LayaSoundAdapter implements IAudioAdapter {
     stopAllSound(): void {
         return Laya.SoundManager.stopAllSound();
     }
+    stopChannel(channel: any): void {
+        if (channel && channel.url) {
+            Laya.SoundManager.stopSound(channel.url);
+        }
+    }
+
+    isChannelStopped(channel: any): boolean {
+        if (channel && channel.url) {
+            let c = Laya.SoundManager.findChannel(channel.url);
+            if (c) {
+                return c.isStopped;
+            }
+        }
+        return true;
+    }
+
     setMusicVolume(volume: number): void {
         Laya.SoundManager.musicVolume = volume;
     }
@@ -58,5 +74,5 @@ export default class LayaSoundAdapter implements IAudioAdapter {
     stopAll(): void {
         Laya.SoundManager.stopAll();
     }
-  
+
 }
