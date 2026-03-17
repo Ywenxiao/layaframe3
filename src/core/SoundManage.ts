@@ -17,9 +17,6 @@ export class SoundManage {
     /** 是否正在暂停音乐 */
     private isPaused: boolean = false;
 
-    /** 暂停时的播放位置 */
-    private pausedPosition: number = 0;
-
     /** 活跃的音效数量 */
     private activeSoundCount: number = 0;
 
@@ -278,9 +275,9 @@ export class SoundManage {
 
         const self = this;
         let tween = {
-            destroyed: false, set volume(value: number) {
-                // 直接调用 adapter.setMusicVolume，不经过 setMusicVolume 方法
-                self.adapter.setMusicVolume(value);
+            destroyed: false,
+            set volume(value: number) {
+                self.setMusicVolume(value);
             }
         };
 
@@ -348,7 +345,7 @@ export class SoundManage {
     stopSound(key: string): void {
         const channel = this.soundChannels.get(key);
         if (channel) {
-            // this.adapter.stopChannel(channel);
+            this.adapter.stopChannel(channel);
             this.adapter.stopSound(key)
             this.soundChannels.delete(key);
         }

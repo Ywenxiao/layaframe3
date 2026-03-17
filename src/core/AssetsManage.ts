@@ -1,6 +1,3 @@
-export default class AssetsMgr {
+export default class AssetsManage {
 
-    static clearAllRes(coutn: number = 0) {
-
-    }
 }

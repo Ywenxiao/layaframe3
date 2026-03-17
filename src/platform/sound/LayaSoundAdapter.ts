@@ -1,5 +1,6 @@
 import { IAudioAdapter } from "./IAudioAdapter";
 
+/**默认声音适配器 */
 export default class LayaSoundAdapter implements IAudioAdapter {
 
     playMusic(url: string, loops?: number, complete?: () => void, startTime?: number) {

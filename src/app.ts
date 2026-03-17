@@ -1,3 +1,3 @@
-export default class app {
+export default class app extends Laya.EventDispatcher {
 
 }

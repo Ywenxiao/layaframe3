@@ -3,6 +3,7 @@ import { BadgeManage } from "./core/BadgeManage";
 import UIManage from "./core/UIManage";
 import AniManage from "./core/AniManage";
 import LogMgr from "./core/LogMgr";
+import app from "./app";
 
 /**
  * 模块类型定义
@@ -47,6 +48,7 @@ class Game extends Laya.EventDispatcher {
             UI: { clazz: UIManage, lazy: false },
             ANI: { clazz: AniManage, lazy: false },
             LOG: { clazz: LogMgr, lazy: true },
+            APP: { clazz: app, lazy: false }
         };
     }
 
@@ -94,6 +96,9 @@ class Game extends Laya.EventDispatcher {
 
     /** 动画管理器 */
     public get ANI(): AniManage { return this.getModule("ANI"); }
+
+    /**多平台管理器 */
+    public get APP(): app { return this.getModule("APP"); }
 }
 
 /** 游戏单例实例 */
