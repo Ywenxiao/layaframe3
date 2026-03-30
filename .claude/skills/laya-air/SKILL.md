@@ -1,5 +1,5 @@
 ---
-name: layaAir
+name: laya-air
 description: 使用layaAir引擎编写代码以及使用layaIDE编辑游戏场景等
 ---
 

@@ -6,7 +6,7 @@ import soundAdapter from "@SOUND";
  * 负责背景音乐和音效的播放管理
  * 支持背景音乐淡入淡出切换、音效播放时压制背景音
  */
-export class SoundManage {
+export class SoundManage extends Laya.EventDispatcher {
 
     /** 背景音乐音量 (0-1) */
     private musicVolumeValue: number = 1;
@@ -60,6 +60,7 @@ export class SoundManage {
     private adapter: IAudioAdapter;
 
     constructor() {
+        super();
         this.adapter = new soundAdapter();
     }
 
@@ -541,20 +542,4 @@ export class SoundManage {
         this.stopMusic(false);
     }
 
-    // // ==================== 适配器设置 ====================
-
-    // /**
-    //  * 设置声音适配器
-    //  * @param adapter 声音适配器实例
-    //  */
-    // setAdapter(adapter: IAudioAdapter): void {
-    //     this.adapter = adapter;
-    // }
-
-    // /**
-    //  * 获取声音适配器
-    //  */
-    // getAdapter(): IAudioAdapter {
-    //     return this.adapter;
-    // }
 }

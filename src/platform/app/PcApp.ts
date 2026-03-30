@@ -1,3 +1,3 @@
-export default class PcApp {
+export default class PcApp extends Laya.EventDispatcher {
 
 }
