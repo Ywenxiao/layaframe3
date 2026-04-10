@@ -1,9 +1,9 @@
-import { SoundManage } from "src/core/SoundManage";
 import { BadgeManage } from "./core/BadgeManage";
-import UIManage from "./core/UIManage";
+import { UIManage } from "./core/UIManage";
 import AniManage from "./core/AniManage";
 import LogMgr from "./core/LogMgr";
-import app from "./app";
+import app from "./platform/app/app";
+import { SoundManage } from "./core/SoundManage";
 
 /**
  * 模块类型定义
@@ -26,17 +26,38 @@ interface ModuleConfig<T> {
  */
 class Game extends Laya.EventDispatcher {
 
+    private static _instance: Game = null;
+    static get instance(): Game {
+        return this._instance || (this._instance = new Game());
+    }
+
     /** 模块实例缓存 */
     private _modules = new Map<string, any>();
 
     /** 模块配置 */
     private _configs: Record<string, ModuleConfig<any>> = {};
 
-    constructor() {
+    private constructor() {
         super();
         this.__initConfigs();
         this.__initEagerModules();
     }
+
+
+    /** 声音管理器 */
+    public get SOUND(): SoundManage { return this.getModule("SOUND"); }
+
+    /** 红点管理器 */
+    public get BADGE(): BadgeManage { return this.getModule("BADGE"); }
+
+    /** UI管理器 */
+    public get UI(): UIManage { return this.getModule("UI"); }
+
+    /** 动画管理器 */
+    public get ANI(): AniManage { return this.getModule("ANI"); }
+
+    /**多平台管理器 */
+    public get APP(): app { return this.getModule("APP"); }
 
     /**
      * 初始化模块配置
@@ -53,8 +74,8 @@ class Game extends Laya.EventDispatcher {
     }
 
     /**
-     * 初始化非懒加载模块
-     */
+   * 初始化非懒加载模块
+   */
     private __initEagerModules(): void {
         for (const [key, config] of Object.entries(this._configs)) {
             if (!config.lazy) {
@@ -78,34 +99,14 @@ class Game extends Laya.EventDispatcher {
         }
         return instance;
     }
-
-    getItem(key: string): string {
-        return "";
-    }
-
-    // ==================== 快捷访问器 ====================
-
-    /** 声音管理器 */
-    public get SOUND(): SoundManage { return this.getModule("SOUND"); }
-
-    /** 红点管理器 */
-    public get BADGE(): BadgeManage { return this.getModule("BADGE"); }
-
-    /** UI管理器 */
-    public get UI(): UIManage { return this.getModule("UI"); }
-
-    /** 动画管理器 */
-    public get ANI(): AniManage { return this.getModule("ANI"); }
-
-    /**多平台管理器 */
-    public get APP(): app { return this.getModule("APP"); }
 }
 
 /** 游戏单例实例 */
-export const game = new Game();
+export const GAME = Game.instance;
 
 /** 快捷导出 - 模块实例 */
-export const SOUND = game.SOUND;
-export const BADGE = game.BADGE;
-export const UI = game.UI;
-export const ANI = game.ANI;
+export const SOUND = GAME.SOUND;
+export const BADGE = GAME.BADGE;
+export const UI = GAME.UI;
+export const ANI = GAME.ANI;
+export const APP = GAME.APP;

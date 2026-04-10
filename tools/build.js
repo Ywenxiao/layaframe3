@@ -16,8 +16,8 @@ function run(cmd) {
 
     return output.toString();
 }
-function build(fun) {
+export function build(fun) {
     run(`LayaAirIDE --project=${projectPath} --script=build_script.${fun}`);
 }
 
-build("buildWeb");
+// build("buildWeb");

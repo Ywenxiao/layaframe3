@@ -5,7 +5,6 @@
   },
   "modules": {
     "laya.ui": true,
-    "laya.d3": true,
     "laya.spine": true,
     "laya.particle": true,
     "laya.trail2D": true,

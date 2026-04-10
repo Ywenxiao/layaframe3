@@ -20,5 +20,8 @@
   "homepage": "https://github.com/Ywenxiao/layaframe3#readme",
   "dependencies": {
     "@types/node": "^25.3.1"
+  },
+  "devDependencies": {
+    "minimist": "^1.2.8"
   }
 }

@@ -2,6 +2,7 @@
   "name": "LayaProject1",
   "startupScene": "res://b02c85ab-1469-4087-80bb-ffe299291174",
   "android": {
+    "exportProject": true,
     "screenOrientation": "portrait",
     "targetArchitectures": {
       "ARMv7": false,
@@ -9,7 +10,8 @@
       "x86": false,
       "x86-64": false
     },
-    "exportFormat": "APK"
+    "exportFormat": "APK",
+    "minSdkVersion": 27
   },
   "wxgame": {
     "appid": "1"

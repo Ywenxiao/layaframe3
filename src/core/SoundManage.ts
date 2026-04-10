@@ -1,5 +1,5 @@
-import { IAudioAdapter } from "src/platform/sound/IAudioAdapter";
 import soundAdapter from "@SOUND";
+import { IAudioAdapter } from "../platform/sound/IAudioAdapter";
 
 /**
  * 声音管理器 - 详细实现

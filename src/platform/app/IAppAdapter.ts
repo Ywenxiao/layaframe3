@@ -4,6 +4,6 @@ export interface IAppAdapter {
 
     setItem?(key: string, value: string): void;
 
-    on(cmd: "show" | "hide", callback: (res?: any) => void): void
+    on(cmd: "show" | "hide", callback: (res?: any) => void): void;
 
 }

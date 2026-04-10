@@ -68,35 +68,7 @@
           ]
         }
       ],
-      "src": "res://3225dc27-5bcb-446e-8b66-27df87624835",
-      "_$comp": [
-        {
-          "_$type": "Animator2D",
-          "controller": {
-            "_$uuid": "2e280b3e-c774-401d-a35d-e2b5ab1677d3",
-            "_$type": "AnimationController2D"
-          },
-          "controllerLayers": [
-            {
-              "_$type": "AnimatorControllerLayer2D",
-              "name": "Base Layer",
-              "states": [
-                {
-                  "_$type": "AnimatorState2D",
-                  "name": "login_start",
-                  "clipStart": 0,
-                  "clip": {
-                    "_$uuid": "4c5b10d1-9c32-4d0f-8676-1d7370b7958e",
-                    "_$type": "AnimationClip2D"
-                  },
-                  "soloTransitions": []
-                }
-              ],
-              "defaultStateName": "login_start"
-            }
-          ]
-        }
-      ]
+      "src": "res://3225dc27-5bcb-446e-8b66-27df87624835"
     },
     {
       "_$id": "whuqeccj",
