@@ -12,8 +12,8 @@
     }
   },
   "server": {
-    "running": false,
-    "status": "stopped",
+    "running": true,
+    "status": "running",
     "port": 18188,
     "autoStart": true,
     "url": "http://127.0.0.1:18188/ai/mcp"
@@ -21,7 +21,7 @@
   "setup": {
     "token": "layamcp-b9547fc9-c823-43cc-8ddc-99951da5e03d",
     "selectedIdeForPreview": "cursor",
-    "apiVersion": "v3.3.8"
+    "apiVersion": "v3.3.9"
   },
   "ides": [
     {

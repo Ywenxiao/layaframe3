@@ -2,12 +2,15 @@
   "name": "LayaProject1",
   "startupScene": "res://b02c85ab-1469-4087-80bb-ffe299291174",
   "android": {
+    "dcc": {
+      "enable": true
+    },
     "exportProject": true,
     "screenOrientation": "portrait",
     "targetArchitectures": {
       "ARMv7": false,
       "ARM64": true,
-      "x86": false,
+      "x86": true,
       "x86-64": false
     },
     "exportFormat": "APK",
@@ -15,5 +18,12 @@
   },
   "wxgame": {
     "appid": "1"
+  },
+  "harmony": {
+    "dcc": {
+      "enable": true,
+      "generate": true
+    },
+    "bundleIdentifier": "ohos.test.game"
   }
 }

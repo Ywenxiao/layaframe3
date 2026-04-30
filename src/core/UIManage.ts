@@ -81,7 +81,7 @@ export class UILayer {
 export class UIManage extends Laya.EventDispatcher {
 
     openUI(url: string, option: any) {
-        
+                
     }
 
 }
