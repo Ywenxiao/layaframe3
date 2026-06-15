@@ -21,7 +21,7 @@
   "setup": {
     "token": "layamcp-b9547fc9-c823-43cc-8ddc-99951da5e03d",
     "selectedIdeForPreview": "cursor",
-    "apiVersion": "v3.3.9"
+    "apiVersion": "v3.3.11"
   },
   "ides": [
     {

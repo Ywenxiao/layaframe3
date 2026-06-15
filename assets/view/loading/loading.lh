@@ -1,0 +1,108 @@
+{
+  "_$ver": 1,
+  "_$id": "jugyoyyw",
+  "_$runtime": "res://6fc7afb1-20ef-4512-a41e-5c2603063673",
+  "_$type": "GWidget",
+  "name": "Root",
+  "width": 750,
+  "height": 1334,
+  "_$child": [
+    {
+      "_$id": "zmb1xn9s",
+      "_$var": true,
+      "_$type": "GImage",
+      "name": "img_bg",
+      "width": 750,
+      "height": 1666,
+      "src": "res://57964417-b1b8-41c6-8869-74e74bd63565"
+    },
+    {
+      "_$id": "q1ho9bpc",
+      "_$var": true,
+      "_$type": "GImage",
+      "name": "img_1",
+      "x": 12,
+      "y": 256,
+      "width": 726,
+      "height": 282,
+      "relations": [
+        {
+          "_$type": "Relation",
+          "target": {
+            "_$ref": "jugyoyyw"
+          },
+          "data": [
+            6,
+            0
+          ]
+        }
+      ],
+      "src": "res://b03a7615-3724-4f77-9040-bc7ae72b6617"
+    },
+    {
+      "_$id": "5d193ofn",
+      "_$prefab": "ec02f8dc-7f71-4330-9daf-06a60e1bb4b7",
+      "_$var": true,
+      "name": "bar",
+      "active": true,
+      "x": 48,
+      "y": 1033,
+      "width": 654,
+      "visible": true,
+      "grayed": false,
+      "tooltips": "\n",
+      "relations": [
+        {
+          "_$type": "Relation",
+          "target": {
+            "_$ref": "jugyoyyw"
+          },
+          "data": [
+            16,
+            0
+          ]
+        }
+      ],
+      "value": 74
+    },
+    {
+      "_$id": "vrnequvb",
+      "_$var": true,
+      "_$type": "GTextField",
+      "name": "txt_version",
+      "x": 15,
+      "y": 1131,
+      "width": 720,
+      "height": 143,
+      "relations": [
+        {
+          "_$type": "Relation",
+          "target": {
+            "_$ref": "jugyoyyw"
+          },
+          "data": [
+            16,
+            0
+          ]
+        }
+      ],
+      "text": "",
+      "fontSize": 18,
+      "color": "#ebe9e9",
+      "bold": true,
+      "align": "center",
+      "wordWrap": true,
+      "leading": 4
+    },
+    {
+      "_$id": "mrsl018o",
+      "_$type": "GImage",
+      "name": "img_2",
+      "x": 34,
+      "y": 24,
+      "width": 80,
+      "height": 104,
+      "src": "res://5debf12d-c687-4640-9acd-a85d1d41a347"
+    }
+  ]
+}

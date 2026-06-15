@@ -1,0 +1,53 @@
+{
+  "GamePanel": {
+    "muted": false,
+    "scale": 1,
+    "scale2": 0.16923076923076918,
+    "dimension": {
+      "name": "全高清",
+      "x": 1920,
+      "y": 1080
+    },
+    "landscape": false
+  },
+  "InspectorPanel": {
+    "previewPanelHeight": 266
+  },
+  "ProjectPanel": {
+    "expandedNodes": [
+      "",
+      "../src"
+    ],
+    "twoColumn": false,
+    "firstColumnWidth": 289,
+    "iconScale": 0,
+    "selected": "f7b1216d-4d04-43a6-9f88-f7ce5e877c5d"
+  },
+  "ConsolePanel": {
+    "collapse": true
+  },
+  "BuildSettingsPanel": {
+    "platform": "wxgame"
+  },
+  "ProjectSettingsPanel": {
+    "catalog": "CompilerSettings"
+  },
+  "SelectResourceDialog": {
+    "iconScale": 0,
+    "previewPanelHeight": 202,
+    "x": 1273,
+    "y": 419,
+    "width": 631,
+    "height": 622
+  },
+  "SelectNodeDialog": {
+    "x": 1550,
+    "y": 530,
+    "width": 354,
+    "height": 429
+  },
+  "y": {},
+  "playButtonBehavior": "startup",
+  "playUsingHttps": false,
+  "S": {}
+}

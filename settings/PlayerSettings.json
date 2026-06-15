@@ -1,7 +1,8 @@
 {
   "resolution": {
     "designWidth": 750,
-    "designHeight": 1334
+    "designHeight": 1334,
+    "scaleMode": "fixedwidth"
   },
   "modules": {
     "laya.ui": true,

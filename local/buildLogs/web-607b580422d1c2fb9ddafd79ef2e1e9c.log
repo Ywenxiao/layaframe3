@@ -1,0 +1,12 @@
+[2026-05-15 11:53:58][info] Start build web, destPath=E:\Object\layaframe3/release/web
+[2026-05-15 11:53:58][info] 正在初始化
+[2026-05-15 11:53:58][info] Run .onSetup
+[2026-05-15 11:53:58][info] Run Object.onSetup
+[2026-05-15 11:53:58][error] TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string or an instance of URL. Received undefined
+TypeError: The "path" argument must be of type string or an instance of URL. Received undefined
+    at fileURLToPath (node:internal/url:1391:11)
+    at Object.onSetup (file:///E:/Object/layaframe3/bin/js/bundles/bundle.scene.js:74:80)
+    at x.callPlugin (file:///C:/Program%20Files/LayaAirIDE/resources/app.asar/game.js:2:1115672)
+    at async x.setup (file:///C:/Program%20Files/LayaAirIDE/resources/app.asar/game.js:2:1098039)
+    at async x.run (file:///C:/Program%20Files/LayaAirIDE/resources/app.asar/game.js:2:1097015)
+[2026-05-15 11:53:58][info] Build end, result=Failed

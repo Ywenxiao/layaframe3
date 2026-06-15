@@ -19,12 +19,17 @@
       ],
       "@SOUND": [
         "./src/platform/sound/LayaSoundAdapter.ts"
+      ],
+      "@APP": [
+        "./src/platform/PcApp.ts"
       ]
     }
   },
   "include": [
     "./assets",
     "./src",
-    "./engine"
+    "./engine",
+    "./libs",
+    "./node_modules/@types/node", "libs/define.d.ts",
   ]
 }

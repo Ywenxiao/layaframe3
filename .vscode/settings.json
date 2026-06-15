@@ -6,6 +6,13 @@
     "temp/": true,
     "local/": true
   },
-
- 
+   "[typescript]": {
+    // Windsurf 提示延迟显示,给 tsserver 先响应的机会
+    "editor.inlineSuggest.showToolbar": "onHover",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": false
+    }
+  }
 }

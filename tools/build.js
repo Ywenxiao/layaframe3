@@ -17,7 +17,9 @@ function run(cmd) {
     return output.toString();
 }
 export function build(fun) {
+    let url = import.meta.url;
+    let path = fileURLToPath(url);
     run(`LayaAirIDE --project=${projectPath} --script=build_script.${fun}`);
 }
 
-// build("buildWeb");
+build("buildWeb");

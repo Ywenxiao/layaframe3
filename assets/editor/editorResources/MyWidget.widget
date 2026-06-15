@@ -1,0 +1,30 @@
+{
+  "_$ver": 1,
+  "_$id": "rmieccud",
+  "_$type": "Widget",
+  "name": "Root",
+  "width": 400,
+  "height": 400,
+  "_$child": [
+    {
+      "_$id": "m4xt0ym1",
+      "_$type": "Image",
+      "name": "img",
+      "x": 122,
+      "y": 98,
+      "width": 128,
+      "height": 128,
+      "src": "res://7954f267-ec0e-847e-0ab7-6343d13ba65b"
+    },
+    {
+      "_$id": "7rur5kdj",
+      "_$prefab": "889a3232-df74-c494-e827-ce1f557f8e85",
+      "name": "Button",
+      "active": true,
+      "x": 146,
+      "y": 266,
+      "visible": true,
+      "touchable": true
+    }
+  ]
+}

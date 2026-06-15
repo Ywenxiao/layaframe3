@@ -1,9 +1,9 @@
 import { BadgeManage } from "./core/BadgeManage";
-import { UIManage } from "./core/UIManage";
+import { UIManager } from "./core/UIManage";
 import AniManage from "./core/AniManage";
 import LogMgr from "./core/LogMgr";
-import app from "./platform/app/app";
-import { SoundManage } from "./core/SoundManage";
+import apk from "./core/apk";
+import SoundManager from "./core/SoundManager";
 
 /**
  * 模块类型定义
@@ -24,10 +24,10 @@ interface ModuleConfig<T> {
  * 游戏核心模块管理器
  * 统一管理所有单例模块
  */
-class Game extends Laya.EventDispatcher {
+export class Game extends Laya.EventDispatcher {
 
     private static _instance: Game = null;
-    static get instance(): Game {
+    static get I(): Game {
         return this._instance || (this._instance = new Game());
     }
 
@@ -45,31 +45,31 @@ class Game extends Laya.EventDispatcher {
 
 
     /** 声音管理器 */
-    public get SOUND(): SoundManage { return this.getModule("SOUND"); }
+    public get SOUND(): SoundManager { return this.getModule("SOUND"); }
 
     /** 红点管理器 */
     public get BADGE(): BadgeManage { return this.getModule("BADGE"); }
 
     /** UI管理器 */
-    public get UI(): UIManage { return this.getModule("UI"); }
+    public get UI(): UIManager { return this.getModule("UI"); }
 
     /** 动画管理器 */
     public get ANI(): AniManage { return this.getModule("ANI"); }
 
     /**多平台管理器 */
-    public get APP(): app { return this.getModule("APP"); }
+    public get APP(): apk { return this.getModule("APP"); }
 
     /**
      * 初始化模块配置
      */
     private __initConfigs(): void {
         this._configs = {
-            SOUND: { clazz: SoundManage, lazy: false },
+            SOUND: { clazz: SoundManager, lazy: false },
             BADGE: { clazz: BadgeManage, lazy: false },
-            UI: { clazz: UIManage, lazy: false },
+            UI: { clazz: UIManager, lazy: false },
             ANI: { clazz: AniManage, lazy: false },
             LOG: { clazz: LogMgr, lazy: true },
-            APP: { clazz: app, lazy: false }
+            APP: { clazz: apk, lazy: false }
         };
     }
 
@@ -100,13 +100,3 @@ class Game extends Laya.EventDispatcher {
         return instance;
     }
 }
-
-/** 游戏单例实例 */
-export const GAME = Game.instance;
-
-/** 快捷导出 - 模块实例 */
-export const SOUND = GAME.SOUND;
-export const BADGE = GAME.BADGE;
-export const UI = GAME.UI;
-export const ANI = GAME.ANI;
-export const APP = GAME.APP;

@@ -1,0 +1,13 @@
+{
+  "_$ver": 1,
+  "_$id": "iupk46xu",
+  "_$type": "GWidget",
+  "name": "Root",
+  "width": 750,
+  "height": 1334,
+  "alpha": 0.521,
+  "background": {
+    "_$type": "DrawRectCmd",
+    "fillColor": "#000000"
+  }
+}

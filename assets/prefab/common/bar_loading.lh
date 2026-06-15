@@ -1,0 +1,122 @@
+{
+  "_$ver": 1,
+  "_$id": "e8malnw5",
+  "_$type": "GProgressBar",
+  "name": "ProgressBar",
+  "width": 654,
+  "height": 67,
+  "tooltips": "111",
+  "_hBar": {
+    "_$ref": "m78qhnuc"
+  },
+  "_titleWidget": {
+    "_$ref": "lzeqsyhl"
+  },
+  "_$child": [
+    {
+      "_$id": "k3702cls",
+      "_$type": "GImage",
+      "name": "bg",
+      "width": 654,
+      "height": 67,
+      "relations": [
+        {
+          "_$type": "Relation",
+          "target": {
+            "_$ref": "e8malnw5"
+          },
+          "data": [
+            1,
+            0,
+            2,
+            0
+          ]
+        }
+      ],
+      "src": "res://deef23fe-7a6a-4aa6-a00a-a7c2ec38776f",
+      "autoSize": false
+    },
+    {
+      "_$id": "ju7q5zn6",
+      "_$type": "GImage",
+      "name": "img",
+      "width": 654,
+      "height": 67,
+      "mask": {
+        "_$ref": "m78qhnuc"
+      },
+      "relations": [
+        {
+          "_$type": "Relation",
+          "target": {
+            "_$ref": "e8malnw5"
+          },
+          "data": [
+            1,
+            0
+          ]
+        }
+      ],
+      "src": "res://5b060136-a4cf-4074-8023-e491cc189618",
+      "autoSize": false
+    },
+    {
+      "_$id": "m78qhnuc",
+      "_$type": "GImage",
+      "name": "bar",
+      "x": 15,
+      "y": -19,
+      "width": 626,
+      "height": 100,
+      "cacheAs": "bitmap",
+      "background": {
+        "_$type": "DrawRectCmd",
+        "fillColor": "#ffffff"
+      },
+      "relations": [
+        {
+          "_$type": "Relation",
+          "target": {
+            "_$ref": "e8malnw5"
+          },
+          "data": [
+            1,
+            0
+          ]
+        }
+      ],
+      "src": "",
+      "autoSize": false
+    },
+    {
+      "_$id": "lzeqsyhl",
+      "_$type": "GTextField",
+      "name": "txt",
+      "x": 170,
+      "y": 5,
+      "width": 314,
+      "height": 57,
+      "relations": [
+        {
+          "_$type": "Relation",
+          "target": {
+            "_$ref": "e8malnw5"
+          },
+          "data": [
+            6,
+            0,
+            13,
+            0
+          ]
+        }
+      ],
+      "text": "100%",
+      "fontSize": 24,
+      "color": "#fafafa",
+      "bold": true,
+      "align": "center",
+      "valign": "middle",
+      "stroke": 2
+    }
+  ]
+}

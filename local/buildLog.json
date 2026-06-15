@@ -1,0 +1,28 @@
+{
+  "logs": [
+    {
+      "name": "微信小游戏 | 试玩广告",
+      "platform": "wxgame",
+      "path": "E:\\Object\\layaframe3/release/wxgame",
+      "time": 1781261476648,
+      "logFile": "wxgame-4a4aecf9e75f9111004782f75f8502fc.log",
+      "success": true
+    },
+    {
+      "name": "Android",
+      "platform": "android",
+      "path": "E:\\Object\\layaframe3/release/android",
+      "time": 1777534284331,
+      "logFile": "android-169135a6ad810dbcd116f852c66a5bb7.log",
+      "success": true
+    },
+    {
+      "name": "鸿蒙NEXT",
+      "platform": "harmony",
+      "path": "E:\\Object\\layaframe3/release/harmony",
+      "time": 1777282322150,
+      "logFile": "harmony-90cf433381fdc3337b677a65a84f44fc.log",
+      "success": true
+    }
+  ]
+}

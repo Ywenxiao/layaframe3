@@ -1,8 +1,14 @@
+import apk from "./core/apk";
+import { conf } from "./core/conf";
+import { UILayer } from "./core/UIManage";
+import { Game } from "./game";
+
 Laya.addBeforeInitCallback((stageConfig) => {
     Laya.Config.isAntialias = true;
     Laya.Config.useWebGL2 = true;
-    console.log("Laya before init", stageConfig);
+    stageConfig.designWidth = apk.getStageWidth();
 
+    console.log("Laya before init", stageConfig);
 })
 
 Laya.addAfterInitCallback(() => {
@@ -11,6 +17,10 @@ Laya.addAfterInitCallback(() => {
 
 export function main() {
     console.log("Game start");
-    Laya.Scene.open("scene/loading.ls");
-
+    Game.I.UI.CreateUI("view/loading/loading.lh", {
+        type: "item",
+        layer: UILayer.DialogTop
+    });
+    // Laya.Scene.open("scene/login/loading.ls");
 }
+
