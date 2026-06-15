@@ -1,5 +1,6 @@
 import apk from "./apk";
-import { conf } from "./conf";
+import { INJECT, type Context } from "./Context";
+import { ContextType } from "./DefineTypes";
 
 type constructorView<T = IView> = new (...args: any[]) => T;
 
@@ -225,6 +226,7 @@ export class UILayer {
 /**
  * UI管理脚本，管理所有使用CreateUI打开的UI的生命周期,用此脚本创建的ui会自动销毁并清理UI带的资源
  */
+@INJECT(ContextType.SYSTEM, false)
 export class UIManager extends Laya.EventDispatcher {
 
     /**UI关闭事件 */
@@ -250,6 +252,8 @@ export class UIManager extends Laya.EventDispatcher {
 
     //当前顶层UI
     private currTopView: number;
+
+    private context: Context;
 
     constructor() {
         super();
@@ -563,28 +567,6 @@ export class UIManager extends Laya.EventDispatcher {
         // })
     }
 
-    public getGID(c: constructorView, create: boolean = true): number {
-        const v = Object.getOwnPropertyDescriptor(c, "$__GID");
-
-        if (v != null && v.value != null) {
-            return v.value;
-        }
-
-        if (!create) {
-            return -1;
-        }
-
-        let num = this.getID();
-        Object.defineProperty(c, "$__GID", {
-            enumerable: true,
-            writable: false,
-            configurable: false,
-            value: num
-        })
-
-        return num;
-    }
-
 
     /**是否已经打开 */
     private hasOpen(url: string) {
@@ -651,27 +633,12 @@ export class UIManager extends Laya.EventDispatcher {
         return info;
     }
 
-    private getID() {
-        // let id = ++this.uiCount;
-        // this.logUI("get id", id);
-        // return id;
-        return ++this.uiCount;
-
-    };
-
-
 
     private clearResUnReference() {
 
 
     }
 
-    private addChild(layer: number, ui: Laya.Sprite) {
-
-        let layerSp = this.getLayer(layer);
-        if (!layerSp) return;
-        layerSp.addChild(ui);
-    }
 
     private onTopUI() {
         Laya.timer.clear(this, this._onTopUI);

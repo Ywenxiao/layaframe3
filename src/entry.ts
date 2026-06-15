@@ -1,6 +1,7 @@
 import apk from "./core/apk";
 import { conf } from "./core/conf";
-import { UILayer } from "./core/UIManage";
+import { GET } from "./core/Context";
+import { UILayer, UIManager } from "./core/UIManage";
 import { Game } from "./game";
 
 Laya.addBeforeInitCallback((stageConfig) => {
@@ -17,10 +18,12 @@ Laya.addAfterInitCallback(() => {
 
 export function main() {
     console.log("Game start");
-    Game.I.UI.CreateUI("view/loading/loading.lh", {
-        type: "item",
-        layer: UILayer.DialogTop
-    });
+    GET(UIManager).CreateUI("view/loading/loading.lh", { type: "view", layer: UILayer.DialogTop });
+
+    // Game.I.UI.CreateUI("view/loading/loading.lh", {
+    //     type: "item",
+    //     layer: UILayer.DialogTop
+    // });
     // Laya.Scene.open("scene/login/loading.ls");
 }
 

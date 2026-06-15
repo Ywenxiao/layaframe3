@@ -2,7 +2,7 @@
   "default": {
     "width": 1916,
     "height": 935,
-    "id": "fR_hUb8s",
+    "id": "vcwnY0cL",
     "layout": 1,
     "children": [
       {
@@ -52,21 +52,21 @@
                 "children": [
                   {
                     "width": 1091,
-                    "height": 369,
+                    "height": 565,
                     "id": "Ug2tk3sB",
                     "layout": 1,
                     "children": [
                       {
                         "width": 1091,
-                        "height": 369,
+                        "height": 565,
                         "id": "zkG3Xl1D",
                         "layout": 2,
                         "children": [
                           {
                             "width": 1091,
-                            "height": 369,
+                            "height": 565,
                             "id": "7eatv6px",
-                            "selected": 3,
+                            "selected": 4,
                             "children": [
                               "ScenePanel",
                               "GamePanel",
@@ -81,7 +81,7 @@
                   },
                   {
                     "width": 1091,
-                    "height": 562,
+                    "height": 366,
                     "id": "cTIBtkMA",
                     "selected": 0,
                     "children": [
@@ -120,7 +120,7 @@
       {
         "width": 554,
         "height": 625,
-        "id": "QXFU5tgB",
+        "id": "DG2WgeC6",
         "selected": 0,
         "children": [
           "PreferencesPanel"
@@ -131,21 +131,21 @@
       },
       {
         "width": 628,
-        "height": 474,
-        "id": "4lCGjj6G",
+        "height": 473,
+        "id": "edxhLn0T",
         "selected": 1,
         "children": [
           "BuildSettingsPanel",
           "BuildTasksPanel"
         ],
-        "x": 641,
+        "x": 642,
         "y": 249,
         "show": false
       },
       {
         "width": 802,
         "height": 607,
-        "id": "4BgDVmUa",
+        "id": "0sOpN4pB",
         "selected": 0,
         "children": [
           "PackageManagerPanel"

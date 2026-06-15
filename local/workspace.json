@@ -2,11 +2,11 @@
   "GamePanel": {
     "muted": false,
     "scale": 1,
-    "scale2": 0.16923076923076918,
+    "scale2": 0.16923076923076924,
     "dimension": {
-      "name": "全高清",
-      "x": 1920,
-      "y": 1080
+      "name": "2K",
+      "x": 2560,
+      "y": 1440
     },
     "landscape": false
   },
@@ -16,6 +16,8 @@
   "ProjectPanel": {
     "expandedNodes": [
       "",
+      "view",
+      "view/loading",
       "../src"
     ],
     "twoColumn": false,

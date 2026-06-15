@@ -1,19 +1,20 @@
-[2026-06-12 18:51:13][info] Start build wxgame, destPath=E:\Object\layaframe3/release/wxgame
-[2026-06-12 18:51:13][info] 正在初始化
-[2026-06-12 18:51:13][info] Run .onSetup
-[2026-06-12 18:51:13][info] 正在清理旧数据
-[2026-06-12 18:51:13][info] 开始构建
-[2026-06-12 18:51:13][info] 正在准备资源
-[2026-06-12 18:51:13][info] ExportAssetTool: 19 assets to parse
-[2026-06-12 18:51:13][info] ExportAssetTool: 29 assets to parse
-[2026-06-12 18:51:13][info] 正在导出资源
-[2026-06-12 18:51:13][info] ExportAssetTool: 49 items to write
-[2026-06-12 18:51:13][info] ExportAssetTool: Create internal/UI/comp.atlas, 30 images.
-[2026-06-12 18:51:14][info] ExportAssetTool: Created internal/UI/comp.atlas
-[2026-06-12 18:51:14][info] 正在编译和打包脚本
-[2026-06-12 18:51:16][info] 正在拷贝文件
-[2026-06-12 18:51:16][info] 正在创建清单文件
-[2026-06-12 18:51:16][info] Run .onCreateManifest
-[2026-06-12 18:51:16][info] 正在创建包
-[2026-06-12 18:51:16][info] 正在结束构建
-[2026-06-12 18:51:16][info] Build end, result=Success
+[2026-06-15 17:57:06][info] Start build wxgame, destPath=E:\Object\layaframe3/release/wxgame
+[2026-06-15 17:57:06][info] 正在初始化
+[2026-06-15 17:57:06][info] Run .onSetup
+[2026-06-15 17:57:06][info] 正在清理旧数据
+[2026-06-15 17:57:06][info] 开始构建
+[2026-06-15 17:57:06][info] 正在准备资源
+[2026-06-15 17:57:06][info] ExportAssetTool: 33 assets to parse
+[2026-06-15 17:57:06][info] ExportAssetTool: 29 assets to parse
+[2026-06-15 17:57:06][info] 正在导出资源
+[2026-06-15 17:57:06][info] ExportAssetTool: 63 items to write
+[2026-06-15 17:57:06][info] ExportAssetTool: Create internal/UI/comp.atlas, 30 images.
+[2026-06-15 17:57:06][info] ExportAssetTool: Created internal/UI/comp.atlas
+[2026-06-15 17:57:06][info] 正在编译和打包脚本
+[2026-06-15 17:57:06][info] 正在拷贝文件
+[2026-06-15 17:57:06][info] 正在创建清单文件
+[2026-06-15 17:57:06][info] Run .onCreateManifest
+[2026-06-15 17:57:06][info] 正在创建包
+[2026-06-15 17:57:06][info] 正在结束构建
+[2026-06-15 17:57:06][info] Cleanup cache
+[2026-06-15 17:57:06][info] Build end, result=Success
