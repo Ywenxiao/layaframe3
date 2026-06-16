@@ -4,7 +4,7 @@ import LogMgr from "./LogMgr";
 type InjectClass<T = any> = new () => T;
 
 interface InjectorInfo {
-    
+
     type: number;
 
     classConstructor: InjectClass;
@@ -142,7 +142,7 @@ export function INJECT(type: ContextType, lazy: boolean = true): ClassDecorator 
     return function (target: any) { Context.instance.inject(target, type, lazy); };
 }
 
-export function GET(c: InjectClass) {
+export function GET<T>(c: InjectClass<T>): T {
 
     return Context.instance.get(c);
 }

@@ -1,12 +1,21 @@
-[2026-06-15 17:45:48][info] Start build web, destPath=E:\Object\layaframe3/release/web
-[2026-06-15 17:45:48][info] 正在初始化
-[2026-06-15 17:45:48][info] Run .onSetup
-[2026-06-15 17:45:48][info] Run Object.onSetup
-[2026-06-15 17:45:48][error] TypeError [ERR_INVALID_URL_SCHEME]: The URL must be of scheme file
-TypeError: The URL must be of scheme file
-    at fileURLToPath (node:internal/url:1395:11)
-    at Object.onSetup (file:///E:/Object/layaframe3/bin/js/bundles/bundle.scene.js:73:80)
-    at v.callPlugin (file:///C:/Program%20Files/LayaAirIDE/resources/app.asar/game.js:2:1108117)
-    at async v.setup (file:///C:/Program%20Files/LayaAirIDE/resources/app.asar/game.js:2:1090484)
-    at async v.run (file:///C:/Program%20Files/LayaAirIDE/resources/app.asar/game.js:2:1089460)
-[2026-06-15 17:45:48][info] Build end, result=Failed
+[2026-06-16 10:51:48][info] Start build web, destPath=E:\Object\layaframe3/release/web
+[2026-06-16 10:51:48][info] 正在初始化
+[2026-06-16 10:51:48][info] Run .onSetup
+[2026-06-16 10:51:48][info] 正在清理旧数据
+[2026-06-16 10:51:48][info] 开始构建
+[2026-06-16 10:51:48][info] 正在准备资源
+[2026-06-16 10:51:48][info] ExportAssetTool: 36 assets to parse
+[2026-06-16 10:51:48][info] ExportAssetTool: 31 assets to parse
+[2026-06-16 10:51:48][info] 正在导出资源
+[2026-06-16 10:51:48][info] ExportAssetTool: 68 items to write
+[2026-06-16 10:51:48][info] ExportAssetTool: Create internal/UI/comp.atlas, 30 images.
+[2026-06-16 10:51:48][info] ExportAssetTool: Created internal/UI/comp.atlas
+[2026-06-16 10:51:48][info] 正在编译和打包脚本
+[2026-06-16 10:51:58][info] 正在拷贝文件
+[2026-06-16 10:51:58][info] 正在创建清单文件
+[2026-06-16 10:51:58][info] Run .onCreateManifest
+[2026-06-16 10:51:58][warn] splash image missing: assets/resources/layaAir.png
+[2026-06-16 10:51:58][info] 正在创建包
+[2026-06-16 10:51:58][info] 正在结束构建
+[2026-06-16 10:51:58][info] Cleanup cache
+[2026-06-16 10:51:58][info] Build end, result=Success

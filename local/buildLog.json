@@ -4,8 +4,21 @@
       "name": "微信小游戏 | 试玩广告",
       "platform": "wxgame",
       "path": "E:\\Object\\layaframe3/release/wxgame",
-      "time": 1781517426795,
+      "time": 1781578492938,
       "logFile": "wxgame-4a4aecf9e75f9111004782f75f8502fc.log",
+      "success": true
+    },
+    {
+      "name": "Web",
+      "platform": "web",
+      "path": "E:\\Object\\layaframe3/release/web",
+      "runHandler": {
+        "serve": "",
+        "open": "",
+        "QRCode": ""
+      },
+      "time": 1781578318746,
+      "logFile": "web-607b580422d1c2fb9ddafd79ef2e1e9c.log",
       "success": true
     },
     {

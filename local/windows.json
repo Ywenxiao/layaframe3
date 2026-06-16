@@ -14,9 +14,10 @@
       "x": 306,
       "y": 195,
       "files": [
-        "?.ls"
+        "?.ls",
+        "2e4f39e7-3097-41a5-9423-e5da861d4447"
       ],
-      "active": 0,
+      "active": 1,
       "name": "sceneEditor"
     }
   ]

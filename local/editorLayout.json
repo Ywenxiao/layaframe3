@@ -2,7 +2,7 @@
   "default": {
     "width": 1916,
     "height": 935,
-    "id": "vcwnY0cL",
+    "id": "0kFAtHAV",
     "layout": 1,
     "children": [
       {
@@ -66,7 +66,7 @@
                             "width": 1091,
                             "height": 565,
                             "id": "7eatv6px",
-                            "selected": 4,
+                            "selected": 3,
                             "children": [
                               "ScenePanel",
                               "GamePanel",
@@ -119,33 +119,33 @@
     "popups": [
       {
         "width": 554,
-        "height": 625,
-        "id": "DG2WgeC6",
+        "height": 624,
+        "id": "duNeTbWN",
         "selected": 0,
         "children": [
           "PreferencesPanel"
         ],
-        "x": 571,
+        "x": 572,
         "y": 251,
-        "show": false
+        "show": true
       },
       {
         "width": 628,
-        "height": 473,
-        "id": "edxhLn0T",
-        "selected": 1,
+        "height": 472,
+        "id": "CuCBnEgG",
+        "selected": 0,
         "children": [
           "BuildSettingsPanel",
           "BuildTasksPanel"
         ],
-        "x": 642,
+        "x": 643,
         "y": 249,
         "show": false
       },
       {
         "width": 802,
         "height": 607,
-        "id": "0sOpN4pB",
+        "id": "432DqoNc",
         "selected": 0,
         "children": [
           "PackageManagerPanel"

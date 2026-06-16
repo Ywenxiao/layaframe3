@@ -1,6 +1,18 @@
 {
   "name": "LayaProject1",
-  "startupScene": "res://b02c85ab-1469-4087-80bb-ffe299291174",
+  "minifyJS": true,
+  "sourcemap": true,
+  "alwaysIncluded": [
+    "view",
+    "cdn"
+  ],
+  "excludeFilesRule": [],
+  "enableVersion": true,
+  "enableSubpackages": true,
+  "subpackages": [],
+  "web": {
+    "useSafeFileExtensions": true
+  },
   "android": {
     "packResources": false,
     "dcc": {

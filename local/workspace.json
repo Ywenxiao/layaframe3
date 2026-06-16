@@ -16,8 +16,8 @@
   "ProjectPanel": {
     "expandedNodes": [
       "",
-      "view",
-      "view/loading",
+      "resources",
+      "resources/apk",
       "../src"
     ],
     "twoColumn": false,
@@ -29,10 +29,10 @@
     "collapse": true
   },
   "BuildSettingsPanel": {
-    "platform": "wxgame"
+    "platform": "web"
   },
   "ProjectSettingsPanel": {
-    "catalog": "CompilerSettings"
+    "catalog": "McpServerSettings"
   },
   "SelectResourceDialog": {
     "iconScale": 0,
@@ -51,5 +51,7 @@
   "y": {},
   "playButtonBehavior": "startup",
   "playUsingHttps": false,
-  "S": {}
+  "S": {},
+  "x": {},
+  "SelectFolderDialog": {}
 }
