@@ -715,6 +715,7 @@ declare namespace gui {
         private updateTransform;
         clearBackgroundStyle(): void;
         static addStyles(doc: Document): void;
+        static getStyles(): string;
     }
     const defaultInputPadding: Array<number>;
     type EventType = "pointer_down" | "pointer_up" | "pointer_move" | "click" | "right_click" | "roll_over" | "roll_out" | "mouse_wheel" | "key_down" | "key_up" | "added_to_stage" | "removed_from_stage" | "pos_changed" | "size_changed" | "content_size_changed" | "controllers_changed" | "changed" | "focus_in" | "focus_out" | "drag_start" | "drag_move" | "drag_end" | "drop" | "native_dragstart" | "native_dragover" | "native_dragend" | "native_dragleave" | "native_drop" | "scroll" | "scroll_end" | "pull_down_release" | "pull_up_release" | "click_item" | "click_link" | "submit" | "play_end" | "gear_stop" | "popup" | "loaded" | "instance_reload";
@@ -1200,6 +1201,7 @@ declare namespace gui {
         static AWAKED: number;
         static ENABLED: number;
         static OBSOLUTE: number;
+        static ALWASY_EMIT_MOUSE_MOVE_EVENT: number;
         static ESCAPE_LAYOUT: number;
         static DISABLE_CLIPPING: number;
         static FORCE_HIDDEN: number;
@@ -1422,6 +1424,7 @@ declare namespace gui {
         private _modalWaitPane;
         private _inputMgr;
         private _popupMgr;
+        private _margin;
         static get inst(): GRoot;
         static getInst(w: Widget): GRoot;
         constructor(ownerWindow: globalThis.Window);
@@ -1431,6 +1434,9 @@ declare namespace gui {
         get pointerPos(): Vec2;
         getPointerPos(pointerId?: number, out?: Vec2): Vec2;
         get popupMgr(): PopupManager;
+        get margin(): number[];
+        set margin(value: number[]);
+        private onWinResize;
         showWindow(win: Window): void;
         hideWindow(win: Window): void;
         hideWindowImmediately(win: Window): void;
@@ -1951,6 +1957,8 @@ declare namespace gui {
         get viewWidth(): number;
         get viewHeight(): number;
         setViewSize(width: number, height: number): void;
+        get _extraPaddingX(): number;
+        get _extraPaddingY(): number;
         get pageX(): number;
         set pageX(value: number);
         get pageY(): number;
@@ -2328,6 +2336,7 @@ declare namespace gui {
         _giveHeight: number;
         sourceWidth: number;
         sourceHeight: number;
+        static findOwnerWidget(element: HTMLElement): Widget;
         constructor();
         get id(): string;
         get name(): string;
@@ -2468,6 +2477,7 @@ declare namespace gui {
         get numChildren(): number;
         get parent(): Widget;
         findRoot(): GRoot;
+        findParent(): Widget;
         isAncestorOf(child: Widget): boolean;
         private prepareActiveChangeList;
         _processActive(active: boolean, fromSetter?: boolean): void;
@@ -2662,6 +2672,7 @@ declare namespace gui {
          * dir正数表示右移或者下移，负数表示左移或者上移
          */
         getSnappingPosition(xValue: number, yValue: number, xDir: number, yDir: number, resultPoint?: Vec2): Vec2;
+        calculateFitSize(childCount?: number, minSize?: number): number;
         resizeToFit(childCount?: number, minSize?: number): void;
         setChangedFlag(reason?: LayoutChangedReason): void;
         refresh(force?: boolean): void;
@@ -2712,6 +2723,8 @@ declare namespace gui {
         set columnGap(value: number);
         get padding(): Array<number>;
         set padding(value: Array<number>);
+        private getPaddingX;
+        private getPaddingY;
         get align(): AlignType;
         set align(value: AlignType);
         get valign(): VAlignType;
@@ -2741,6 +2754,7 @@ declare namespace gui {
         get contentWidth(): number;
         get contentHeight(): number;
         setContentSize(aw: number, ah: number): void;
+        calculateFitSize(childCount?: number, minSize?: number): number;
         resizeToFit(childCount?: number, minSize?: number): void;
         protected applyNone(): void;
         private applyFlowX;

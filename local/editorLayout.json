@@ -1,31 +1,31 @@
 {
   "default": {
     "width": 1916,
-    "height": 935,
-    "id": "SuhbET2h",
+    "height": 953,
+    "id": "LWruYb9S",
     "layout": 1,
     "children": [
       {
         "width": 1916,
-        "height": 935,
+        "height": 953,
         "id": "OMNVdDuX",
         "layout": 2,
         "children": [
           {
             "width": 1916,
-            "height": 935,
+            "height": 953,
             "id": "kxI_pBKk",
             "layout": 1,
             "children": [
               {
                 "width": 289,
-                "height": 935,
+                "height": 953,
                 "id": "7qp8mq2g",
                 "layout": 2,
                 "children": [
                   {
                     "width": 289,
-                    "height": 469,
+                    "height": 478,
                     "id": "7yjnpdum",
                     "selected": 0,
                     "children": [
@@ -34,7 +34,7 @@
                   },
                   {
                     "width": 289,
-                    "height": 462,
+                    "height": 471,
                     "id": "7q7fz5d1",
                     "selected": 0,
                     "children": [
@@ -46,25 +46,25 @@
               },
               {
                 "width": 1091,
-                "height": 935,
+                "height": 953,
                 "id": "bXVBGBox",
                 "layout": 2,
                 "children": [
                   {
                     "width": 1091,
-                    "height": 635,
+                    "height": 644,
                     "id": "Ug2tk3sB",
                     "layout": 1,
                     "children": [
                       {
                         "width": 1091,
-                        "height": 635,
+                        "height": 644,
                         "id": "zkG3Xl1D",
                         "layout": 2,
                         "children": [
                           {
                             "width": 1091,
-                            "height": 635,
+                            "height": 644,
                             "id": "7eatv6px",
                             "selected": 0,
                             "children": [
@@ -81,7 +81,7 @@
                   },
                   {
                     "width": 1091,
-                    "height": 296,
+                    "height": 305,
                     "id": "cTIBtkMA",
                     "selected": 0,
                     "children": [
@@ -95,13 +95,13 @@
               },
               {
                 "width": 528,
-                "height": 935,
+                "height": 953,
                 "id": "0lqhnpck",
                 "layout": 2,
                 "children": [
                   {
                     "width": 528,
-                    "height": 935,
+                    "height": 953,
                     "id": "7i01d2q9",
                     "selected": 0,
                     "children": [
@@ -120,7 +120,7 @@
       {
         "width": 554,
         "height": 623,
-        "id": "VZZnDz4L",
+        "id": "Dfmprb05",
         "selected": 0,
         "children": [
           "PreferencesPanel"
@@ -132,7 +132,7 @@
       {
         "width": 628,
         "height": 470,
-        "id": "C13ElsmD",
+        "id": "xVDD8m7i",
         "selected": 1,
         "children": [
           "BuildSettingsPanel",
@@ -145,7 +145,7 @@
       {
         "width": 802,
         "height": 607,
-        "id": "f-HAkSKG",
+        "id": "Ks8EL9TI",
         "selected": 0,
         "children": [
           "PackageManagerPanel"
