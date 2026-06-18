@@ -28,4 +28,8 @@ function build() {
     return import("./tools/utils.js").then(({ runIDEbyScript }) => runIDEbyScript(projectPath, "build_script", platform));
 }
 
-export { complete, build };
+function genui() {
+    return import("./tools/genUI.js").then(({ genUIDefine }) => genUIDefine());
+}
+
+export { complete, build, genui };

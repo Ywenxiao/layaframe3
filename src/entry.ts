@@ -3,6 +3,7 @@ import { conf } from "./core/conf";
 import { GET } from "./core/Context";
 import { UILayer, UIManager } from "./core/UIManage";
 import { Game } from "./game";
+import { UIDefine } from "./patch/UIDefine";
 
 Laya.addBeforeInitCallback((stageConfig) => {
     Laya.Config.isAntialias = true;
@@ -18,6 +19,6 @@ Laya.addAfterInitCallback(() => {
 
 export function main() {
     console.log("Game start");
-    GET(UIManager).CreateUI("view/loading/loading.lh", { type: "view", layer: UILayer.DialogTop });
+    GET(UIManager).CreateUI(UIDefine.loading, { type: "view", layer: UILayer.DialogTop });
 }
 
