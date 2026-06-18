@@ -19,11 +19,5 @@ Laya.addAfterInitCallback(() => {
 export function main() {
     console.log("Game start");
     GET(UIManager).CreateUI("view/loading/loading.lh", { type: "view", layer: UILayer.DialogTop });
-
-    // Game.I.UI.CreateUI("view/loading/loading.lh", {
-    //     type: "item",
-    //     layer: UILayer.DialogTop
-    // });
-    // Laya.Scene.open("scene/login/loading.ls");
 }
 

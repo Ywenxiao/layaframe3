@@ -156,6 +156,10 @@ export function UNINJECT(classConstructor?: InjectClass) {
     }
 }
 
+export function DISPATCH(event: keyof IContext, ...args: any[]) {
+    Context.instance.dispatch(event, ...args);
+}
+
 function getGID(classConstructor: InjectClass): number {
     let id = classConstructor["$__ID"];
     if (id === undefined || id === null) {

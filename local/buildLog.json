@@ -1,10 +1,18 @@
 {
   "logs": [
     {
+      "name": "抖音小游戏 | 试玩广告",
+      "platform": "bytedancegame",
+      "path": "E:\\Object\\layaframe3/release/bytedancegame",
+      "time": 1781598607713,
+      "logFile": "bytedancegame-411ab7152af62e59b04bd32b3e4fc9de.log",
+      "success": true
+    },
+    {
       "name": "微信小游戏 | 试玩广告",
       "platform": "wxgame",
       "path": "E:\\Object\\layaframe3/release/wxgame",
-      "time": 1781578492938,
+      "time": 1781581644706,
       "logFile": "wxgame-4a4aecf9e75f9111004782f75f8502fc.log",
       "success": true
     },

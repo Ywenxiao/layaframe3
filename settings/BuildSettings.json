@@ -33,6 +33,9 @@
   "wxgame": {
     "appid": "1"
   },
+  "bytedancegame": {
+    "appid": "1"
+  },
   "harmony": {
     "dcc": {
       "enable": true,

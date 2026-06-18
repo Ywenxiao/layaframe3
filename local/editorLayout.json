@@ -2,7 +2,7 @@
   "default": {
     "width": 1916,
     "height": 935,
-    "id": "0kFAtHAV",
+    "id": "SuhbET2h",
     "layout": 1,
     "children": [
       {
@@ -52,21 +52,21 @@
                 "children": [
                   {
                     "width": 1091,
-                    "height": 565,
+                    "height": 635,
                     "id": "Ug2tk3sB",
                     "layout": 1,
                     "children": [
                       {
                         "width": 1091,
-                        "height": 565,
+                        "height": 635,
                         "id": "zkG3Xl1D",
                         "layout": 2,
                         "children": [
                           {
                             "width": 1091,
-                            "height": 565,
+                            "height": 635,
                             "id": "7eatv6px",
-                            "selected": 3,
+                            "selected": 0,
                             "children": [
                               "ScenePanel",
                               "GamePanel",
@@ -81,7 +81,7 @@
                   },
                   {
                     "width": 1091,
-                    "height": 366,
+                    "height": 296,
                     "id": "cTIBtkMA",
                     "selected": 0,
                     "children": [
@@ -119,33 +119,33 @@
     "popups": [
       {
         "width": 554,
-        "height": 624,
-        "id": "duNeTbWN",
+        "height": 623,
+        "id": "VZZnDz4L",
         "selected": 0,
         "children": [
           "PreferencesPanel"
         ],
-        "x": 572,
+        "x": 573,
         "y": 251,
-        "show": true
+        "show": false
       },
       {
         "width": 628,
-        "height": 472,
-        "id": "CuCBnEgG",
-        "selected": 0,
+        "height": 470,
+        "id": "C13ElsmD",
+        "selected": 1,
         "children": [
           "BuildSettingsPanel",
           "BuildTasksPanel"
         ],
-        "x": 643,
-        "y": 249,
+        "x": 579,
+        "y": 314,
         "show": false
       },
       {
         "width": 802,
         "height": 607,
-        "id": "432DqoNc",
+        "id": "f-HAkSKG",
         "selected": 0,
         "children": [
           "PackageManagerPanel"

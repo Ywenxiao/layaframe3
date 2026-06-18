@@ -22,7 +22,7 @@
       "_$type": "GImage",
       "name": "img_1",
       "x": 12,
-      "y": 256,
+      "y": 161,
       "width": 726,
       "height": 282,
       "relations": [
@@ -92,7 +92,8 @@
       "bold": true,
       "align": "center",
       "wordWrap": true,
-      "leading": 4
+      "leading": 4,
+      "letterSpacing": 0
     },
     {
       "_$id": "mrsl018o",

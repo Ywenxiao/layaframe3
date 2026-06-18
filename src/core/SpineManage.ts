@@ -1,5 +1,6 @@
 import { INJECT } from "./Context";
 import { ContextType } from "./DefineTypes";
+import LogMgr from "./LogMgr";
 
 export type spineTemp = Laya.SpineTemplet;
 
@@ -78,6 +79,8 @@ interface ISpineOption {
     /**缩放 */
     scale?: number;
 
+    /**锚点 */
+    anchor?: Laya.Vector2;
 }
 
 export class SpineItem extends Laya.SpineSkeleton {
@@ -87,6 +90,7 @@ export class SpineItem extends Laya.SpineSkeleton {
     private _option: ISpineOption = null;
     private _autoPause: boolean = true;
     private _active: boolean = false;
+    private _anchor: Laya.Vector2 = null;
 
     constructor(public readonly spinePath: string, tp?: spineTemp) {
         super();
@@ -101,12 +105,6 @@ export class SpineItem extends Laya.SpineSkeleton {
         }
         this.templet = tp;
         this._spItem = this["_spineComponent"];
-
-
-        // if (this._spItem) {
-        //     this._spItem.destroy();
-        //     console.error("spine重复创建:", this.spinePath);
-        // }
 
         if (this._act === null || typeof this._act === "undefined") {
             return;
@@ -127,9 +125,10 @@ export class SpineItem extends Laya.SpineSkeleton {
 
         act = act || 0;
 
-        if (!this._spItem) {
+        if (!this._spItem || !this.templet) {
             this._act = act;
             this._option = option;
+            this._anchor = option?.anchor ? new Laya.Vector2(option.anchor.x, option.anchor.y) : null;
             return;
         }
 
@@ -140,11 +139,22 @@ export class SpineItem extends Laya.SpineSkeleton {
         const end = option.end || 0;
         const scale = option.scale || 1;
 
+        let width = this.templet.width, height = this.templet.height;
+        if (width < 1) width = 100;
+        if (height < 1) height = 100;
+
+        this.width = Math.round(width);
+        this.height = Math.round(height);
+        if (this._anchor) {
+            this.anchor(this._anchor.x, this._anchor.y);
+        } else {
+            this.pivot(Math.round(this.templet.offsetX), Math.round(this.templet.offsetY));
+        }
+
         this.scale(scale, scale);
         this.play(act, loop, force, start, end, false, false);
         this.event(Laya.Event.START);
         option.onStart && option.onStart();
-
 
         if (loop || !option.call) {
             return;
@@ -166,13 +176,10 @@ export class SpineItem extends Laya.SpineSkeleton {
 
     stop() {
         this._act = this._option = null;
-
-        if (!this.destroyed) {
-            super.stop();
-            this.event(Laya.Event.STOPPED);
-        }
+        super.stop();
     }
 
+    //TODO 未验证
     stopByTime(time: number) {
         let item = this._spItem;
         if (!item || this.destroyed) {
@@ -180,12 +187,6 @@ export class SpineItem extends Laya.SpineSkeleton {
         }
 
         this.currentTime = time;
-        // if (item instanceof Laya.SpineSkeleton) {
-        //     item.currentTime = time;
-        // } else if (item instanceof Laya.Skeleton) {
-        //     throw "stopByTime not support Skeleton";
-        // }
-
         this.stop();
     }
 
@@ -231,12 +232,6 @@ export class SpineItem extends Laya.SpineSkeleton {
 
         this.event(Laya.Event.END);
         this.stop();
-        // let item = this._spItem;
-
-        // if (item) {
-        //     item.stop();
-        // }
-
         this._spItem = null;
         this._act = null;
         this._option = null;
@@ -262,6 +257,7 @@ export class SpineItem extends Laya.SpineSkeleton {
     }
 
     private onRemove() {
+
         this._autoPause && this.paused();
     }
 
@@ -358,9 +354,7 @@ export class Spinemanage {
         const useCache = option.useCache !== false;
         const remove = option.remove !== false;
         const clearOldSpine = !!option.clearOldSpine;
-        // const olderIndex = option.olderIndex || 0;
-        const x = option.x || 0;
-        const y = option.y || 0;
+        const x = option.x ?? 0, y = option.y ?? 0;
 
         let sp = parent.getChildByName(name) as SpineItem;
 
@@ -369,7 +363,7 @@ export class Spinemanage {
 
         } else if (!(sp instanceof SpineItem)) {
             //有其它同名节点
-            throw "repetition node:" + url;
+            throw new Error("repetition node:" + url);
 
         } else if (clearOldSpine) {
             //清理旧spine
@@ -389,7 +383,7 @@ export class Spinemanage {
 
         }
 
-        sp.alpha = 1;
+
         if (remove) {
             let call = option.call;
             option.call = () => {
@@ -406,12 +400,10 @@ export class Spinemanage {
             parent.addChild(sp);
         }
 
-        // option.olderIndex != null ? parent.addChildAt(sp, option.olderIndex) : parent.addChild(sp);
-        // sp.zOrder = olderIndex;
-        // parent.addChild(sp);
         sp.name = name;
-        sp.pos(x, y);
+        sp.alpha = 1;
         sp.setActive(true);
+        sp.pos(x, y);
         sp.tryPlay(option.act, option);
 
         return sp;
@@ -679,5 +671,5 @@ export class Spinemanage {
 }
 
 function log(...str: any[]) {
-    // LogMgr.log("[--Spine--]", ...str);
+    LogMgr.log("[--Spine--]", ...str);
 }

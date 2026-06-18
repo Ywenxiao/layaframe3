@@ -31,9 +31,9 @@ export class loading extends loadingBase implements IView {
         GET(Spinemanage).showAnim(apk.resLocal() + "apk/qijigongchang.skel", {
             parent: this,
             x: this.width >> 1,
-            y: this.height * 0.3,
+            y: this.height + 100,
             olderIndex: 1,
-            scale: 1
+            anchor: Laya.Vector2.TEMP.setValue(0.5, 1),
         })
     }
 
