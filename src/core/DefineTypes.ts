@@ -28,3 +28,7 @@ export enum ContextType {
     /**系统，全局存在不会卸载的 */
     SYSTEM = 3,
 }
+
+export function isNil(v) {
+    return v === null || v === undefined;
+}

@@ -1,5 +1,5 @@
 import apk from "./apk";
-import { INJECT, type Context } from "./Context";
+import { WITHCONTEXT, INJECT } from "./Context";
 import { ContextType } from "./DefineTypes";
 
 type constructorView<T = IView> = new (...args: any[]) => T;
@@ -227,7 +227,7 @@ export class UILayer {
  * UI管理脚本，管理所有使用CreateUI打开的UI的生命周期,用此脚本创建的ui会自动销毁并清理UI带的资源
  */
 @INJECT(ContextType.SYSTEM, false)
-export class UIManager extends Laya.EventDispatcher {
+export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
 
     /**UI关闭事件 */
     public readonly CLOSE_OPEN = "ON_CLOSE";
@@ -252,8 +252,6 @@ export class UIManager extends Laya.EventDispatcher {
 
     //当前顶层UI
     private currTopView: number;
-
-    private context: Context;
 
     constructor() {
         super();

@@ -1,4 +1,6 @@
 import { UIUtils } from "../utils/UIUtils";
+import { INJECT } from "./Context";
+import { ContextType } from "./DefineTypes";
 
 /**
  * 红点事件/委托
@@ -106,6 +108,7 @@ export class BadgeView {
     }
 }
 
+@INJECT(ContextType.SYSTEM, false)
 export class BadgeManage {
 
     /**节点池 */

@@ -1,4 +1,4 @@
-import { INJECT } from "./Context";
+import { INJECT, Injectable } from "./Context";
 import { ContextType } from "./DefineTypes";
 import LogMgr from "./LogMgr";
 
@@ -268,7 +268,7 @@ export class SpineItem extends Laya.SpineSkeleton {
 }
 
 @INJECT(ContextType.SYSTEM, false)
-export class Spinemanage {
+export class Spinemanage extends Injectable {
 
     /**spine资源 */
     private spMap: Map<string, spineTemp | Promise<spineTemp>> = new Map<string, spineTemp | Promise<spineTemp>>();
@@ -286,6 +286,7 @@ export class Spinemanage {
     private oldDisposeTime: number = 0;
 
     constructor() {
+        super();
         this.oldDisposeTime = Date.now();
     }
 

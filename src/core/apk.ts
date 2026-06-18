@@ -94,10 +94,14 @@ export default class apk {
         }
         Laya.LocalStorage.removeItem(name);
     }
+
+    
     public static setJsonItem(name: string, value: object): void {
         var str: string = JSON.stringify(value);
         apk.setItem(name, str);
     }
+
+
     public static getJsonItem(name: string): any {
         var data = apk.getItem(name);
         if (typeof (data) != typeof ("str"))

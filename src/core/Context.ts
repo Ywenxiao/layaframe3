@@ -1,7 +1,11 @@
-import { ContextType, IContext } from "./DefineTypes";
+import { ContextType, IContext, isNil } from "./DefineTypes";
 import LogMgr from "./LogMgr";
 
-type InjectClass<T = any> = new () => T;
+// type InjectClass<T = any> = new () => T;
+
+type InjectClass<T = {}> = new (...args: any[]) => T;
+
+type Constructor<T = {}> = new (...args: any[]) => T;
 
 interface InjectorInfo {
 
@@ -14,6 +18,11 @@ interface InjectorInfo {
     active: boolean;
 }
 
+
+/**注入类继承此基类，可在内部获得 this.context 的类型提示 */
+export abstract class Injectable {
+    readonly context!: Context;
+}
 
 export class Context extends Laya.EventDispatcher {
 
@@ -69,7 +78,7 @@ export class Context extends Laya.EventDispatcher {
 
 
     //获取实例
-    get<T>(classConstructor: InjectClass<T>): T {
+    get<T>(classConstructor: InjectClass<T>): T & { readonly context: Context } {
         const id = getGID(classConstructor);
         const element = this.injectMap.get(id);
         if (!element) {
@@ -142,7 +151,7 @@ export function INJECT(type: ContextType, lazy: boolean = true): ClassDecorator 
     return function (target: any) { Context.instance.inject(target, type, lazy); };
 }
 
-export function GET<T>(c: InjectClass<T>): T {
+export function GET<T>(c: InjectClass<T>): T & { readonly context: Context } {
 
     return Context.instance.get(c);
 }
@@ -158,6 +167,19 @@ export function UNINJECT(classConstructor?: InjectClass) {
 
 export function DISPATCH(event: keyof IContext, ...args: any[]) {
     Context.instance.dispatch(event, ...args);
+}
+
+
+export function WITHCONTEXT<TBase extends Constructor>(Base: TBase): new (...args: ConstructorParameters<TBase>) => InstanceType<TBase> & { readonly context: Context };
+export function WITHCONTEXT(): typeof Injectable;
+export function WITHCONTEXT(Base?: any) {
+    if (isNil(Base)) return Injectable;
+    
+    class ContextInject extends Base {
+        readonly context!: Context;
+    }
+
+    return ContextInject;
 }
 
 function getGID(classConstructor: InjectClass): number {
