@@ -1,7 +1,6 @@
 import { writeFile } from "fs/promises";
 import path from "path";
-import { fileURLToPath } from "url"
-
+import { fileURLToPath } from "url";
 
 @IEditorEnv.regClass()
 class build_script {
@@ -13,11 +12,11 @@ class build_script {
                 onSetup(task) {
                     // let json = JSON.stringify(task);
                     let json = String(task.name);
-                    let dir = path.dirname(fileURLToPath(__dirname));
+                    // let dir = path.dirname(fileURLToPath(import.meta.url));
 
-                    return writeFile(path.join(dir, "build.json"), json).then(() => {
-                        return void 0;
-                    });
+                    // return writeFile(path.join(dir, "build.json"), json).then(() => {
+                    //     return void 0;
+                    // });
                 }
             })
             .waitForCompletion();
@@ -25,12 +24,17 @@ class build_script {
 
     // 构建微信小游戏
     static async buildWxgame() {
-        return IEditorEnv.BuildTask.start("wxgame").waitForCompletion();
+        let project_path = path.join(__dirname, '../../release');
+        return IEditorEnv.BuildTask.start("wxgame", {
+            onStart(task) {
+                task.logger.log("开始构建微信小游戏");
+            },
+        }).waitForCompletion();
     }
 
     // 构建抖音小游戏
     static async buildBytedancegame() {
-        return IEditorEnv.BuildTask.start("bytedancegame").waitForCompletion();
+        return IEditorEnv.BuildTask.start("bytedancegame",).waitForCompletion();
     }
 
     // 构建oppo小游戏

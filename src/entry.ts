@@ -1,8 +1,6 @@
 import apk from "./core/apk";
-import { conf } from "./core/conf";
 import { GET } from "./core/Context";
 import { UILayer, UIManager } from "./core/UIManage";
-import { Game } from "./game";
 import { UIDefine } from "./patch/UIDefine";
 
 Laya.addBeforeInitCallback((stageConfig) => {

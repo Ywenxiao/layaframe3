@@ -2,13 +2,10 @@
   "name": "LayaProject1",
   "minifyJS": true,
   "sourcemap": true,
-  "alwaysIncluded": [
-    "view",
-    "cdn"
-  ],
+  "alwaysIncluded": [],
   "excludeFilesRule": [],
-  "enableVersion": true,
-  "enableSubpackages": true,
+  "enableRemoteMainPackage": true,
+  "mainPackageRemoteUrl": "http://localhost:8001/",
   "subpackages": [],
   "web": {
     "useSafeFileExtensions": true

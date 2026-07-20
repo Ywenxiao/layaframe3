@@ -1,0 +1,9 @@
+{
+  "file_scan_exclusions": [
+    "**/.DS_Store",
+    "**/*.meta",
+    "library/",
+    "temp/",
+    "local/",
+  ],
+}

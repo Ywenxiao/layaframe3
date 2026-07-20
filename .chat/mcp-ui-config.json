@@ -12,16 +12,16 @@
     }
   },
   "server": {
-    "running": true,
-    "status": "running",
+    "running": false,
+    "status": "stopped",
     "port": 18188,
-    "autoStart": true,
+    "autoStart": false,
     "url": "http://127.0.0.1:18188/ai/mcp"
   },
   "setup": {
     "token": "layamcp-b9547fc9-c823-43cc-8ddc-99951da5e03d",
     "selectedIdeForPreview": "cursor",
-    "apiVersion": "v3.3.11"
+    "apiVersion": "v3.4.0"
   },
   "ides": [
     {
@@ -46,7 +46,7 @@
       "isInstalled": true,
       "isConfigured": true,
       "isRuleSaved": true,
-      "selected": true
+      "selected": false
     },
     {
       "id": "trae",

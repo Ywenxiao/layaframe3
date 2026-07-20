@@ -1,3 +1,3 @@
-export namespace utils {
-  
+export class utils {
+
 }

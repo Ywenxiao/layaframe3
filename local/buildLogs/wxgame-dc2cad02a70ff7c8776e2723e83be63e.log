@@ -1,0 +1,21 @@
+[2026-06-22 13:36:27][info] Start build wxgame, destPath=C:\Program Files\LayaAirIDE\release
+[2026-06-22 13:36:27][info] Initializing
+[2026-06-22 13:36:27][info] Run .onSetup
+[2026-06-22 13:36:27][info] Cleaning up old data
+[2026-06-22 13:36:27][warn] An error occurred while cleaning up old files Error: EPERM: operation not permitted, mkdir 'C:\Program Files\LayaAirIDE\release'
+[2026-06-22 13:36:27][info] Starting
+[2026-06-22 13:36:27][info] Run Object.onStart
+[2026-06-22 13:36:27][info] 开始构建微信小游戏
+[2026-06-22 13:36:27][info] Preparing assets
+[2026-06-22 13:36:27][info] ExportAssetTool: 36 assets to parse
+[2026-06-22 13:36:27][info] ExportAssetTool: 31 assets to parse
+[2026-06-22 13:36:27][info] Exporting assets
+[2026-06-22 13:36:27][info] ExportAssetTool: 68 items to write
+[2026-06-22 13:36:27][error] Error: EPERM: operation not permitted, mkdir 'C:\Program Files\LayaAirIDE\release\resources\apk'
+Error: EPERM: operation not permitted, mkdir 'C:\Program Files\LayaAirIDE\release\resources\apk'
+    at mkdirSync (node:fs:1370:26)
+    at t.mkdirSync (node:electron/js2c/node_init:2:17237)
+    at n.ExportAssetTool.write (file:///C:/Program%20Files/LayaAirIDE/resources/app.asar/game.js:2:1046029)
+    at N.exportAssets (file:///C:/Program%20Files/LayaAirIDE/resources/app.asar/game.js:2:1028796)
+    at async N.run (file:///C:/Program%20Files/LayaAirIDE/resources/app.asar/game.js:2:1018613)
+[2026-06-22 13:36:27][info] Build end, result=Failed

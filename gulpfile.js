@@ -14,7 +14,7 @@ const argv = minimist(process.argv.slice(2), {
     }
 });
 
-const { platform } = argv;
+let { platform } = argv;
 
 const projectPath = path.dirname(fileURLToPath(import.meta.url));
 
@@ -32,4 +32,9 @@ function genui() {
     return import("./tools/genUI.js").then(({ genUIDefine }) => genUIDefine());
 }
 
-export { complete, build, genui };
+function buildany() {
+    platform = "buildWxgame";
+    return build();
+}
+
+export { complete, buildany as build, genui };
