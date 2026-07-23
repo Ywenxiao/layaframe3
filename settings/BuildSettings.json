@@ -1,6 +1,6 @@
 {
   "name": "LayaProject1",
-  "minifyJS": true,
+  "useCompressedEngine": false,
   "sourcemap": true,
   "alwaysIncluded": [],
   "excludeFilesRule": [],
