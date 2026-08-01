@@ -668,15 +668,15 @@ Zed 内置了常用 Vim 插件功能的等价实现：
 | `S{char}` (visual) | 用字符包围选中文本                       |
 
 > Visual 模式下需要自定义绑定：
->
-> ```json
-> {
->     "context": "vim_mode == visual",
->     "bindings": {
->         "shift-s": ["vim::PushOperator", { "AddSurrounds": {} }]
->     }
-> }
-> ```
+
+```json
+{
+    "context": "vim_mode == visual",
+    "bindings": {
+        "shift-s": ["vim::PushOperator", { "AddSurrounds": {} }]
+    }
+}
+```
 
 ### 15.2 Comment（vim-commentary）
 

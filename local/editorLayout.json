@@ -1,31 +1,31 @@
 {
   "default": {
-    "width": 1916,
-    "height": 953,
-    "id": "RHqqdTAK",
+    "width": 1955,
+    "height": 1031,
+    "id": "l3jQeKy6",
     "layout": 1,
     "children": [
       {
-        "width": 1916,
-        "height": 953,
+        "width": 1955,
+        "height": 1031,
         "id": "OMNVdDuX",
         "layout": 2,
         "children": [
           {
-            "width": 1916,
-            "height": 953,
+            "width": 1955,
+            "height": 1031,
             "id": "kxI_pBKk",
             "layout": 1,
             "children": [
               {
                 "width": 289,
-                "height": 953,
+                "height": 1031,
                 "id": "7qp8mq2g",
                 "layout": 2,
                 "children": [
                   {
                     "width": 289,
-                    "height": 478,
+                    "height": 517,
                     "id": "7yjnpdum",
                     "selected": 0,
                     "children": [
@@ -34,7 +34,7 @@
                   },
                   {
                     "width": 289,
-                    "height": 471,
+                    "height": 510,
                     "id": "7q7fz5d1",
                     "selected": 0,
                     "children": [
@@ -45,28 +45,28 @@
                 ]
               },
               {
-                "width": 1091,
-                "height": 953,
+                "width": 1130,
+                "height": 1031,
                 "id": "bXVBGBox",
                 "layout": 2,
                 "children": [
                   {
-                    "width": 1091,
-                    "height": 644,
+                    "width": 1130,
+                    "height": 683,
                     "id": "Ug2tk3sB",
                     "layout": 1,
                     "children": [
                       {
-                        "width": 1091,
-                        "height": 644,
+                        "width": 1130,
+                        "height": 683,
                         "id": "zkG3Xl1D",
                         "layout": 2,
                         "children": [
                           {
-                            "width": 1091,
-                            "height": 644,
+                            "width": 1130,
+                            "height": 683,
                             "id": "7eatv6px",
-                            "selected": 0,
+                            "selected": 1,
                             "children": [
                               "ScenePanel",
                               "GamePanel",
@@ -80,8 +80,8 @@
                     ]
                   },
                   {
-                    "width": 1091,
-                    "height": 305,
+                    "width": 1130,
+                    "height": 344,
                     "id": "cTIBtkMA",
                     "selected": 0,
                     "children": [
@@ -95,13 +95,13 @@
               },
               {
                 "width": 528,
-                "height": 953,
+                "height": 1031,
                 "id": "0lqhnpck",
                 "layout": 2,
                 "children": [
                   {
                     "width": 528,
-                    "height": 953,
+                    "height": 1031,
                     "id": "7i01d2q9",
                     "selected": 0,
                     "children": [
@@ -120,7 +120,7 @@
       {
         "width": 554,
         "height": 623,
-        "id": "EcpWCUnv",
+        "id": "jr6HrEFf",
         "selected": 0,
         "children": [
           "PreferencesPanel"
@@ -132,7 +132,7 @@
       {
         "width": 628,
         "height": 470,
-        "id": "vQauA7fc",
+        "id": "-qmasAKV",
         "selected": 1,
         "children": [
           "BuildSettingsPanel",
@@ -145,7 +145,7 @@
       {
         "width": 802,
         "height": 607,
-        "id": "Q_GWZ2NT",
+        "id": "A3NIBRB8",
         "selected": 0,
         "children": [
           "PackageManagerPanel"
