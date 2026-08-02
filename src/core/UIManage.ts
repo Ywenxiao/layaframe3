@@ -312,7 +312,7 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
         }
 
         view.zIndex = option.zIndex ?? 0;
-        view.zOrder = option.zOrder || 0;
+        view.zOrder = option.zOrder ?? 0;
 
         let parent = option.parent || this.getLayer(info.layer);
         parent.addChild(view);

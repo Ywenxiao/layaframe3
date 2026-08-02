@@ -5,7 +5,6 @@ import { conf } from "./conf";
 export default class apk {
     private static localData = {};
 
-
     static getApp(): IAppAdapter {
         return APP.getInst() as any;
     }
@@ -18,112 +17,116 @@ export default class apk {
 
         let check = Math.min(Laya.Browser.width, Laya.Browser.height) >= 768;
 
-        apk.isPad = function () { return check; }
+        apk.isPad = function () {
+            return check;
+        };
 
-        return check
+        return check;
     }
 
     // 固定高度 1334 适配:宽屏等比扩展,窄屏保持最小 750
     static getStageWidth() {
         if (!this.isPad()) return 750;
 
-        let w = Math.max(750, Math.round(1334 * Laya.Browser.width / Laya.Browser.height));
+        let w = Math.max(
+            750,
+            Math.round((1334 * Laya.Browser.width) / Laya.Browser.height),
+        );
 
-        apk.getStageWidth = function () { return w; }
+        apk.getStageWidth = function () {
+            return w;
+        };
 
         return w;
     }
 
-
-    public static getItem(name: string, def: any = null, useuid: boolean = true): string {
+    public static getItem(
+        name: string,
+        def: any = null,
+        useuid: boolean = true,
+    ): string {
         if (useuid) {
-            name = `${conf.getUID()}${name}`
+            name = `${conf.getUID()}${name}`;
         }
 
         if (apk.localData[name] != undefined) {
             return apk.localData[name];
         }
 
-        var app = apk.getApp();
-        if (app != null) {
-            if (app.getItem != null) {
-                var val: string = app.getItem(name);
-                if (val != null && val.length > 0) {
-                    apk.localData[name] = val;
-                    return val;
-                } else {
-                    apk.localData[name] = def;
-                    return def;
-                }
+        if (apk.getApp()?.getItem != null) {
+            var val: string = apk.getApp().getItem(name);
+            if (val != null && val.length > 0) {
+                apk.localData[name] = val;
+                return val;
+            } else {
+                apk.localData[name] = def;
+                return def;
             }
         }
         val = Laya.LocalStorage.getItem(name);
-        if (val != null && val.length > 0)
-            return val;
-        else
-            return def;
+        if (val != null && val.length > 0) return val;
+        else return def;
     }
-    public static setItem(name: string, value: string, useuid: boolean = true): void {
+
+    public static setItem(
+        name: string,
+        value: string,
+        useuid: boolean = true,
+    ): void {
         if (useuid) {
-            name = `${conf.getUID()}${name}`
+            name = `${conf.getUID()}${name}`;
         }
 
         apk.localData[name] = value;
-        var app = apk.getApp();
-        if (app != null) {
-            if (app.setItem != null) {
-                return app.setItem(name, value.toString());
-            }
+        if (apk.getApp()?.setItem != null) {
+            return apk.getApp().setItem(name, value.toString());
         }
         return Laya.LocalStorage.setItem(name, value.toString());
     }
-    public static delItem(name: string, useuid: boolean = true): void {
 
+    public static delItem(name: string, useuid: boolean = true): void {
         if (useuid) {
-            name = `${conf.getUID()}${name}`
+            name = `${conf.getUID()}${name}`;
         }
 
         apk.localData[name] = undefined;
-        var app = apk.getApp();
-        if (app != null) {
-            if (app.removeItem != null) {
-                return app.removeItem(name);
-            } else {
-                return apk.setItem(name, "");
-            }
+        if (apk.getApp()?.removeItem != null) {
+            apk.getApp().removeItem(name);
+        } else {
+            apk.setItem(name, "");
+            Laya.LocalStorage.removeItem(name);
         }
-        Laya.LocalStorage.removeItem(name);
     }
 
-    
     public static setJsonItem(name: string, value: object): void {
-        var str: string = JSON.stringify(value);
-        apk.setItem(name, str);
+        try {
+            var str: string = JSON.stringify(value);
+            apk.setItem(name, str);
+        } catch (e) {
+            apk.delItem(name);
+        }
     }
-
 
     public static getJsonItem(name: string): any {
         var data = apk.getItem(name);
-        if (typeof (data) != typeof ("str"))
-            return null;
-        if (data.indexOf("{") < 0)
-            return null;
+        if (typeof data != typeof "str") return null;
+        if (data.indexOf("{") < 0) return null;
         return JSON.parse(data);
     }
 
-
-
     static resCDN() {
-        return "cdn/"
+        return "cdn/";
     }
 
     static resLocal() {
-        return "resources/"
+        return "resources/";
     }
 
     //是否是高性能模式，主要针对ios，开启后会有更激进的内存管理和更频繁的垃圾回收
     static isHightPerformanceMode(): boolean {
-        return apk.getApp()?.isIOSHighPerformanceMode?.() === true ? true : false;
+        return apk.getApp()?.isIOSHighPerformanceMode?.() === true
+            ? true
+            : false;
     }
 
     //是否需要激进的内存管理
@@ -164,7 +167,6 @@ export default class apk {
         // }
 
         //TODO
-        return "no_money_skin"
-
+        return "no_money_skin";
     }
 }

@@ -2,7 +2,7 @@
   "default": {
     "width": 1955,
     "height": 1031,
-    "id": "l3jQeKy6",
+    "id": "wQxMvWKh",
     "layout": 1,
     "children": [
       {
@@ -120,7 +120,7 @@
       {
         "width": 554,
         "height": 623,
-        "id": "jr6HrEFf",
+        "id": "spYVHPlu",
         "selected": 0,
         "children": [
           "PreferencesPanel"
@@ -132,7 +132,7 @@
       {
         "width": 628,
         "height": 470,
-        "id": "-qmasAKV",
+        "id": "vt-gYxq4",
         "selected": 1,
         "children": [
           "BuildSettingsPanel",
@@ -145,7 +145,7 @@
       {
         "width": 802,
         "height": 607,
-        "id": "A3NIBRB8",
+        "id": "AidKtdf7",
         "selected": 0,
         "children": [
           "PackageManagerPanel"
