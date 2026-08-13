@@ -1,10 +1,13 @@
 {
   "name": "LayaProject1",
-  "useCompressedEngine": false,
+  "minifyJS": true,
   "sourcemap": true,
+  "sourcesContent": true,
   "alwaysIncluded": [],
-  "excludeFilesRule": [],
-  "enableRemoteMainPackage": true,
+  "copyBinFiles": false,
+  "excludeFilesRule": [
+    ""
+  ],
   "mainPackageRemoteUrl": "http://localhost:8001/",
   "subpackages": [],
   "web": {
@@ -28,10 +31,12 @@
     "minSdkVersion": 27
   },
   "wxgame": {
-    "appid": "1"
+    "allowTextureCompressedFormat": false,
+    "keepTextureSourceFile": false,
+    "appid": "wx66c2b160f87374c0"
   },
   "bytedancegame": {
-    "appid": "1"
+    "appid": "wx66c2b160f87374c0"
   },
   "harmony": {
     "dcc": {

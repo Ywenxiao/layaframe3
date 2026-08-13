@@ -6,15 +6,7 @@
   },
   "modules": {
     "laya.ui": true,
-    "laya.spine": true,
-    "laya.particle": true,
-    "laya.trail2D": true,
-    "laya.line2D": true,
-    "laya.light2D": true,
-    "laya.device": true,
-    "laya.tilemap": true,
-    "laya.physics2D": true,
-    "laya.navMesh2D": true
+    "laya.spine": true
   },
   "addons": {
     "laya.ui": "ui2"

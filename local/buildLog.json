@@ -9,15 +9,15 @@
         "open": "",
         "QRCode": ""
       },
-      "time": 1784701177080,
+      "time": 1786620285321,
       "logFile": "web-607b580422d1c2fb9ddafd79ef2e1e9c.log",
       "success": true
     },
     {
-      "name": "WeChat minigame | playable ads",
+      "name": "微信小游戏 | 试玩广告",
       "platform": "wxgame",
       "path": "E:\\Object\\layaframe3/release/wxgame",
-      "time": 1782107291483,
+      "time": 1784859054393,
       "logFile": "wxgame-4a4aecf9e75f9111004782f75f8502fc.log",
       "success": true
     },
@@ -25,7 +25,7 @@
       "name": "抖音小游戏 | 试玩广告",
       "platform": "bytedancegame",
       "path": "E:\\Object\\layaframe3/release/bytedancegame",
-      "time": 1781598607713,
+      "time": 1784803636660,
       "logFile": "bytedancegame-411ab7152af62e59b04bd32b3e4fc9de.log",
       "success": true
     },
