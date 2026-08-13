@@ -16,20 +16,20 @@
   "ProjectPanel": {
     "expandedNodes": [
       "",
-      "../src",
-      "~/packages",
-      "~/ui"
+      "view",
+      "view/loading",
+      "../src"
     ],
     "twoColumn": false,
     "firstColumnWidth": 289,
     "iconScale": 0,
-    "selected": "folder:../src"
+    "selected": "f7b1216d-4d04-43a6-9f88-f7ce5e877c5d"
   },
   "ConsolePanel": {
     "collapse": true
   },
   "BuildSettingsPanel": {
-    "platform": "common"
+    "platform": "bytedancegame"
   },
   "ProjectSettingsPanel": {
     "catalog": "PlayerSettings"
