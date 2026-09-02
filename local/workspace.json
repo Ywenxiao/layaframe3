@@ -61,5 +61,8 @@
   },
   "FrameDebuggerPanel": {
     "resolution": 0
-  }
+  },
+  "AnimatorControllerPanel": {},
+  "TileSetPanel": {},
+  "TileMapPanel": {}
 }

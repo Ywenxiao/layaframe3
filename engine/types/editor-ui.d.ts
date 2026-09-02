@@ -270,6 +270,7 @@ declare namespace gui {
         UUID_to_URL(uuid: string): Promise<string>;
         URL_to_UUID(url: string): Promise<string>;
         formatURL(url: string): string;
+        postFormatURL(url: string): string;
         getMeta(url: string, uuid: string): Promise<any>;
         getI18nSettingsURL(id: string): string;
     }
@@ -309,6 +310,7 @@ declare namespace gui {
         UUID_to_URL(uuid: string): Promise<string>;
         URL_to_UUID(url: string): Promise<string>;
         formatURL(url: string): string;
+        postFormatURL(url: string): string;
         getMeta(url: string, uuid: string): Promise<any>;
         getI18nSettingsURL(id: string): string;
     }
@@ -728,6 +730,7 @@ declare namespace gui {
         get sender(): Widget;
         get initiator(): Widget;
         get originalTarget(): HTMLElement;
+        isFromInput(): boolean;
         get input(): Readonly<InputInfo>;
         stopPropagation(): void;
         preventDefault(): void;

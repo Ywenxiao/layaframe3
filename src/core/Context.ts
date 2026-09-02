@@ -174,9 +174,8 @@ export function WITHCONTEXT<TBase extends Constructor>(Base: TBase): new (...arg
 export function WITHCONTEXT(): typeof Injectable;
 export function WITHCONTEXT(Base?: any) {
     if (isNil(Base)) return Injectable;
-    
-    class ContextInject extends Base {
-        readonly context!: Context;
+
+    class ContextInject extends Base implements Injectable {
     }
 
     return ContextInject;

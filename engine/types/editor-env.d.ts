@@ -4,11 +4,18 @@ declare global {
      * Namespaces containing various scene-related classes and functions.
      * 
      * All classes and functions in this namespace are running in the Scene process.
+     *
+     * @remarks In documentation examples, the full-width character `＠` represents the
+     * TypeScript decorator character `@`. Replace `＠` with `@` when copying an example.
+     * The substitution prevents TypeScript's JSDoc parser from treating decorators inside
+     * fenced `@example` blocks as new JSDoc tags.
      */
     export namespace IEditorEnv {
+        /** GPU-assisted helper for snapping a screen-space pointer to the nearest mesh vertex. */
         export interface IVertexPicker {
             /**
-             * Find the global coordinates of the nearest vertex corresponding to the model position
+             * Find the world-space coordinates of the nearest mesh vertex within a screen-space range.
+             * @param camera Camera used to project the mesh and pointer coordinates.
              * @param sprite The model to be checked
              * @param x The pixel coordinate X to be detected
              * @param y The pixel coordinate y to be detected
@@ -19,9 +26,13 @@ declare global {
             pick(camera: Laya.Camera, sprite: Laya.Sprite3D, x: number, y: number, range: number, out: Laya.Vector3): boolean;
         }
 
+        /** Finds asset references by walking plain data according to an editor type descriptor. */
         export interface ITypedDataAnalyzer {
+            /** Analyze `data` and return every discovered asset link with its data path. */
             analyse(data: any, typeDef: FTypeDescriptor): Array<IAssetLinkInfo>;
         }
+
+        /** Optional cancellation, temporary-directory and progress settings for texture processing. */
         export interface ITextureToolOptions {
             /**
              * Abort token. If you want to abort the tool on some conditions, you can pass an abort token here. Call abortToken.signal() to abort the tool.
@@ -39,6 +50,7 @@ declare global {
             progressCallback?: (progress: number) => void;
         }
 
+        /** One generated texture file and the engine format stored in it. */
         export interface ITextureFileWithFormat {
             /**
              * File name without extension. It could be an empty string, indicating the use of the source file.
@@ -56,6 +68,7 @@ declare global {
             format: Laya.TextureFormat;
         }
 
+        /** Per-platform compression overrides applied on top of the default texture settings. */
         export interface ITexturePlatformSettings {
             /**
              * Texture format. e.g. "R8G8B8", "R8G8B8A8", etc.
@@ -68,6 +81,7 @@ declare global {
             quality?: number;
         }
 
+        /** Import and conversion settings accepted by {@link ITextureTool.run}. */
         export interface ITextureSettings {
             /**
              * 0: default, 1: lightmap, 2: sprite texture
@@ -83,9 +97,7 @@ declare global {
              */
             sRGB?: boolean;
 
-            /**
-             * 
-             */
+            /** Force the output format to preserve an alpha channel even when source inspection does not detect one. */
             alphaChannel?: boolean;
 
             /**
@@ -134,9 +146,7 @@ declare global {
              */
             readWrite?: boolean;
 
-            /**
-             * 
-             */
+            /** HDR encoding: `0` for none, `1` for RGBD, or `2` for RGBM. */
             hdrEncodeFormat?: number;
 
             /**
@@ -172,32 +182,30 @@ declare global {
             npot?: number;
 
             /**
-             * 
+             * Limits the maximum size of the texture. If the texture exceeds this size, it will be scaled down to fit within the specified dimensions. A value of 0 indicates no limit.
              */
+            maxSize?: number;
+
+            /**
+             * Optimize the image by using PNG8 compression. This option reduces the color depth of the image to 8 bits, which can significantly reduce the file size while maintaining acceptable visual quality. It is particularly useful for images with a limited color palette, such as icons or simple graphics.
+             */
+            usePng8?: boolean;
+
+            /** Whether generated cubemap mip levels contain image-based-lighting convolution data. */
             mipmapCoverageIBL?: boolean;
 
-            /**
-             * 
-             */
+            /** Target cubemap face size in pixels. */
             cubemapSize?: number;
 
-            /**
-             * 
-             */
+            /** Native texture-tool format name used when generating a cubemap file. */
             cubemapFileMode?: string;
 
-            /**
-             * 
-             */
+            /** Legacy mipmap fade range. This setting is currently retained for metadata compatibility. */
             fadeOutMipmap?: { x: number, y: number };
-            /**
-             * 
-             */
+            /** Native texture-tool filter value used while generating mipmaps. */
             mipmapFilter?: number;
 
-            /**
-             * 
-             */
+            /** Reserved native texture-tool edge-extension filter value. */
             extendFilter?: number;
 
             /**
@@ -231,6 +239,7 @@ declare global {
             platformIOS?: ITexturePlatformSettings;
         }
 
+        /** Normalized texture metadata returned after conversion and written beside the generated files. */
         export interface ITextureConfig {
             /** 
              * 0-default, 1-lightmap, 2-sprite 
@@ -280,9 +289,7 @@ declare global {
              */
             pma: boolean;
 
-            /**
-             *
-             */
+            /** HDR encoding: `0` for none, `1` for RGBD, or `2` for RGBM. */
             hdrEncodeFormat: number;
 
             /**
@@ -315,7 +322,7 @@ declare global {
             /**
              * Process the texture file with the specified settings.
              * @param srcFilePath The source file path. It is an absolute path.
-             * @param destFilePrefix The destination file prefix. The tool will generate multiple files base on this prefix.
+             * @param destFilePrefix The destination file prefix. The tool generates multiple files based on this prefix.
              * @param config The texture settings.
              * @param options The tool options.
              * @returns The texture config.
@@ -333,6 +340,8 @@ declare global {
              */
             function extendMargin(pixelData: Uint8Array | Float32Array, width: number, height: number, margin: number, highFilter?: number): void;
         }
+
+        /** Image preprocessing options combined with the max-rectangles packing options. */
         export interface ITexturePackerOptions extends IMaxRectsPackingOptions {
             /**
              * Whether to trim the blank area of the image.
@@ -343,26 +352,41 @@ declare global {
              * Scale of the image.
              */
             scale?: number;
+
+            /**
+             * Whether to quantize the output as a palette-based PNG-8 image.
+             */
+            usePng8?: boolean;
         }
 
+        /** Placement and original-source geometry for one packed atlas entry. */
         export interface IAtlasFrame {
+            /** Packed rectangle and output-atlas image index. */
             frame: {
+                /** Index into {@link ITexturePackerResult.images}. */
                 idx: number;
+                /** Left coordinate in the atlas image. */
                 x: number;
+                /** Top coordinate in the atlas image. */
                 y: number;
+                /** Packed width. */
                 w: number;
+                /** Packed height. */
                 h: number;
             },
+            /** Original source-image dimensions before trimming and scaling. */
             sourceSize: {
                 w: number;
                 h: number;
             },
+            /** Offset of the trimmed sprite within the original source image. */
             spriteSourceSize: {
                 x: number,
                 y: number
             }
         }
 
+        /** Atlas metadata, per-frame placements and generated atlas image descriptors. */
         export interface ITexturePackerResult {
             /**
              * Metadata of the atlas.
@@ -383,12 +407,14 @@ declare global {
             /**
              * Generate a texture atlas from the source files.
              * @param sourceFiles Image files to pack. They are absolute paths.
-             * @param outTexturePath The path of the output texture. It is a absolute path.
+             * @param outTexturePath The absolute path of the output texture.
              * @param options Packing options.
              * @returns The result of the packing.
              */
             function pack(sourceFiles: string[], outTexturePath: string, options?: ITexturePackerOptions): Promise<ITexturePackerResult>;
         }
+
+        /** Controls type metadata, default-value elimination and node-reference encoding. */
         export interface IEncodeObjOptions {
             /**
              * Write "_$type" field in the object. Default is true.
@@ -412,6 +438,7 @@ declare global {
             forceType?: string;
         }
 
+        /** Controls validation, error collection and node-reference resolution during decoding. */
         export interface IDecodeObjOptions {
             /**
              * An array to receive the errors during deserialization.
@@ -443,9 +470,14 @@ declare global {
             const isDeserializing: boolean;
 
             /**
+             * When a setter is called, this flag can be used to determine whether the call comes from the property panel setting (including undo)
+             */
+            const isSettingProp: boolean;
+
+            /**
              * Serialize an object to a plain object.
-             * @param data Object to serialize.
-             * @param typeDef Type descriptor of the object. 
+             * @param obj Object to serialize.
+             * @param receiver Optional existing object used as serialization context.
              * @param options Serialization options.
              * @returns The serialized object. 
              */
@@ -470,9 +502,11 @@ declare global {
              */
             function decodeObj(data: any, receiver?: any, type?: string, options?: IDecodeObjOptions): any;
         }
+
+        /** Build-time JavaScript minification and compatibility-transformation utilities. */
         export interface IScriptTool {
             /**
-             * Compress a javascript file. Compressed result is cached for future use. Cache path is library/minifiedJsCache.
+             * Compress a JavaScript file. The result is cached in `library/minifiedJsCache` for future use.
              * @param filePath The path of the file to compress.
              * @param mangleOptions The options for mangling.
              * - keep_fnames: Keep the function names.
@@ -487,6 +521,10 @@ declare global {
              */
             babelTransform(filePath: string, presets?: string): Promise<void>;
         }
+
+        export type ParticleActionCommand = "play" | "pause" | "stop" | "restart" | "seek";
+
+        /** Manages the Scene-process scene collection and dispatches registered scene scripts. */
         export interface ISceneManager {
             /**
              * Triggered when the selection is changed.
@@ -499,6 +537,11 @@ declare global {
              * @param previousScene The previous scene.
              */
             readonly onSceneActivated: IDelegate<(currentScene: IMyScene, previousScene: IMyScene) => void>;
+
+            /**
+             * Triggered when the Scene panel sends a particle preview action.
+             */
+            readonly onParticleAction: IDelegate<(command: ParticleActionCommand, value?: number) => void>;
 
             /**
              * Current active scene.
@@ -516,7 +559,7 @@ declare global {
              * @param scene The this object.
              * @param name objectName.methodName
              * @param args The arguments.
-             * @returns The function found. Null if not found.
+             * @returns The registered function's resolved return value. If no function is found, the method logs an error and resolves to `undefined`.
              * @example
              * ```
              * ＠IEditorEnv.regClass
@@ -526,12 +569,13 @@ declare global {
              *   }
              * }
              * 
-             * const func = EditorEnv.scene.runScript("MyTest.sayHello");
-             * func(); // Output: Hello
+             * await EditorEnv.scene.runScript("MyTest.sayHello"); // Output: Hello
              * ```
              */
             runSceneScript(scene: IMyScene, name: string, ...args: any[]): Promise<any>;
         }
+
+        /** Optional Scene-process lifecycle hooks registered through `＠IEditorEnv.sceneHook`. */
         export interface ISceneHook {
             /**
              * Called when a new node is about to be created.
@@ -575,11 +619,12 @@ declare global {
             onWriteRuntime?(scene: IMyScene, info: IWriteRuntimeInfo): void | Promise<void>;
         }
 
+        /** Mutable generated-code context passed to {@link ISceneHook.onWriteRuntime}. */
         export interface IWriteRuntimeInfo {
             /**
              * The generated code. You can replace it with your own code, or set it to null to skip the generation.
              */
-            code: string;
+            code: string | null;
 
             /**
              * The runtime script asset.
@@ -606,23 +651,38 @@ declare global {
              */
             readonly vars: string[];
         }
+
+        /** SVG stroke attributes accepted by gizmo elements. */
         export interface StrokeData {
+            /** CSS stroke color. */
             color?: string;
+            /** Stroke width in screen pixels. */
             width?: number;
+            /** Stroke opacity in the range `[0, 1]`. */
             opacity?: number;
+            /** SVG `stroke-linecap` value. */
             linecap?: string;
+            /** SVG `stroke-linejoin` value. */
             linejoin?: string;
+            /** SVG miter-limit value. */
             miterlimit?: number;
+            /** SVG dash pattern, such as `"4 2"`. */
             dasharray?: string;
+            /** Offset into the SVG dash pattern. */
             dashoffset?: number;
         }
 
+        /** SVG fill attributes accepted by gizmo elements. */
         export interface FillData {
+            /** CSS fill color. */
             color?: string
+            /** Fill opacity in the range `[0, 1]`. */
             opacity?: number
+            /** SVG fill-rule value, usually `"nonzero"` or `"evenodd"`. */
             rule?: string
         }
 
+        /** Factory and coordinate-conversion API for one node's SVG overlay gizmos. */
         export interface ISVGGizmos {
             /**
              * Owner node.
@@ -653,7 +713,7 @@ declare global {
             createPolygon(easyTouch?: boolean): IGizmoPolygon;
 
             /**
-             * Create en ellipse.
+             * Create an ellipse.
              * @param rx Radius x.
              * @param ry Radius y.
              */
@@ -718,7 +778,7 @@ declare global {
              * Local coordinates are relative to the owner node. Global coordinates are relative to the screen, which are used to position the gizmos.
              * @param x Local x.
              * @param y Local y. 
-             * @param out A optional output vector to receive the result. If not provided, a new vector will be created. 
+             * @param out An optional output vector to receive the result. If not provided, a new vector is created.
              * @returns The global coordinates.
              */
             localToGlobal(x: number, y: number, out?: gui.Vec2): gui.Vec2;
@@ -728,13 +788,14 @@ declare global {
              * Local coordinates are relative to the owner node. Global coordinates are relative to the screen, which are used to position the gizmos.
              * @param x Global x. 
              * @param y Global y. 
-             * @param out A optional output vector to receive the result. If not provided, a new vector will be created. 
+             * @param out An optional output vector to receive the result. If not provided, a new vector is created.
              * @param targetSpace The target space to convert to. If not provided, the owner node will be used.
              * @returns The local coordinates. 
              */
             globalToLocal(x: number, y: number, out?: gui.Vec2, targetSpace?: IMyNode): gui.Vec2;
         }
 
+        /** Common lifecycle, interaction and styling surface of an SVG gizmo element. */
         export interface IGizmoElement {
             /**
              * Owner manager.
@@ -747,7 +808,7 @@ declare global {
             readonly element: Element;
 
             /**
-             * Owner node.
+             * Underlying DOM node owned by {@link element}.
              */
             readonly node: SVGElement;
 
@@ -821,7 +882,7 @@ declare global {
             set direction(value: number);
 
             /**
-             * Cusor style of the element. e.g. "default", "pointer", "grab".
+             * CSS cursor style of the element, for example `"default"`, `"pointer"`, or `"grab"`.
              */
             get cursor(): string;
             set cursor(value: string);
@@ -894,12 +955,15 @@ declare global {
             setButtonStatus(status: "normal" | "over" | "down"): void;
         }
 
+        /** Draggable rectangular or circular SVG handle. */
         export interface IGizmoHandle extends IGizmoElement {
         }
 
+        /** Draggable handle rendered from normal/hover/pressed image skins. */
         export interface IGizmoIconHandle extends IGizmoElement {
         }
 
+        /** Reusable pool of identically styled handles for dynamic per-frame geometry. */
         export interface IGizmoHandleGroup extends IGizmoElement {
             /**
              * Triggered when the user starts dragging a handle.
@@ -952,14 +1016,19 @@ declare global {
             clear(): void;
         }
 
+        /** Rectangle SVG gizmo element. */
         export interface IGizmoRect extends IGizmoElement {
         }
 
+        /** Circle SVG gizmo element. */
         export interface IGizmoCircle extends IGizmoElement {
+            /** Set the radius in owner-node local coordinates. */
             setLocalRadius(value: number): this;
+            /** Set the radius in screen/global coordinates. */
             setRadius(value: number): this;
         }
 
+        /** Ellipse SVG gizmo element. */
         export interface IGizmoEllipse extends IGizmoElement {
             /**
              * Set the radius of the ellipse. The value is in local coordinates.
@@ -976,6 +1045,7 @@ declare global {
             setRadius(rx: number, ry: number): this;
         }
 
+        /** Polygon SVG gizmo backed by a mutable flat point array. */
         export interface IGizmoPolygon extends IGizmoElement {
             /**
              * All points of the polygon. The coordinates of the points are stored in the array in the order of x0, y0, x1, y1, etc.
@@ -990,6 +1060,7 @@ declare global {
             refresh(): void;
         }
 
+        /** Mutable SVG path gizmo. Call {@link refresh} after changing its commands. */
         export interface IGizmoPath extends IGizmoElement {
             /**
              * If true, the coordinates passed in the subsequent drawing operations are relative to the coordinates of the last drawing operation. 
@@ -997,12 +1068,19 @@ declare global {
              */
             relativeCoords: boolean;
 
+            /** Begin a new subpath at `(x, y)`. */
             moveTo(x: number, y: number): this;
+            /** Add a straight line to `(x, y)`. */
             lineTo(x: number, y: number): this;
+            /** Add a smooth cubic curve using the previous control-point reflection and the supplied control/end point. */
             cubicCurveTo(x: number, y: number, x2: number, y2: number): this;
+            /** Add a cubic Bezier curve with two control points and an end point. */
             cubicCurveTo(x: number, y: number, x1: number, y1: number, x2: number, y2: number): this;
+            /** Add a smooth quadratic curve to `(x, y)`. */
             quadCurveTo(x: number, y: number): this;
+            /** Add a quadratic Bezier curve using a control point and end point. */
             quadCurveTo(x: number, y: number, x1: number, y1: number): this;
+            /** Add a quadratic curve; omitting the control point selects the smooth form. */
             quadCurveTo(x: number, y: number, x1?: number, y1?: number): this;
 
             /**
@@ -1016,6 +1094,7 @@ declare global {
             refresh(): void;
         }
 
+        /** Text SVG gizmo element. */
         export interface IGizmoText extends IGizmoElement {
             /**
              * Set the font style of the text.
@@ -1029,9 +1108,12 @@ declare global {
              */
             setFontProp(prop: string, value: string | number): this;
 
+            /** Replace the displayed text. */
             setText(text: string): this;
         }
 
+
+        /** Tracks mutable Scene-process resources and persists their changes. */
         export interface IResourceManager {
             /**
              * Save all resources.
@@ -1056,7 +1138,12 @@ declare global {
              * Get a plain object that contains all properties of the specified object.
              */
             getProps(obj: any): any;
+
+            /** Starts tracking a loaded resource so later edits can be detected and saved. */
+            trackResource(resource: any): void;
         }
+
+        /** A localizable prefab string and the object property that stores it. */
         export interface IPrefabI18nString {
             /**
              * Object that contains the property.
@@ -1074,6 +1161,7 @@ declare global {
             text: string;
         }
 
+        /** Selects prefab analysis outputs and optional entity visitors. */
         export interface IPrefabAnalyseOptions {
             /**
              * Whether to get the dependencies.
@@ -1108,6 +1196,7 @@ declare global {
             errorEntityVisitor?: (data: any, error: PrefabEntityErrorCode, isComponent: boolean, isOverrideEntry: boolean) => void;
         }
 
+        /** Structural error reported while walking serialized prefab entities. */
         export enum PrefabEntityErrorCode {
             /**
              * The type is missing.
@@ -1125,6 +1214,7 @@ declare global {
             OverrideTargetMissing = 2
         }
 
+        /** Dependency and localization data collected from one prefab. */
         export interface IPrefabAnalyseResult {
             /**
              * Dependencies.
@@ -1137,6 +1227,7 @@ declare global {
             i18nStrings: Array<IPrefabI18nString>;
         }
 
+        /** Reads, validates, traverses and minimizes serialized prefab data. */
         export interface IPrefabDataAnalyzer {
             /**
              * Analyse the prefab data.
@@ -1156,21 +1247,28 @@ declare global {
             analyseRaw(sourceData: any, isWidget: boolean, options: IPrefabAnalyseOptions): Promise<IPrefabAnalyseResult>;
 
             /**
-             * Get the raw data of an prefab asset.
+             * Get the raw serialized data of a prefab asset.
+             * @param asset Prefab asset to read.
+             * @returns Parsed prefab data.
              */
             getContent(asset: IAssetInfo): Promise<any>;
 
             /**
-             * Get the node map of an prefab asset.
+             * Get serialized nodes indexed by node ID for a prefab asset.
+             * @param asset Prefab asset to read.
+             * @returns Node data indexed by ID.
              */
             getNodeMap(asset: IAssetInfo): Promise<Record<string, any>>;
 
             /**
              * Delete unused data for release environment.
              * @param content Prefab content data.
+             * @returns The minimized prefab data.
              */
             minifyPrefabData(content: any): any;
         }
+
+        /** GPU-based scene picking for object IDs, nodes and world positions. */
         export interface IPickManager {
             /**
              * Pick object id list through pixel coordinates
@@ -1198,27 +1296,30 @@ declare global {
              * Pick world position through pixel coordinates
              * @param x pixel coordinate x 
              * @param y pixel coordinate y 
-             * @param ignoreSelected whether to ignore selected objects 
+             * @param ignoreSelected whether to ignore selected objects
+             * @returns The picked world position, or null when the coordinates are outside the pick render target.
              */
-            pickPos(x: number, y: number, ignoreSelected?: boolean): Readonly<Laya.Vector4>;
+            pickPos(x: number, y: number, ignoreSelected?: boolean): Readonly<Laya.Vector4> | null;
 
             /**
              * Pick Sprite3D through pixel coordinates in current scene.
              * @param x pixel coordinate x 
              * @param y pixel coordinate y 
              * @param range pixel range, objects within the range will be picked 
-             * @param ignoreSelected whether to ignore selected objects 
+             * @param ignoreSelected whether to ignore selected objects
+             * @returns The picked sprite, or null when nothing is hit.
              */
-            pickSprite3D(x: number, y: number, range: number, ignoreSelected?: boolean): Laya.Sprite3D;
+            pickSprite3D(x: number, y: number, range: number, ignoreSelected?: boolean): Laya.Sprite3D | null;
 
             /**
              * Pick Sprite3D through pixel coordinates in specified render commands.
              * @param x pixel coordinate x
              * @param y pixel coordinate y 
              * @param range pixel range, objects within the range will be picked 
-             * @param addCmds commands to render pick buffer. 
+             * @param addCmds commands to render pick buffer.
+             * @returns The picked sprite, or null when nothing is hit.
              */
-            pickSprite3D(x: number, y: number, range: number, addCmds: (cmdBuffer: Laya.CommandBuffer) => void): Laya.Sprite3D;
+            pickSprite3D(x: number, y: number, range: number, addCmds: (cmdBuffer: Laya.CommandBuffer) => void): Laya.Sprite3D | null;
 
             /**
              * Pick Sprite through pixel coordinates in specified render commands.
@@ -1226,8 +1327,9 @@ declare global {
              * @param y pixel coordinate y
              * @param range pixel range, objects within the range will be picked
              * @param addCmds commands to render pick buffer.
+             * @returns The picked sprite, or null when nothing is hit.
              */
-            pickSprite(x: number, y: number, range: number, addCmds: (cmdBuffer: Laya.CommandBuffer2D) => void): Laya.Sprite;
+            pickSprite(x: number, y: number, range: number, addCmds: (cmdBuffer: Laya.CommandBuffer2D) => void): Laya.Sprite | null;
 
             /**
              * Pick a 2D Sprite/Node from the scene using GPU rendering.
@@ -1241,6 +1343,8 @@ declare global {
             pickSprite(x: number, y: number, range: number, root: Laya.Sprite): Laya.Node | null;
 
         }
+
+        /** Renderable target and lifecycle callbacks submitted to an offscreen renderer. */
         export interface IOffscreenRenderSubmit {
             /**
              * This is the target for offscreen rendering, point to a existing sprite or a scene3D.
@@ -1265,6 +1369,7 @@ declare global {
             onPostRender(): void;
         }
 
+        /** Queue-based renderer that produces `ImageBitmap` previews outside the visible scene. */
         export interface IOffscreenRenderer {
             /**
              * Width of the rendertexture.
@@ -1281,7 +1386,7 @@ declare global {
              * @param target The target passed in the submit method.
              * @param bitmap The rendering result.
              * @param contentWidth The width of the bitmap. 
-             * @param contentHeight THhe height of the bitmap.
+             * @param contentHeight The height of the bitmap.
              */
             onComplete: (target: IOffscreenRenderSubmit, bitmap: ImageBitmap, contentWidth: number, contentHeight: number) => void;
 
@@ -1307,6 +1412,7 @@ declare global {
             destroy(): void;
         }
 
+        /** Reusable 3D preview scene used by offscreen asset renderers. */
         export interface IOffscreenRenderScene {
             /**
              * Scene3D object.
@@ -1386,6 +1492,8 @@ declare global {
              */
             changeShape(shape: string): Promise<void>;
         }
+
+        /** Simple class-name keyed pool for reusable editor objects. */
         export interface IObjectPool {
             /**
              * Get an object from the pool.
@@ -1405,6 +1513,8 @@ declare global {
              */
             destroy(): void;
         }
+
+        /** Scene-viewport navigation state, tool selection, focus, picking and cursor control. */
         export interface INavigationManager {
             /**
              * Whether the mouse is down.
@@ -1455,8 +1565,11 @@ declare global {
              */
             setCursor(cursor: string | null): void;
         }
+
+        /** Built-in viewport navigation or object-transform tool identifier. */
         export type SceneNavToolType = "move" | "orbit" | "orbit_focus" | "zoom" | "obj_move" | "obj_rotate" | "obj_scale" | "obj_transform";
 
+        /** Optional positioning and duplicate-name handling for newly created nodes. */
         export interface ICreateNodeOptions {
             /**
              * When creating a node, a reasonable position will be set for the node if this option is true. Default is true.
@@ -1469,6 +1582,7 @@ declare global {
             fixDupName?: boolean;
         }
 
+        /** Common Scene-process API implemented by 2D, 3D and GUI editing scenes. */
         export interface IMyScene extends gui.EventDispatcher {
             /**
              * A internal unique id of the scene.
@@ -1478,7 +1592,7 @@ declare global {
             /**
              * The asset of the scene. It may be null if the scene is new and not saved.
              */
-            readonly asset: IAssetInfo;
+            readonly asset: IAssetInfo | null;
 
             /**
              * Communication port to the UI process.
@@ -1524,7 +1638,7 @@ declare global {
             /**
              * Scene3D node. May be null if the scene is a 2D scene.
              */
-            readonly rootNode3D: IMyNode;
+            readonly rootNode3D: IMyNode | null;
 
             /**
              * Scene3D node. The difference between this property and rootNode3D is that this property will be a bridge scene3D or a standalone scene3D.
@@ -1534,7 +1648,7 @@ declare global {
             /**
              * Prefab root node. May be null if the scene is not a prefab editing scene.
              */
-            readonly prefabRootNode: IMyNode;
+            readonly prefabRootNode: IMyNode | null;
 
             /**
              * The world type of the scene.
@@ -1543,7 +1657,7 @@ declare global {
              * - null: Common scene. 2D and 3D nodes can be mixed.
              * - gui: GUI scene.
              */
-            readonly worldType: WorldType;
+            readonly worldType: WorldType | null;
 
             /**
              * Scene status is used to store temporary data about the scene.
@@ -1558,7 +1672,7 @@ declare global {
             /**
              * The last box in the openedBoxChain. Null if no box is opened.
              */
-            readonly openedBox: IMyNode;
+            readonly openedBox: IMyNode | null;
 
             /**
              * Open a box. Only available for box-like sprites, such as Box, Panel, List, etc.
@@ -1578,7 +1692,7 @@ declare global {
              * @param node The node to find.
              * @returns The box that contains the node. Null if the node is not in any box. 
              */
-            findBox(node: IMyNode): IMyNode;
+            findBox(node: IMyNode): IMyNode | null;
 
             /**
              * Check if a node is a box.
@@ -1612,8 +1726,9 @@ declare global {
              * Run these tests to validate the scene:
              * - Check if the file is outdated.
              * - Check all prefabs to see if they are outdated.
+             * @param ignorePrefab If true, the prefab validation will be skipped. Default is false.
              */
-            validateScene(): void;
+            validateScene(ignorePrefab?: boolean): void;
 
             /**
              * Set the scene to modified status.
@@ -1654,7 +1769,7 @@ declare global {
              * @param id The id of the node.
              * @returns The node. Null if not found.
              */
-            getNodeById(id: string): IMyNode;
+            getNodeById(id: string): IMyNode | null;
             /**
              * Find nodes by keyword.
              * @param keyword Keyword to search. 
@@ -1683,9 +1798,9 @@ declare global {
              * @param nodeProps The properties of the node. 
              * @param parentNode The parent node. 
              * @param options Options for creating the node. 
-             * @returns The new created node.
+             * @returns The newly created node, or null if the prefab cannot be instantiated.
              */
-            instantiatePrefab(assetId: string, nodeProps: Record<string, any>, parentNode: IMyNode, options?: ICreateNodeOptions): Promise<IMyNode>;
+            instantiatePrefab(assetId: string, nodeProps: Record<string, any>, parentNode: IMyNode, options?: ICreateNodeOptions): Promise<IMyNode | null>;
 
             /**
              * Unpack a prefab. That means all nodes in the prefab will be converted to normal nodes.
@@ -1739,7 +1854,7 @@ declare global {
              * A className must be registered with ＠IEditorEnv.regClass.
              * @param name objectName.methodName
              * @param args The arguments.
-             * @returns The function found. Null if not found.
+             * @returns The registered function's resolved return value. If no function is found, the method logs an error and resolves to `undefined`.
              * @example
              * ```
              * ＠IEditorEnv.regClass
@@ -1749,8 +1864,7 @@ declare global {
              *   }
              * }
              * 
-             * const func = EditorEnv.scene.runScript("MyTest.sayHello");
-             * func(); // Output: Hello
+             * await EditorEnv.scene.runScript("MyTest.sayHello"); // Output: Hello
              * ```
              */
             runScript(name: string, ...args: any[]): Promise<any>;
@@ -1764,62 +1878,108 @@ declare global {
              */
             runNodeScript(target: IMyNode | IMyComponent, methodName: string, ...args: any[]): Promise<any>;
         }
+
+        /** Editor-only metadata attached to a live Scene-process node. */
         export interface IMyNodeExtra {
+            /** Stable editor node ID. */
             readonly id?: string;
+            /** Registered editor type name. */
             readonly type?: string;
+            /** Whether the node belongs to the current editor selection. */
             readonly selected?: boolean;
+            /** Whether this node is the outermost root of a prefab instance. */
             readonly isTopPrefab?: boolean;
+            /** Whether prefab ownership prevents direct editing. */
             readonly isPrefabReadonly?: boolean;
+            /** Source prefab asset ID when the node belongs to a prefab. */
             readonly prefabId?: string;
+            /** Scene wrapper that owns the node. */
             readonly scene?: IMyScene;
         }
 
+        /** Minimal common surface shared by engine nodes and GUI widgets in the Scene process. */
         export interface IMyNode {
+            /** Editor/engine visibility and serialization bit flags. */
             hideFlags: number;
+            /** User-facing node name. */
             name: string;
-            readonly parent: IMyNode;
+            /** Parent node, or null for a scene root. */
+            readonly parent: IMyNode | null;
+            /** Whether the underlying runtime object has been destroyed. */
             readonly destroyed: boolean;
+            /** Number of direct children. */
             readonly numChildren: number;
 
+            /** Return the child at `index`. */
             getChildAt(index: number): IMyNode;
+            /** Test whether this node is an ancestor of `node`. */
             isAncestorOf(node: IMyNode): boolean;
+            /** Test one `hideFlags` bit. */
             hasHideFlag(flag: number): boolean;
 
+            /** Set an internal engine/editor state bit. Prefer higher-level APIs when available. */
             _setBit(type: number, value: boolean): void;
+            /** Read an internal engine/editor state bit. Prefer higher-level APIs when available. */
             _getBit(type: number): boolean;
 
+            /** Editor metadata associated with this node. */
             _extra: IMyNodeExtra;
         }
 
+        /** Minimal common component surface used by Scene-process editor APIs. */
         export interface IMyComponent {
+            /** Node that owns the component. */
             readonly owner: IMyNode;
+            /** Editor/engine visibility and serialization bit flags. */
             hideFlags: number;
+            /** Whether the component participates in runtime updates. */
             enabled: boolean;
         }
+
+        /** Rectangle accepted by the max-rectangles atlas packer. Output fields are written in place. */
         export interface IRectangle {
+            /** Rectangle width in pixels. */
             width: number;
+            /** Rectangle height in pixels. */
             height: number;
+            /** Packed x-coordinate; assigned by the packer. */
             x: number;
+            /** Packed y-coordinate; assigned by the packer. */
             y: number;
+            /** Whether the packer may rotate this rectangle by 90 degrees. */
             allowRotation?: boolean;
+            /** Caller-defined source index. */
             index?: number;
+            /** Optional grouping tag used with tagged packing. */
             tag?: number;
+            /** Caller-defined payload retained on the rectangle. */
             data?: any;
 
+            /** Whether the rectangle exceeded the configured bin dimensions. */
             oversized?: boolean;
+            /** Whether the packed rectangle was rotated by 90 degrees. */
             rotated?: boolean;
         }
 
+        /** One output bin and its remaining free-space rectangles. */
         export interface IBin<T extends IRectangle> {
+            /** Bin width in pixels. */
             width: number;
+            /** Bin height in pixels. */
             height: number;
+            /** Free rectangles remaining after placement. */
             freeRects: IRectangle[];
+            /** Source rectangles assigned to this bin. */
             rects: T[];
+            /** Optional grouping tag associated with the bin. */
             tag?: number;
         }
 
+        /** Heuristic used to select the next max-rectangles placement. */
         export enum MaxRectsPackingLogic {
+            /** Prefer the placement that minimizes unused area. */
             MaxArea = 0,
+            /** Prefer the placement that minimizes the longest leftover edge. */
             MaxEdge = 1
         }
 
@@ -1837,17 +1997,27 @@ declare global {
          * @interface Option
          */
         export interface IMaxRectsPackingOptions {
+            /** Grow bin dimensions to fit content. Defaults to `true`. */
             smart?: boolean,
+            /** Round bin dimensions up to powers of two. Defaults to `true`. */
             pot?: boolean,
+            /** Force square output bins. Defaults to `false`. */
             square?: boolean,
+            /** Allow rectangles to rotate by 90 degrees. Defaults to `false`. */
             allowRotation?: boolean,
+            /** Group rectangles using their `tag` values. Defaults to `false`. */
             tag?: boolean,
+            /** Put distinct tags in independent bins. Defaults to `true`. */
             exclusiveTag?: boolean,
+            /** Empty spacing reserved at atlas edges, in pixels. Defaults to `0`. */
             border?: number,
+            /** Placement heuristic. Defaults to {@link MaxRectsPackingLogic.MaxEdge}. */
             logic?: MaxRectsPackingLogic
         }
 
+        /** Incremental max-rectangles bin packer used to build texture atlases. */
         export interface IMaxRectsPacker<T extends IRectangle> {
+            /** Output bins produced so far. */
             readonly bins: IBin<T>[];
 
             /**
@@ -1904,6 +2074,8 @@ declare global {
              */
             get rects(): T[];
         }
+
+        /** Local HTTP/HTTPS server used for project preview and plugin-provided file routes. */
         export interface ILiveServer {
             /**
              * Host name.
@@ -1921,7 +2093,7 @@ declare global {
             readonly securePort: number;
 
             /**
-             * URl of the server, it's "http://host:port".
+             * Base URL of the server, in the form `http://host:port`.
              */
             readonly url: string;
 
@@ -1931,13 +2103,27 @@ declare global {
             readonly expressApp: express.Express;
 
             /**
+             * Serve a local file at the specified URL path.
+             * @param routePath URL path relative to the live-server root.
+             * @param filePath Absolute path of the local file.
+             */
+            addFileRoute(routePath: string, filePath: string): void;
+
+            /**
+             * Remove a previously registered local-file route.
+             * @param routePath URL path relative to the live-server root.
+             */
+            removeFileRoute(routePath: string): void;
+
+            /**
              * Start a web server to serve the specified directory.
-             * @param webRootPath The root path of the web server. It is a absolute path.
+             * @param webRootPath The absolute root path served by the web server.
              * @param secure Whether to use secure connection. Default is false.
              * @returns The URL of the server, e.g. "http://192.168.1.1:19090".
              */
             serveAnywhere(webRootPath: string, secure?: boolean): Promise<string>;
         }
+
         export namespace ILineEditor {
             /**
              * Get the distance from a point to a line segment. 
@@ -1965,9 +2151,13 @@ declare global {
              */
             function addPoint(points: number[], x: number, y: number, isLoop?: boolean, tolerance?: number): boolean;
         }
+        /** Laya DCC resource-cache generation helpers used during a build. */
         export namespace ILayaDCC {
+            /** Generate DCC metadata for the built resources under `resourcePath`. */
             function build(task: IBuildTask, resourcePath: string): Promise<void>;
         }
+
+        /** Encodes one or more image buffers into a Windows ICO file buffer. */
         export interface IIcoEncoder {
             /**
              * encode writes the stored image buffers into the internal buffer storage,
@@ -1978,6 +2168,7 @@ declare global {
              */
             encode(imageBuffers: Array<Buffer | ArrayBuffer>): Buffer;
         }
+
         export namespace II18nUtils {
             /**
              * Analyze all prefab files in the folder and sub-folers where the configuration file is located, collect all the text that needs to be translated into the reference file, and convert these texts into an internationalized format. If the reference file is not set, one will be automatically generated.
@@ -1989,6 +2180,7 @@ declare global {
              */
             function syncTranslations(defAssetId: string): Promise<void>;
         }
+        /** Controls node references and output shape during hierarchy serialization. */
         export interface IHierarchyWriterOptions {
             /**
              * Callback function to get the id path of the node.
@@ -1996,7 +2188,7 @@ declare global {
             getNodeRef?: (node: Laya.Node) => string | string[];
 
             /**
-             * Don't product the header like "_$ver: 1" to the output. Default is false.
+             * Omit header fields such as `_$ver`. Defaults to `false`.
              */
             noHeader?: boolean;
 
@@ -2036,16 +2228,21 @@ declare global {
              */
             function collectResources(node: Laya.Node, out?: Set<any>): Set<any>;
         }
+
+        /** One structural or reference error found in serialized hierarchy data. */
         export interface ValidationError {
             /**
              * RFC 6902 JSON Pointer 格式的错误位置路径
              * 例如: /root/child/items/0/position
              */
             path: string;
+            /** Machine-readable validation category. */
             errorType: 'undefined-property' | 'type-mismatch' | 'invalid-type' | 'prefab-conflict' | 'invalid-prefab-format' | 'invalid-override' | 'override-position-error' | 'prefab-missing' | 'override-node-missing' | 'parent-node-missing';
+            /** Human-readable diagnostic message. */
             errorMessage: string;
         }
 
+        /** Validates the structure, types, prefab references and overrides in hierarchy data. */
         export interface IHierarchyValidator {
             /**
              * Validate the hierarchy data.
@@ -2054,6 +2251,8 @@ declare global {
              */
             validate(data: any): ValidationError[];
         }
+
+        /** Visual and interaction state of a scene handle. */
         export enum HandleState {
             /**
              * Normal state, the handle is not hovered or active.
@@ -2073,14 +2272,21 @@ declare global {
             Inactive
         }
 
+        /** Pointer/drag event currently being processed by the immediate-mode handle API. */
         export enum HandleEvent {
+            /** A handle received a pointer-down event. */
             MouseDown,
+            /** A handle received a pointer-up event. */
             MouseUp,
+            /** The pointer moved over a handle without dragging it. */
             MouseMove,
+            /** A handle is being dragged. */
             Drag,
+            /** A handle received a right-click event. */
             RightClick
         }
 
+        /** Appearance of an immediate-mode 2D handle. */
         export type Handle2DStyle = {
             /**
              * The shape of the 2D handle, it can be "rect" or "circle", default is "circle".
@@ -2104,13 +2310,19 @@ declare global {
             anchor?: Laya.Vector2;
         };
 
+        /** Per-item state and custom payload passed when opening a handle context menu. */
         export interface IHandleContextMenuOptions {
+            /** Visibility overrides indexed by menu item ID. */
             visible?: Record<string, boolean>;
+            /** Enabled-state overrides indexed by menu item ID. */
             enabled?: Record<string, boolean>;
+            /** Checked-state overrides indexed by menu item ID. */
             checked?: Record<string, boolean>;
+            /** Host-defined value returned when a menu item is selected. */
             data?: any;
         }
 
+        /** Immediate-mode scene handle API used while drawing custom editor gizmos. */
         export interface IHandles extends IGizmos3D {
 
             /**
@@ -2429,11 +2641,17 @@ declare global {
             setCursor(cursor: string): void;
 
             /**
-             * Set the context menu callback when right click on handles.
+             * Set the context menu callback when right click on last added handle.
              * @returns An object with showMenu function, when right click on the handle, the showMenu function will be returned and caller is responsible for calling this function with proper menuId and options to show the context menu. If clicked is returned, it means the context menu has been clicked, and the menuId and a custom data will be returned.
              */
             setMenu(): { showMenu?: (menuId: string, options?: IHandleContextMenuOptions) => void, clicked?: string, data?: any };
+
+            /**
+             * Set the pointer capture for the last added handle. When no other handle is hovered or active, the pointer events will be captured by this handle, and the handle will receive all pointer events.
+             */
+            setPointerCapture(): void;
         }
+
         export namespace IHandleUtils {
 
             /**
@@ -2464,6 +2682,13 @@ declare global {
             function getHandleSize(position: Laya.Vector3): number;
 
             /**
+             * Get the world-space length of one screen pixel at the specified position.
+             * @param position The world-space position.
+             * @returns The world-space length corresponding to one screen pixel.
+             */
+            function getWorldUnitsPerPixel(position: Laya.Vector3): number;
+
+            /**
              * Get the transformation matrix for a handle in the local space of a sprite. 
              * @param sprite The target sprite.
              * @param localX The local x coordinate of the handle in the sprite's local space. 
@@ -2473,52 +2698,98 @@ declare global {
              */
             function getWorldMatrix(sprite: Laya.Node, localX?: number, localY?: number, out?: Laya.Matrix): Laya.Matrix;
         }
+
+        /** Built-in transform tool displayed for the current scene selection. */
         export enum TransformCtrlMode {
+            /** Translation controls. */
             Move,
+            /** Rotation controls. */
             Rotate,
+            /** Scale controls. */
             Scale,
+            /** Combined translation, rotation and scale controls. */
             Transform,
         }
 
+        /** Coordinate space used by transform controls. */
         export enum TransformSpaceMode {
+            /** Orient controls in the selected object's local space. */
             Local,
+            /** Orient controls in world space. */
             World
         }
 
+        /** Constraint used while moving transform controls. */
         export enum TransformMoveMode {
+            /** Move along the active view or axis plane. */
             Plane,
+            /** Snap movement to a picked world position. */
             WorldPos
         }
 
+        /** Mutable snapping state of the built-in move control. */
         export interface IMoveCtrl {
+            /** Current movement constraint. */
             moveMode: TransformMoveMode;
+            /** Whether the selected object's mesh position participates in snapping. */
             selectMeshPos: boolean;
+            /** Whether a target mesh position is used for snapping. */
             targetMeshPos: boolean;
         }
 
+        /** Scene-process manager for transform controls, custom gizmos and interactive handles. */
         export interface IGizmosManager {
+            /** Scale multiplier applied to scene gizmo icons. */
             iconScale: number;
+            /** Whether scene gizmo icons are visible. */
             showIcon: boolean;
+            /** Whether the built-in transform controls are visible. The misspelling is retained for API compatibility. */
             showTranformTools: boolean;
 
+            /** Index of the hovered or active handle, or `-1` when no handle is active. */
             get activeHandle(): number;
+            /** Mutable state of the built-in move control. */
             get moveCtrl(): IMoveCtrl;
+            /** Active transform control mode. */
             transformCtrlMode: TransformCtrlMode;
+            /** Active local/world coordinate-space mode. */
             spaceMode: TransformSpaceMode;
 
+            /** Switch built-in controls between 2D and 3D behavior. */
             setMode2d(is2d: boolean): void;
 
+            /** Get a cached 3D mesh used to draw a standard gizmo shape. */
             getMesh(type: GizmoMeshKey): Laya.Mesh;
+            /** Get a cached 2D mesh used to draw a standard gizmo shape. */
             getMesh2D(type: GizmoMeshKey): Laya.Mesh2D;
 
+            /** Instantiate and register a gizmo, forwarding arguments to its `create` method. */
             addGizmo<T extends GizmoBase>(gizmoClass: new () => T, ...args: Parameters<T['create']>): T;
+            /** Register a handle class or instance and execute it with the supplied arguments. */
             addHandle<T extends HandleBase>(handleClass: (new () => T) | T, ...args: Parameters<T['execute']>): T;
+            /** Pick a gizmo node at screen coordinates, or return `null` when nothing is hit. */
             pickGizmo(x: number, y: number): Laya.Node | null;
+            /** Append selectable scene nodes inside a screen-selection frustum to `result`. */
             getSprite3DsInRect(frustum: Laya.BoundFrustum, result: Laya.Node[]): void;
         }
+
+        /** Identifier of a cached primitive mesh supplied for 3D gizmo drawing. */
         export type GizmoMeshKey = "quad" | "cube" | "sphere" | "cone" | "plane";
 
+        /** Immediate-mode drawing and editing API for custom 3D scene gizmos. */
         export interface IGizmos3D {
+
+            /** The graphics object currently being edited in either the 2D or 3D scene. */
+            readonly editingGraphics: Readonly<IGraphicsEditingInfo>;
+
+            /**
+             * Switches the single graphics object being edited by scene gizmos.
+             * @param node Graphics owner node. Pass `null` to leave graphics-editing mode.
+             * @param comp Optional component that owns the edited property.
+             * @param propPath Optional data path of the edited property.
+             * @param hideStageGrid Whether to hide the stage grid while editing. Default is false.
+             */
+            switchEditingGraphics(node: Laya.Node | null, comp?: Laya.Component, propPath?: ReadonlyArray<string>, hideStageGrid?: boolean): void;
 
             /**
              * Get a built-in mesh for gizmos.
@@ -2704,9 +2975,9 @@ declare global {
              * @param position Text position.
              * @param text The text content.
              * @param color The text color. Default is white.
-             * @param fontSize The font size. Default is 16.
-             * @param scaleX Text X-axis display scale. Default is 1.0.
-             * @param scaleY Text Y-axis display scale. Default is 1.0.
+             * @param fontSize The font size in screen pixels. Default is 16.
+             * @param scaleX Text X-axis display scale multiplier. Default is 1.0.
+             * @param scaleY Text Y-axis display scale multiplier. Default is 1.0.
              * @param fontWeight Font weight. Default is "normal". Accepts "normal", "bold", "bolder", "lighter", or numeric strings like "100", "200", etc.
              * @param fontFamily Font family. Default is "Arial". Accepts values like "Arial", "Times New Roman", etc.
              */
@@ -2747,14 +3018,21 @@ declare global {
              */
             drawGizmo<T extends GizmoBase>(gizmoClass: new () => T, ...args: Parameters<T['create']>): T;
         }
+
+        /** Identifier of a cached primitive mesh supplied for 2D gizmo drawing. */
         export type Gizmo2DMeshKey = "quad";
 
+        /** Identifies the single node property currently being edited by scene gizmos. */
         export interface IGraphicsEditingInfo {
-            node: Laya.Node;
-            comp: Laya.Component;
+            /** Node that owns the edited graphics, or `null` when graphics editing is inactive. */
+            node: Laya.Node | null;
+            /** Component that owns the property, or `null` when the property is on the node or editing is inactive. */
+            comp: Laya.Component | null;
+            /** Data path of the edited property. */
             readonly propPath: Array<string>;
         }
 
+        /** Immediate-mode drawing and editing API for custom 2D scene gizmos. */
         export interface IGizmos2D {
             /**
              * There can only be one graphic being edited in the scene at a time. Use `switchEditingGraphics` to switch the editing graphic.
@@ -2774,7 +3052,7 @@ declare global {
             getMesh(type: Gizmo2DMeshKey): Laya.Mesh2D;
 
             /**
-             * Get a vector graphics manager for drawing gizmos. Only available in onDrawGizmosSelected callback.
+             * @deprecated Do not use vector graphics in 2D gizmos anymore.
              * @param node The node.
              * @returns The gizmos manager.
              */
@@ -2782,11 +3060,12 @@ declare global {
 
             /**
              * There can only be one graphic being edited in the scene at a time, so use this function to switch the editing graphic.
-             * @param node Graphics owner node. 
+             * @param node Graphics owner node. Pass `null` to leave graphics-editing mode.
              * @param comp Graphics owner component. Can be null.
              * @param propPath Property path of the graphics. Can be null. 
+             * @param hideStageGrid Whether to hide the stage grid while editing. Default is false.
              */
-            switchEditingGraphics(node: Laya.Node, comp?: Laya.Component, propPath?: ReadonlyArray<string>): void;
+            switchEditingGraphics(node: Laya.Node | null, comp?: Laya.Component, propPath?: ReadonlyArray<string>, hideStageGrid?: boolean): void;
 
             /**
              * Draw mesh.
@@ -2905,9 +3184,14 @@ declare global {
              */
             drawPolygon(matrix: Laya.Matrix, x: number, y: number, points: number[], color?: Laya.Color, lineWidth?: number, lineColor?: Laya.Color): void;
         }
+
+        /** Live 2D/3D engine scene exposed to Scene-process plugins. */
         export interface IGameScene extends IMyScene {
+            /** Complete current selection in selection order. */
             readonly selection: ReadonlyArray<Laya.Node>;
+            /** Weak node lookup indexed by editor node ID. */
             readonly allNodes: Map<string, WeakRef<Laya.Node>>;
+            /** Selected nodes whose ancestors are not also selected. */
             readonly topLevelSelection: ReadonlyArray<Laya.Node>;
 
             /**
@@ -2920,36 +3204,61 @@ declare global {
              */
             readonly nodesSet_cameras: Set<Laya.Camera>;
 
+            /** Editor-owned root for 2D content. */
             readonly rootNode2D: Laya.Scene;
+            /** Editor-owned root for 3D content. */
             readonly rootNode3D: Laya.Scene3D;
+            /** Active engine 3D scene. */
             readonly scene3D: Laya.Scene3D;
+            /** Bridge that displays 3D content inside a 2D scene. */
             readonly bridge3DSprite: Laya.Bridge3DSprite;
-            readonly prefabRootNode: Laya.Sprite | Laya.Sprite3D;
+            /** Root of the prefab currently being edited. */
+            readonly prefabRootNode: Laya.Sprite | Laya.Sprite3D | null;
 
+            /** Nested box-editing chain from outermost to innermost. */
             readonly openedBoxChain: ReadonlyArray<Laya.Sprite>;
-            readonly openedBox: Laya.Sprite;
+            /** Innermost box currently opened for isolated editing. */
+            readonly openedBox: Laya.Sprite | null;
 
-            getNodeById(id: string): Laya.Node;
+            /** Get a live scene node by ID, or null if it is missing or has been destroyed. */
+            getNodeById(id: string): Laya.Node | null;
+            /** Mark the live scene dirty so the editor schedules refresh and persistence work. */
             setDirty(): void;
         }
+
+        /** Options controlling GUI-widget serialization. */
         export interface IGUIPrefabWriterOptions {
+            /** Convert a referenced widget into its serialized reference value. */
             getNodeRef?: (node: gui.Widget) => string | string[];
+            /** Omit the standard prefab/scene header from the returned data. */
             noHeader?: boolean;
+            /** Apply prefab-creation serialization rules. */
             creatingPrefab?: boolean;
+            /** Serialize only `node`, without its child hierarchy. */
             ignoreChildren?: boolean;
         }
 
+        /** GUI-prefab serialization helpers for the Scene process. */
         export namespace IGUIPrefabWriter {
+            /** Serialize a widget hierarchy into editor prefab data. */
             function write(node: gui.Widget, options?: IGUIPrefabWriterOptions): any;
+            /** Collect resource references used by a widget hierarchy into `out` or a new set. */
             function collectResources(node: gui.Widget, out?: Set<any>): Set<any>;
         }
+
+        /** Bitmask describing which extension inputs triggered a hot reload. */
         export enum ReloadReason {
+            /** User TypeScript/JavaScript code changed. */
             Code = 1,
+            /** A configured script bundle changed. */
             ScriptBundles = 2,
+            /** A JavaScript plugin changed. */
             JsPlugins = 4,
+            /** Blueprint assets changed. */
             Blueprints = 8,
         }
 
+        /** Metadata and runtime state of one JavaScript plugin asset. */
         export interface IJsPluginInfo {
             /**
              * The asset info of the js plugin.
@@ -2975,6 +3284,10 @@ declare global {
              */
             autoLoad: boolean;
             /**
+             * Whether to preserve the asset path when publishing instead of placing the plugin in the default script directory. Default is false.
+             */
+            preservePath: boolean;
+            /**
              * Whether to minify the js plugin on publish. Only applies to runtime js plugins. Default is false.
              */
             minifyOnPublish: boolean;
@@ -2996,6 +3309,7 @@ declare global {
             limitedPlatforms: string[];
         }
 
+        /** Loads extension code, resolves registered functions and coordinates hot reload. */
         export interface IExtensionManager {
             /**
              * Whether a reload is in progress.
@@ -3017,7 +3331,7 @@ declare global {
              * @param name objectName.methodName
              * @returns The function found. Null if not found.
              */
-            findFunction(name: string): Function;
+            findFunction(name: string): Function | null;
 
             /**
              * Get all js plugins.
@@ -3042,6 +3356,7 @@ declare global {
              */
             flushScriptChanges(): Promise<void>;
         }
+
         export type IFileContent = {
             /**
              * If set, the file name will have its extension removed and the nameSuffix appended to the file name upon output.
@@ -3186,14 +3501,14 @@ declare global {
              * Configuration. e.g. Texture export configuration.
              */
             config?: Record<string, any>;
-
-            /**
-             * Whether to output to a remote package.
-             */
-            remote?: boolean;
         }
 
         export interface IAutoAtlasConfig {
+            /**
+             * Image asset references excluded from this automatic atlas configuration.
+             */
+            excludedImages?: Array<string>;
+
             /**
              * Whether to trim the blank area of the image.
              */
@@ -3304,6 +3619,12 @@ declare global {
              * If true, add all assets in the specified folder to this subpackage.
              */
             packAllAssets?: boolean;
+
+            /**
+             * Output paths of JavaScript plugins that should be loaded by the subpackage entry.
+             * This list is populated during the build in plugin load order.
+             */
+            autoLoadPlugins?: Array<string>;
         }
 
         export interface IExportAssetToolOptions {
@@ -3460,6 +3781,19 @@ declare global {
             getBrokenLinks(): Map<string, Set<IAssetInfo>>;
 
             /**
+             * Get conflicts found while generating asset output paths.
+             * The map key is the conflicting output file path, and the value contains the different source file paths mapped to it.
+             */
+            getOutputPathConflicts(): ReadonlyMap<string, ReadonlySet<string>>;
+
+            /**
+             * Generate the output path of the asset.
+             * @param asset The asset to generate the output path for.
+             * @returns The output path of the asset.
+             */
+            generateAssetOutputPath(asset: IAssetInfo): string;
+
+            /**
              * Write the output files to the specified folder.
              * @param outputPath The output folder.
              * @param outFiles Receive the out files information if provided.
@@ -3468,6 +3802,7 @@ declare global {
              */
             write(outputPath: string, outFiles?: Map<string, IOutFileInfo>, progressCallback?: (value: number) => void, abortToken?: IAbortToken): Promise<void>;
         }
+
 
         export interface IEngineLib {
             /**
@@ -3517,7 +3852,7 @@ declare global {
             /**
              * All the addons of the engine library. Null if no addons.
              */
-            addons: Array<IEngineLibAddOn>;
+            addons: Array<IEngineLibAddOn> | null;
         }
 
         export interface IEngineLibAddOn {
@@ -3549,6 +3884,16 @@ declare global {
              * Whether this addon will not include the files defines in it's owner. Default is false.
              */
             ignoreEntryFiles: boolean;
+
+            /**
+             * Whether this addon is only for native platform. Default is false.
+             */
+            forNativeOnly?: boolean;
+
+            /**
+             * If this addon is only for native platform, the fallback addon name for other platforms. Default is null.
+             */
+            fallback?: string | null;
         }
 
         export interface IEngineLibsManager {
@@ -3566,10 +3911,11 @@ declare global {
              * @param options
              * - renderDevice: The render device. Default is "webgl".
              * - debug: Whether to load the debug files. Default is false.
+             * - native: Whether to allow the native only libraries. Default is false.
              * - disableWebAssembly: Whether to disable the web assembly. Default is false.
              * @returns The files. 
              */
-            getFiles(options?: { renderDevice?: string, debug?: boolean, disableWebAssembly?: boolean }): { files: Array<string>, otherFiles: Array<string>, workerFiles: Array<string>, wasmFallbackLog: Array<string> };
+            getFiles(options?: { renderDevice?: string, debug?: boolean, native?: boolean, disableWebAssembly?: boolean }): { files: Array<string>, otherFiles: Array<string>, workerFiles: Array<string>, wasmFallbackLog: Array<string> };
 
             /**
              * Get the full path of the lib.
@@ -3583,6 +3929,7 @@ declare global {
              */
             getFullPath(libName: string): Promise<string>;
         }
+
         export interface IEditorEnvSingleton {
             /**
              * The path of the project
@@ -3872,7 +4219,13 @@ declare global {
              * Synchronize data with the UI process and refresh gizmos/handles immediately in the next frame.
              */
             invalidateFrame(): void;
+
+            /**
+             * Refresh gizmos/handles immediately in the next frame.
+             */
+            invalidateGizmos(): void;
         }
+
         export interface ID3Manager {
             /**
              * Whether to show the grid line in the scene.
@@ -4275,6 +4628,335 @@ declare global {
              */
             buildScriptBundle(defAsset: IAssetInfo, outDir: string, options?: ICodeBuildOptions): Promise<Array<string>>;
         }
+        /**
+         * Public types for the built-in Clipper2 polygon library.
+         *
+         * Coordinates are double-precision numbers. Boolean operations return newly allocated
+         * paths and do not mutate their input paths. `precision` parameters control decimal
+         * rounding inside an operation; omit them to use the library default.
+         */
+        export namespace Clipper2 {
+            /** Two-dimensional point in the caller's coordinate system. */
+            export interface PointD {
+                /** Horizontal coordinate. */
+                x: number;
+                /** Vertical coordinate. */
+                y: number;
+            }
+
+            /** Polygon filling rule: 0 EvenOdd, 1 NonZero, 2 Positive, 3 Negative. */
+            export type FillRule = 0 | 1 | 2 | 3;
+            /** Boolean operation: 0 None, 1 Intersection, 2 Union, 3 Difference, 4 Xor. */
+            export type ClipType = 0 | 1 | 2 | 3 | 4;
+            /** Input-path role: 1 Subject, 2 Clip. */
+            export type PathType = 1 | 2;
+            /** Offset join: 0 Square, 1 Round, 2 Miter, 3 Bevel. */
+            export type JoinType = 0 | 1 | 2 | 3;
+            /** Offset end: 0 Polygon, 1 Joined, 2 Butt, 3 Square, 4 Round. */
+            export type EndType = 0 | 1 | 2 | 3 | 4;
+            /** Point classification: 0 on boundary, 1 inside, 2 outside. */
+            export type PointInPolygonResult = 0 | 1 | 2;
+
+            /** Mutable, typed path of points. Use `IEditorEnv.Clipper2.PathD` to construct one. */
+            export interface IPathD extends Iterable<PointD> {
+                /** Append points and return the new length. */
+                push(...points: PointD[]): number;
+                /** Append all points from an iterable and return the new length. */
+                pushRange(points: Iterable<PointD>): number;
+                /** Remove every point. */
+                clear(): void;
+                /** Return a deep copy whose point storage is independent. */
+                clone(): IPathD;
+                /** Remove and return the last point, or undefined when empty. */
+                pop(): PointD | undefined;
+                /** Return the point view at `index`. Mutating it may mutate the path. */
+                get(index: number): PointD;
+                /** Return an independent copy of the point at `index`. */
+                getClone(index: number): PointD;
+                /** Return the X coordinate at `index`. */
+                getX(index: number): number;
+                /** Return the Y coordinate at `index`. */
+                getY(index: number): number;
+                /** Replace the point coordinates at `index`. */
+                set(index: number, x: number, y: number): void;
+                /** Number of points in the path. */
+                readonly length: number;
+            }
+
+            /** Runtime constructor signatures for a mutable path. */
+            export interface PathDConstructor {
+                /** Create an empty path. */
+                new(): IPathD;
+                /** Create storage with the requested initial length. */
+                new(arrayLength: number): IPathD;
+                /** Create a path containing copies of the supplied points. */
+                new(...points: PointD[]): IPathD;
+            }
+
+            /** Mutable collection of paths. */
+            export interface PathsD extends Array<IPathD> {
+                /** Remove every path. */
+                clear(): void;
+                /** Append an existing `IPathD` without converting its point storage. */
+                directPush(path: IPathD): void;
+                /** Convert and append path iterables; return the new collection length. */
+                push(...paths: Iterable<PointD>[]): number;
+                /** Convert and append all path iterables; return the new collection length. */
+                pushRange(paths: Iterable<Iterable<PointD>>): number;
+            }
+
+            /** Runtime constructor and clone signatures for a path collection. */
+            export interface PathsDConstructor {
+                /** Create an empty path collection. */
+                new(): PathsD;
+                /** Create a collection with the requested initial length. */
+                new(arrayLength: number): PathsD;
+                /** Create a collection containing the supplied paths. */
+                new(...paths: IPathD[]): PathsD;
+                /** Deep-copy all paths and their points. */
+                clone(paths: Iterable<Iterable<PointD>>): PathsD;
+            }
+
+            /** Mutable axis-aligned rectangle. */
+            export interface RectD {
+                /** Minimum X coordinate. */
+                left: number;
+                /** Minimum Y coordinate. */
+                top: number;
+                /** Maximum X coordinate. */
+                right: number;
+                /** Maximum Y coordinate. */
+                bottom: number;
+                /** Current width (`right - left`). */
+                width: number;
+                /** Current height (`bottom - top`). */
+                height: number;
+                /** Return the center point. */
+                midPoint(): PointD;
+                /** Return the rectangle boundary as a closed polygon path. */
+                asPath(): IPathD;
+                /** Test whether the point lies within the rectangle bounds. */
+                contains(point: PointD): boolean;
+                /** Test whether the complete rectangle lies within these bounds. */
+                contains(rect: RectD): boolean;
+                /** Multiply all rectangle coordinates by `scale` in place. */
+                scale(scale: number): void;
+                /** Test whether the rectangle has no valid area. */
+                isEmpty(): boolean;
+                /** Test whether two rectangles overlap. */
+                intersects(rect: RectD): boolean;
+            }
+
+            /** Runtime constructor signatures for rectangles. */
+            export interface RectDConstructor {
+                /** Create an empty rectangle. */
+                new(): RectD;
+                /** Create a rectangle from explicit bounds. */
+                new(left: number, top: number, right: number, bottom: number): RectD;
+                /** Create initialized-valid or invalid sentinel bounds. */
+                new(isValid: boolean): RectD;
+                /** Copy a rectangle. */
+                new(rect: RectD): RectD;
+            }
+
+            /** Base node in a polygon containment tree. */
+            export interface PolyPathBase extends Iterable<PolyPathBase> {
+                /** Number of direct child polygons. */
+                readonly length: number;
+                /** Return nesting depth, where top-level output is level 0. */
+                getLevel(): number;
+                /** Return whether this polygon represents a hole by nesting parity. */
+                getIsHole(): boolean;
+                /** Remove this node's children. */
+                clear(): void;
+            }
+
+            /** Floating-point polygon-tree node. */
+            export interface PolyPathD extends PolyPathBase {
+                /** Coordinate scale used while converting from the integer clipping core. */
+                scale: number;
+                /** Polygon at this node; the tree root may not have one. */
+                polygon?: IPathD;
+                /** Signed area of this node's polygon. */
+                area(): number;
+                /** Iterate direct child nodes. */
+                [Symbol.iterator](): Generator<PolyPathD, void, unknown>;
+            }
+
+            /** Root or node type for hierarchical polygon output. */
+            export interface PolyTreeD extends PolyPathD {
+            }
+
+            /** Runtime constructor for polygon trees. */
+            export interface PolyTreeDConstructor {
+                /** Create a tree root or a child associated with `parent`. */
+                new(parent?: PolyPathBase): PolyTreeD;
+            }
+
+            /** Stateful clipping engine for incremental input and reusable output buffers. */
+            export interface ClipperD {
+                /** Remove all subject and clip inputs so the instance can be reused. */
+                clear(): void;
+                /** Add one subject or clip path. Set `isOpen` for an open polyline. */
+                addPath(path: Iterable<PointD>, pathType: PathType, isOpen?: boolean): void;
+                /** Add one or more subject or clip paths. */
+                addPaths(paths: Iterable<PointD> | Iterable<Iterable<PointD>>, pathType: PathType, isOpen?: boolean): void;
+                /** Add one or more closed subject paths. */
+                addSubject(paths: Iterable<PointD> | Iterable<Iterable<PointD>>): void;
+                /** Add one or more open subject polylines. */
+                addOpenSubject(paths: Iterable<PointD> | Iterable<Iterable<PointD>>): void;
+                /** Add one or more closed clip paths. */
+                addClip(paths: Iterable<PointD> | Iterable<Iterable<PointD>>): void;
+                /** Execute into separate caller-owned closed and open output collections. */
+                execute(clipType: ClipType, fillRule: FillRule, solutionClosed: PathsD, solutionOpen: PathsD): boolean;
+                /** Execute closed-path output into a caller-owned collection. */
+                execute(clipType: ClipType, fillRule: FillRule, solutionClosed: PathsD): boolean;
+                /** Execute hierarchical output and collect open paths separately. */
+                execute(clipType: ClipType, fillRule: FillRule, polyTree: PolyTreeD, openPaths: PathsD): boolean;
+                /** Execute closed paths into a hierarchical containment tree. */
+                execute(clipType: ClipType, fillRule: FillRule, polyTree: PolyTreeD): boolean;
+            }
+
+            /** Runtime constructor for a stateful clipping engine. */
+            export interface ClipperDConstructor {
+                /** Create an engine using the optional number of decimal places for input rounding. */
+                new(roundingDecimalPrecision?: number): ClipperD;
+            }
+
+            /** Stateless polygon operations. Returned paths are newly allocated. */
+            export interface ClipperApi {
+                /** Return the intersection of subject and clip polygons. */
+                intersect(subject: PathsD, clip: PathsD, fillRule: FillRule, precision?: number): PathsD;
+                /** Union all subject polygons. */
+                union(subject: PathsD, fillRule: FillRule, precision?: number): PathsD;
+                /** Union subject and clip polygon sets. */
+                union(subject: PathsD, clip: PathsD, fillRule: FillRule, precision?: number): PathsD;
+                /** Subtract clip polygons from subject polygons. */
+                difference(subject: PathsD, clip: PathsD, fillRule: FillRule, precision?: number): PathsD;
+                /** Return regions contained by exactly one of the two polygon sets. */
+                xor(subject: PathsD, clip: PathsD, fillRule: FillRule, precision?: number): PathsD;
+                /** Execute an arbitrary boolean operation and return flat closed paths. */
+                booleanOp(clipType: ClipType, subject: PathsD, clip: PathsD | undefined, fillRule: FillRule, precision?: number): PathsD;
+                /** Execute an arbitrary boolean operation into a caller-owned polygon tree. */
+                booleanOp(clipType: ClipType, subject: PathsD, clip: PathsD | undefined, polyTree: PolyTreeD, fillRule: FillRule, precision?: number): void;
+                /** Offset paths by `delta`; positive and negative meanings depend on winding and end type. */
+                inflatePaths(paths: PathsD, delta: number, joinType: JoinType, endType: EndType, miterLimit?: number, precision?: number, arcTolerance?: number): PathsD;
+                /** Clip closed polygons to an axis-aligned rectangle. */
+                rectClip(rect: RectD, paths: IPathD | PathsD, precision?: number): PathsD;
+                /** Clip open polylines to an axis-aligned rectangle. */
+                rectClipLines(rect: RectD, paths: IPathD | PathsD, precision?: number): PathsD;
+                /** Compute the Minkowski sum of a pattern and a path. */
+                minkowskiSum(pattern: IPathD, path: IPathD, isClosed: boolean): PathsD;
+                /** Compute the Minkowski difference of a pattern and a path. */
+                minkowskiDiff(pattern: IPathD, path: IPathD, isClosed: boolean): PathsD;
+                /** Return signed area for one path, or the sum for a collection. */
+                area(path: IPathD | PathsD): number;
+                /** Test path orientation using the sign convention of `area`. */
+                isPositive(path: IPathD): boolean;
+                /** Format a path for diagnostics. The format is not a persistence contract. */
+                pathDToString(path: IPathD): string;
+                /** Format multiple paths for diagnostics. The format is not a persistence contract. */
+                pathsDToString(paths: PathsD): string;
+                /** Return a new path with every coordinate multiplied by `scale`. */
+                scalePath(path: IPathD, scale: number): IPathD;
+                /** Return new paths with every coordinate multiplied by `scale`. */
+                scalePaths(paths: PathsD, scale: number): PathsD;
+                /** Return a new path translated by the supplied delta. */
+                translatePath(path: IPathD, dx: number, dy: number): IPathD;
+                /** Return new paths translated by the supplied delta. */
+                translatePaths(paths: PathsD, dx: number, dy: number): PathsD;
+                /** Return a new path with point order reversed. */
+                reversePath(path: IPathD): IPathD;
+                /** Return new paths with every point order reversed. */
+                reversePaths(paths: PathsD): PathsD;
+                /** Calculate axis-aligned bounds for one path or a path collection. */
+                getBounds(path: IPathD | PathsD): RectD;
+                /** Build a path from alternating X/Y numbers: `[x0, y0, x1, y1, ...]`. */
+                makePathD(points: ArrayLike<number>): IPathD;
+                /** Remove adjacent points closer than the supplied squared distance. */
+                stripNearDuplicates(path: IPathD, minEdgeLengthSquared: number, isClosedPath: boolean): IPathD;
+                /** Simplify one path with the Ramer-Douglas-Peucker algorithm. */
+                ramerDouglasPeucker(path: IPathD, epsilon: number): IPathD;
+                /** Simplify multiple paths with the Ramer-Douglas-Peucker algorithm. */
+                ramerDouglasPeucker(paths: PathsD, epsilon: number): PathsD;
+                /** Remove insignificant vertices from one path. */
+                simplifyPath(path: IPathD, epsilon: number, isClosedPath?: boolean): IPathD;
+                /** Remove insignificant vertices from multiple paths. */
+                simplifyPaths(paths: PathsD, epsilon: number, isClosedPaths?: boolean): PathsD;
+                /** Remove collinear vertices after rounding to `precision` decimal places. */
+                trimCollinear(path: IPathD, precision: number, isOpen?: boolean): IPathD;
+                /** Classify a point as on, inside, or outside a polygon. */
+                pointInPolygon(point: PointD, polygon: IPathD, precision?: number): PointInPolygonResult;
+                /** Create a polygonal ellipse; omit `radiusY` for a circle and `steps` for automatic detail. */
+                ellipse(center: PointD, radiusX: number, radiusY?: number, steps?: number): IPathD;
+            }
+        }
+
+        /** Runtime exports of the built-in Clipper2 polygon library. */
+        export interface IClipper2 {
+            /** Fill-rule constants used by boolean operations. */
+            readonly FillRule: {
+                readonly EvenOdd: 0;
+                readonly NonZero: 1;
+                readonly Positive: 2;
+                readonly Negative: 3;
+            };
+            /** Boolean-operation constants. */
+            readonly ClipType: {
+                readonly None: 0;
+                readonly Intersection: 1;
+                readonly Union: 2;
+                readonly Difference: 3;
+                readonly Xor: 4;
+            };
+            /** Input-path role constants for `ClipperD`. */
+            readonly PathType: {
+                readonly Subject: 1;
+                readonly Clip: 2;
+            };
+            /** Offset join-style constants. */
+            readonly JoinType: {
+                readonly Square: 0;
+                readonly Round: 1;
+                readonly Miter: 2;
+                readonly Bevel: 3;
+            };
+            /** Offset end-style constants. */
+            readonly EndType: {
+                readonly Polygon: 0;
+                readonly Joined: 1;
+                readonly Butt: 2;
+                readonly Square: 3;
+                readonly Round: 4;
+            };
+            /** Point-in-polygon result constants. */
+            readonly PointInPolygonResult: {
+                readonly IsOn: 0;
+                readonly IsInside: 1;
+                readonly IsOutside: 2;
+            };
+            /** Mutable path constructor. */
+            readonly PathD: Clipper2.PathDConstructor;
+            /** Mutable path-collection constructor. */
+            readonly PathsD: Clipper2.PathsDConstructor;
+            /** Mutable rectangle constructor. */
+            readonly RectD: Clipper2.RectDConstructor;
+            /** Stateful clipping-engine constructor. */
+            readonly ClipperD: Clipper2.ClipperDConstructor;
+            /** Polygon containment-tree constructor. */
+            readonly PolyTreeD: Clipper2.PolyTreeDConstructor;
+            /** Stateless polygon operations. */
+            readonly Clipper: Clipper2.ClipperApi;
+            /** Test whether a runtime value is a Clipper2 path. */
+            readonly isPathD: (value: unknown) => value is Clipper2.IPathD;
+            /** Test whether a runtime value is a Clipper2 path collection. */
+            readonly isPathsD: (value: unknown) => value is Clipper2.PathsD;
+            /** Test whether a runtime value is a point-like Clipper2 value. */
+            readonly isPointD: (value: unknown) => value is Clipper2.PointD;
+            /** Test whether a runtime value is a Clipper2 rectangle. */
+            readonly isRectD: (value: unknown) => value is Clipper2.RectD;
+        }
+
         export enum OrthographicMode {
             Orthographic_XZ,
             Orthographic_XY,
@@ -4626,9 +5308,9 @@ declare global {
              * - If it is a built-in build target of the IDE, it is in the built-in release template folder of the IDE; if it is a custom build target added by a plugin, it is in the template folder specified by the plugin.
              * 
              * @param filePath A relative path.
-             * @returns The absolute path of the file.
+             * @returns The absolute path of the file, or null if it does not exist in any build-template location.
              */
-            findFileInBuildTemplate(filePath: string): string;
+            findFileInBuildTemplate(filePath: string): string | null;
 
             /**
              * Load the index.html template file. This method is used to load the index.html template file for web platforms.
@@ -4820,6 +5502,7 @@ declare global {
              */
             function start(platform: string, destPath: string, ...tempPlugins: Array<IBuildPlugin>): IBuildTask;
         }
+
         export interface IBuildManager {
             /**
              * Get the target information of the specified platform.
@@ -4906,6 +5589,12 @@ declare global {
              * Enable version management. If true, the hash value of the file will be appended to the file name.
              */
             enableVersion: boolean;
+
+            /**
+             * When enableVersion is true, whether to append the hash value to the fileconfig file name.
+             * If false, fileconfig keeps its original file name and uses a query parameter to avoid caching. Default is false.
+             */
+            enableFileConfigHash: boolean;
 
             /**
              * When enableVersion is true, ignore these files in the version management. They are asset ids in 'res://uuid' format.
@@ -5039,6 +5728,12 @@ declare global {
             subpackageGameJsName: string;
 
             /**
+             * Template content used to generate a subpackage entry. The template receives a `libs` array whose `name` values are paths relative to the entry file.
+             * If the subpackage defines a main script, the rendered content is prepended to the compiled script when there are auto-loaded JavaScript plugins in the subpackage.
+             */
+            subpackageGameJsTemplate: string;
+
+            /**
              * Overide the default exporter of certain assets.
              */
             customAssetExporters: Map<IAssetInfo, new () => IAssetExporter>;
@@ -5061,17 +5756,18 @@ declare global {
              */
             runHandler: { serve?: string, open?: string, QRCode?: string, secure?: boolean, runInTerminal?: string };
         }
+
         export interface IAssetThumbnail {
             /**
              * Generate a thumbnail for the asset.
              * @param asset The asset to generate thumbnail for.
              * @returns The thumbnail data.
              * - String type: It is the absolute path of a png/jpg/svg file.
-             * - Buffer type: It is data encoded as png. The recommended size for the image is IEditorEnv.AssetThumbmail.imageSize
+             * - Buffer type: It is data encoded as PNG. The recommended size is `IEditorEnv.AssetThumbnail.imageSize`.
              * - "source": Use the source image directly.
              * - null: No thumbnail is generated.
              */
-            generate(asset: IAssetInfo): Promise<Buffer | string>;
+            generate(asset: IAssetInfo): Promise<Buffer | string | "source" | null>;
 
             /**
              * Destroy the thumbnail generator.
@@ -5120,7 +5816,7 @@ declare global {
              * Json files may have various usage, this method is used to recognize the real type of a json file, and return the type name as sub type. Return null if no special type is recognized.
              * @param headText The first 200 characters of the json file.
              * @param asset The json asset.
-             * @returns The type name as sub type.
+             * @returns The subtype name, or null when the JSON does not match a recognized subtype.
              * @example
              * ```
              * onRecognizeJson(headText: string, asset: IAssetInfo): AssetType | string {
@@ -5131,8 +5827,9 @@ declare global {
              * }
              * ```
              */
-            onRecognizeJson?(headText: string, asset: IAssetInfo): AssetType | string;
+            onRecognizeJson?(headText: string, asset: IAssetInfo): AssetType | string | null;
         }
+
         export interface IAssetPreview extends IOffscreenRenderSubmit {
             /**
              * A helper scene for rendering.
@@ -5180,6 +5877,9 @@ declare global {
              */
             destroy(): void;
         }
+        export const resourcesDirName = "resources";
+        export const editorResourcesDirName = "editorresources";
+
         export interface IPackageInfo {
             version: string;
             displayName?: string;
@@ -5203,7 +5903,7 @@ declare global {
              * Custom asset filters.
              * @example
              * ```
-             * IEditorEnv.assetManager.customAssetFilters["myFilter"] = (asset: IAssetInfo)=> {
+             * EditorEnv.assetMgr.customAssetFilters["myFilter"] = (asset: IEditorEnv.IAssetInfo) => {
              *    return asset.name.startsWith("my");
              * };
              * ```
@@ -5229,7 +5929,7 @@ declare global {
              * Get all assets in the specified folder.
              * @param folderAsset The folder asset.
              * @param types The types of assets to get. If not specified, all types of assets will be returned.
-             * @param customFilter The custom filter to use. The filter should have been registered through the `IEditorEnv.assetMgr.customAssetFilters` method.
+             * @param customFilter The custom filter name registered through `EditorEnv.assetMgr.customAssetFilters`.
              * @returns The assets.
              */
             getAllAssetsInDir(folderAsset: IAssetInfo, types?: ReadonlyArray<AssetType>, customFilter?: string): Array<IAssetInfo>;
@@ -5242,7 +5942,7 @@ declare global {
             /**
              * Get all assets in all `resources` folder.
              * @param types The types of assets to get. If not specified, all types of assets will be returned.
-             * @param customFilter The custom filter to use. The filter should have been registered through the `IEditorEnv.assetMgr.customAssetFilters` method.
+             * @param customFilter The custom filter name registered through `EditorEnv.assetMgr.customAssetFilters`.
              * @returns The assets.
              */
             getAllAssetsInResourceDir(types?: ReadonlyArray<AssetType>, customFilter?: string): Array<IAssetInfo>;
@@ -5264,7 +5964,7 @@ declare global {
              * @param folderAsset The folder asset.
              * @param types The types of assets to get. If not specified, all types of assets will be returned.
              * @param matchSubType Whether to return assets whose subtypes match the types parameter.
-             * @param customFilter The custom filter to use. The filter should have been registered through the `IEditorEnv.assetMgr.customAssetFilters` method.
+             * @param customFilter The custom filter name registered through `EditorEnv.assetMgr.customAssetFilters`.
              * @returns The assets.
              */
             getChildrenAssets(folderAsset: IAssetInfo, types: ReadonlyArray<AssetType>, matchSubType?: boolean, customFilter?: string): Array<IAssetInfo>;
@@ -5274,7 +5974,7 @@ declare global {
              * @param keyword The keyword to search.
              * @param types The types of assets to get. If not specified, all types of assets will be returned.
              * @param matchSubType Whether to return assets whose subtypes match the types parameter.
-             * @param customFilter The custom filter to use. The filter should have been registered through the `IEditorEnv.assetMgr.customAssetFilters` method.
+             * @param customFilter The custom filter name registered through `EditorEnv.assetMgr.customAssetFilters`.
              * @param limit The maximum number of assets to return. Default is 5000.
              * @returns The assets.
              */
@@ -5294,7 +5994,7 @@ declare global {
              * @param assetIds The asset ids to filter.
              * @param types The types of assets to get. If not specified, all types of assets will be returned.
              * @param matchSubType Whether to return assets whose subtypes match the types parameter.
-             * @param customFilter The custom filter to use. The filter should have been registered through the `IEditorEnv.assetMgr.customAssetFilters` method.
+             * @param customFilter The custom filter name registered through `EditorEnv.assetMgr.customAssetFilters`.
              * @returns The assets.
              */
             filterAssets(assetIds: ReadonlyArray<string>, types?: ReadonlyArray<AssetType>, matchSubType?: boolean, customFilter?: string): Array<IAssetInfo>;
@@ -5303,15 +6003,15 @@ declare global {
              * Get an asset by its id or path.
              * @param idOrPath The id or path of the asset.
              * @param allowResourcesSearch Whether to follow the resources search rules.
-             * @returns The asset.
+             * @returns The asset, or null if no matching asset is found.
              * @example
              * ```
-             * IEditorEnv.assetManager.getAsset("12345678-1234-1234-1234-1234567890ab");
-             * IEditorEnv.assetManager.getAsset("textures/texture.png"); //path is relative to the assets folder
-             * IEditorEnv.assetManager.getAsset("resources/textures/texture.png", true); //search in all resources folders
+             * EditorEnv.assetMgr.getAsset("12345678-1234-1234-1234-1234567890ab");
+             * EditorEnv.assetMgr.getAsset("textures/texture.png"); // path is relative to the assets folder
+             * EditorEnv.assetMgr.getAsset("resources/textures/texture.png", true); // search in all resources folders
              * ```
              */
-            getAsset(idOrPath: string, allowResourcesSearch?: boolean): IAssetInfo;
+            getAsset(idOrPath: string, allowResourcesSearch?: boolean): IAssetInfo | null;
 
             /**
              * Get all assets of the specified types.
@@ -5379,7 +6079,7 @@ declare global {
              * @returns The asset type.
              * @example
              * ```
-             * IEditorEnv.assetManager.getAssetTypeByFileExt("png");
+             * EditorEnv.assetMgr.getAssetTypeByFileExt("png");
              * //=> AssetType.Texture
              * ```
              */
@@ -5391,7 +6091,7 @@ declare global {
              * @returns The file extensions.
              * @example
              * ```
-             * IEditorEnv.assetManager.getFileExtByAssetType(AssetType.Texture);
+             * EditorEnv.assetMgr.getFileExtByAssetType(IEditorEnv.AssetType.Texture);
              * //=> ["png", "jpg", "jpeg", "astc", "ktx", "ktx2", "dds", "pvr", "hdr", "tif", "tiff", "tga", "rendertexture"]
              * ```
              */
@@ -5414,7 +6114,7 @@ declare global {
             getFullPath(asset: IAssetInfo): string;
 
             /**
-             * Convert a relative path to a absolute path.
+             * Convert a path relative to the assets folder to an absolute path.
              * @param path The relative path to the assets folder.
              * @returns The absolute path.
              */
@@ -5433,7 +6133,7 @@ declare global {
              * @returns The absolute path of the scene file.
              * @example
              * ```
-             * IEditorEnv.assetManager.getPrefabSourcePath(aFbxAsset);
+             * EditorEnv.assetMgr.getPrefabSourcePath(aFbxAsset);
              * //=> "/path/to/project/library/0a/0a0a0a0a-0a0a-0a0a-0a0a-0a0a0a0a0a0a.lh"
              * ```
              */
@@ -5500,6 +6200,7 @@ declare global {
              */
             flushChanges(): Promise<void>;
         }
+
         export interface IAssetImporterOptions {
             /**
              * Importer version. This is used to handle the compatibility of the importer.
@@ -5578,7 +6279,7 @@ declare global {
             readonly importArgs: ReadonlyArray<string>;
 
             /**
-             * Get a absolute path of which the sub-asset is saved.
+             * Absolute directory where sub-assets are saved.
              */
             readonly subAssetLocation: string;
 
@@ -5597,13 +6298,13 @@ declare global {
             /**
              * Create a sub-asset.
              * @param fileName File name of the sub-asset. e.g. "texture.png"
-             * @param id ID of the sub-asset. The ID is unique within the sub-assets of the asset. Commonly you dont need to provide this value, it will be generated automatically.
+             * @param id ID of the sub-asset. The ID is unique within the asset's sub-assets. Usually you do not need to provide it because one is generated automatically.
              * @returns The sub-asset info.
              */
             createSubAsset(fileName: string, id?: string): ISubAssetInfo;
 
             /**
-             * Create a asset in the asset library.
+             * Create an asset in the asset library.
              * @param filePath A path relative to the assets folder.
              * @param metaData Metadata of the asset.
              * @returns The asset info.
@@ -5636,21 +6337,21 @@ declare global {
             /**
              * Get the path relative to the assets folder by the asset ID.
              * @param assetId 
-             * @returns The path relative to the assets folder.
+             * @returns The path relative to the assets folder, or null if the asset ID cannot be resolved.
              */
-            getAssetPathById(assetId: string): string;
+            getAssetPathById(assetId: string): string | null;
 
             /**
              * Find an asset by a relative path, starting from the folder where the current asset is located. Null if not found.
              * @param filePath A relative path.
              * @param predicate An optional filter function.
-             * @returns The asset info. 
+             * @returns The asset info, or null if no matching asset is found.
              * @example
              * ```
              * let asset = this.findAsset("textures/texture.png");
              * ```
              */
-            findAsset(filePath: string, predicate?: (asset: IAssetInfo) => boolean): IAssetInfo;
+            findAsset(filePath: string, predicate?: (asset: IAssetInfo) => boolean): IAssetInfo | null;
 
             /**
              * Report the progress of the importer. The value should be between 0 and 100.
@@ -5665,6 +6366,7 @@ declare global {
              */
             readonly settings: ITextureSettings;
         }
+
         export interface IAssetExporterOptions {
             /**
              * If a exporter has this flag set to true, assets handled by this exporter will not be exported, and the handleExport method will not be called.
@@ -5729,7 +6431,7 @@ declare global {
 
             /**
              * Query the assets that reference the given asset IDs or paths.
-             * @param assetIdOrPaths The asset IDs or paths to query.
+             * @param assets The asset IDs or paths to query.
              * @returns A promise that resolves to an array of asset info objects representing the referencing assets. 
              */
             queryReference(assets: ReadonlyArray<string>): Promise<Array<IAssetInfo>>;
@@ -5742,6 +6444,7 @@ declare global {
              */
             replaceReference(replacements: Record<string, string>, targetAssets?: ReadonlySet<IAssetInfo>): Promise<Array<IAssetInfo>>;
         }
+
         export type FEnumDescriptor = {
             name: string,
             value: any,
@@ -5892,8 +6595,12 @@ declare global {
 
             /**
              * Whether the property is serializable. If false, the property will not be serialized. Default is true.
+             * 
+             * boolean: False means not serializable, true means serializable.
+             * 
+             * string: For example, "!!data.a". If !!data.a is true, it indicates that this property is serializable.
              */
-            serializable?: boolean;
+            serializable?: boolean | string;
             /**
              * When the property does not participate in serialization, if its data may be affected by another serializable property, fill in the name of other property here.
              * 
@@ -6087,6 +6794,15 @@ declare global {
              * - move: Move an element to a specified position.
              */
             arrayActions?: Array<"append" | "insert" | "delete" | "move">;
+
+            /**
+             * Applicable to array type properties. Defines an optional header and proportional width for each column
+             * rendered by a compound array-element inspector. Width values are percentages and are normalized when
+             * their total is not exactly 100.
+             *
+             * Use "i18n:<key>" or "i18n:<file-id>:<key>" for localized captions.
+             */
+            arrayColumns?: Array<{ caption: string; width: number }>;
 
             /**
              * Applicable to array or dictionary type properties. Here you can define the properties of array/dictionary elements.
@@ -6330,6 +7046,11 @@ declare global {
             newNodeName?: string;
 
             /**
+             * Default file name without extension when this asset type is created from the Project/Create menu.
+             */
+            newAssetName?: string;
+
+            /**
              * Icon of the type.  Images are generally placed in the editorResources directory or its subdirectories, and then referenced using a path starting from editorResources, such as "editorResources/my-plugin/icon.png".
              */
             icon?: string;
@@ -6494,9 +7215,24 @@ declare global {
             caption?: string;
 
             /**
+             * Button caption when the bound toggle property is true.
+             *
+             * Use "i18n:&lt;key&gt;" or "i18n:&lt;file-id&gt;:&lt;key&gt;" to specify the key of the internationalization string.
+             */
+            selectCaption?: string;
+
+            /**
              * Button tips.
              */
             tips?: string;
+
+            /**
+             * Makes this button toggle a boolean property.
+             *
+             * Set to true to toggle the field's own property, or provide a property name
+             * to toggle another property on the same object.
+             */
+            toggleProperty?: true | string;
 
             /**
              * If this is defined, a event with this name will be emitted when the button is clicked.
@@ -6529,6 +7265,7 @@ declare global {
              */
             sceneHotkey?: string;
         }
+
         /**
          * Asset type
          */
@@ -6582,7 +7319,9 @@ declare global {
             I18nSettings,
 
             Dll,
-            CSS
+            CSS,
+            ComputeShader,
+            ScriptableObject
         }
 
         /**
@@ -6648,9 +7387,13 @@ declare global {
          * Asset changed flag
          */
         export enum AssetChangedFlag {
+            /** Existing asset contents or metadata changed. */
             Modified = 0,
+            /** A new asset was added to the database. */
             New = 1,
+            /** An asset was removed from the database. */
             Deleted = 2,
+            /** An asset moved or was renamed. */
             Moved = 3
         }
 
@@ -6675,13 +7418,13 @@ declare global {
              */
             Editor = 4,
             /**
-             * A script is a javascript file.
+             * A JavaScript file.
              */
             Javascript = 8
         }
 
         /**
-         * Asset Infomation
+         * Asset information stored by the asset database.
          */
         export interface IAssetInfo {
             /**
@@ -6724,10 +7467,8 @@ declare global {
              * If the asset has children, only meaningful for folders and some special assets like fbx.
              */
             hasChild: boolean;
-            /**
-             * Asset flags
-             */
-            flags: number;
+            /** Bitmask composed from {@link AssetFlags}. */
+            flags: AssetFlags;
             /**
              * Asset script type
              */
@@ -6757,7 +7498,7 @@ declare global {
         }
 
         /**
-         * Custom asset filter. Can be used to register custom asset filters through the `IEditorEnv.assetMgr.customAssetFilters` method.
+         * Custom asset filter registered through `EditorEnv.assetMgr.customAssetFilters` in the Scene process.
          */
         export interface IAssetFilter {
             /**
@@ -6768,6 +7509,7 @@ declare global {
             (asset: IAssetInfo): boolean;
         }
 
+        /** Filters and result limits used by asset-search APIs. */
         export interface IFindAssetsOptions {
             /**
              * Whether to match the sub type. Some assets have a type and a sub type. Such as a json asset has a type of `Json` and a sub type of `Spine` if it is a description file of spine.
@@ -6775,7 +7517,7 @@ declare global {
             matchSubType?: boolean;
 
             /**
-             * The custom filter. Developers can register custom filters by calling the `IEditorEnv.assetMgr.customAssetFilters` method in scene process.
+             * The custom filter name registered through `EditorEnv.assetMgr.customAssetFilters` in the Scene process.
              */
             customFilter?: string;
 
@@ -6794,6 +7536,7 @@ declare global {
              */
             limit?: number;
         }
+
         /**
          * Interface for the configuration file.
          */
@@ -7518,6 +8261,12 @@ declare global {
             deepCloneObj(obj: any): any;
 
             /**
+             * Creates a cycle-free snapshot containing only primitives, arrays and plain objects.
+             * Throws when the value contains cycles or unsupported runtime objects.
+             */
+            clonePlainData<T>(value: T): T;
+
+            /**
              * Merge two objects. 
              * 
              * If a property with the same name exists in both objects, and the value of it is an object, the two objects will be merged recursively.
@@ -7587,7 +8336,14 @@ declare global {
             getDataByPath(obj: any, datapath: ReadonlyArray<string>, pathLen?: number): any;
 
             /**
-             * Whether an object is empty. A empty object has no properties.
+             * Whether a value has enumerable string-keyed properties.
+             * @param value The value to inspect.
+             * @param ignoreEditorInternal Whether properties prefixed with `_$` should be ignored.
+             */
+            hasEnumerableProperties(value: unknown, ignoreEditorInternal?: boolean): boolean;
+
+            /**
+             * Whether an object has no enumerable properties other than editor-internal properties prefixed with `_$`.
              * @param obj The object to check.
              * @returns True if the object is empty, otherwise false. 
              */
@@ -7623,6 +8379,7 @@ declare global {
              */
             assignObject(target: any, source: any): any;
         }
+
         export type SettingsLocation = "application" | "project" | "local" | "memory";
 
         export interface ISettings {
@@ -7682,7 +8439,7 @@ declare global {
 
         export interface ISettingsService {
             /**
-             * Create a built-in configuration file. This method is only available in the UI process. User should call this method directly.
+             * Enable a built-in settings definition. This method is only available in the UI process and is intended for IDE modules; plugins should use `Editor.extensionManager.createSettings`.
              * @param name The name of the settings.
              * @param location The location of the configuration file. The default is "project".
              * - application: Saved to the user data directory of the application. On Windows, it is generally C:\Users\{user}\AppData\Local\{appname}, and on Mac, it is generally ~/Library/Application Support/{appname}. This means that this configuration needs to be shared across different projects.
@@ -7694,7 +8451,7 @@ declare global {
             enableSettings(name: string, location?: SettingsLocation, typeName?: string): void;
 
             /**
-             * Create a built-in configuration file. This method is only available in the UI process. User should call this method directly.
+             * Enable a built-in asset-backed settings definition. This method is only available in the UI process and is intended for IDE modules; plugins should use `Editor.extensionManager.createSettings`.
              * @param name The name of the configuration. It should be unique within the editor and use characters that conform to file name specifications.
              * @param pathToAsset The path to the configuration file. It is a relative path to the assets directory.
              * @param typeName The data type corresponding to the configuration.
@@ -7702,7 +8459,7 @@ declare global {
             enableSettings(name: string, pathToAsset: string, typeName?: string): void;
 
             /**
-             * Create a built-in configuration file. This method is only available in the UI process. User should call this method directly.
+             * Enable a built-in settings definition. This method is only available in the UI process and is intended for IDE modules; plugins should use `Editor.extensionManager.createSettings`.
              * @param name The name of the configuration. It should be unique within the editor and use characters that conform to file name specifications.
              * @param options Options to create the settings.
              */
@@ -7710,22 +8467,24 @@ declare global {
             /**
              * Query the settings by name.
              * @param name The name of the settings.
-             * @returns The settings.
+             * @returns The settings, or null when the name has not been registered.
              */
-            getSettings(name: string): ISettings;
+            getSettings(name: string): ISettings | null;
 
             /**
              * Query the settings type name.
              * @param name The name of the settings.
-             * @returns The type name of the settings.
+             * @returns The type name of the settings, or null when the name has not been registered.
              */
-            getSettingsType(name: string): string;
+            getSettingsType(name: string): string | null;
 
             /**
              * Flush the changes of all settings to the storage immediately. Only meaningful for settings with delayed saving.
              */
             flushChanges(): void;
         }
+
+        /** Prefix used by reflected shader type names. */
         export const ShaderTypePrefix = "Shader.";
         /**
          * A callback function that is used to determine whether a value is equal to the default value.
@@ -7734,10 +8493,14 @@ declare global {
          * @param looseMode In loose mode, empty data (i.e. {}) is allowed to match non-empty default values.
          */
         export type DefaultValueComparator = (value: any, overridedDefaultValue?: any, looseMode?: boolean) => boolean;
+        /** One reflected type prepared for a node/component creation menu. */
         export type TypeMenuItem = { type: FTypeDescriptor, label: string, icon: string, order: number };
+        /** Ordered menu items with the localized category label attached to the array. */
         export type TypeMenuItems = Array<TypeMenuItem> & { menuLabel: string };
+        /** Compiled dynamic expressions controlling an inspector property's state and validation. */
         export type PropertyTestFunctions = { hiddenTest: Function, readonlyTest: Function, validator: Function, requiredTest: Function };
 
+        /** Runtime registry for reflected engine, editor and user-script type descriptors. */
         export interface ITypeRegistry {
             /**
              * All types. Key is the name of the type.
@@ -7836,10 +8599,19 @@ declare global {
             getComponentMenuItems(type: WorldType): Readonly<Record<string, TypeMenuItems>>;
 
             /**
+             * Get creation-menu items for registered types derived from an asset base type.
+             * The descriptor's menu value is the path relative to Project/Create. An empty path places the type at the root.
+             * @param baseType The asset base type name.
+             * @returns Asset creation menu items. Key is the menu path, value is the menu items.
+             */
+            getAssetMenuItems(baseType: string): Readonly<Record<string, TypeMenuItems>>;
+
+            /**
              * Find a type defined in the typescript code by its path.
              * @param path A path relative to the assets folder. 
+             * @returns The type descriptor, or null if no registered script uses the path.
              */
-            findScriptByPath(path: string): FTypeDescriptor;
+            findScriptByPath(path: string): FTypeDescriptor | null;
 
             /**
              * Whether a type is a 3D type.
@@ -7868,7 +8640,7 @@ declare global {
              * @param type The type name.
              * @returns The base type name or null.
              */
-            getNodeBaseType(type: string): string;
+            getNodeBaseType(type: string): string | null;
 
             /**
              * Check whether two types share the same base type.
@@ -7879,7 +8651,7 @@ declare global {
             hasSameBase(type1: string, type2: string): boolean
 
             /**
-             * Whether a type is deprecated. If an new type descriptor is registered with the same name, the original type descriptor will be marked as deprecated.
+             * Whether a type is deprecated. If a new type descriptor is registered with the same name, the original descriptor is marked as deprecated.
              * @param type The type descriptor.
              * @returns Whether the type is deprecated.
              */
@@ -7903,15 +8675,15 @@ declare global {
 
             /**
              * @en Get property of a type, if the property is not found, look for it in the base types.
-             * @param type The type descriptor.
+             * @param typeDef The type descriptor.
              * @param propName The property name.
-             * @returns The property value.
+             * @returns The property value, or `null` if neither the type nor any of its base types defines the property.
              * @zh 获取类型的属性，如果属性未找到，则在基类中查找。
-             * @param type 类型描述符。
+             * @param typeDef 类型描述符。
              * @param propName 属性名称。
-             * @returns 属性值。
+             * @returns 属性值；如果当前类型及其所有基类都未定义该属性，则返回 `null`。
              */
-            findTypePropertyInChain(typeDef: FTypeDescriptor, propName: string): string;
+            findTypePropertyInChain<T = any>(typeDef: FTypeDescriptor, propName: string): T | null;
 
             /**
              * Get caption of a property.
@@ -7927,10 +8699,9 @@ declare global {
              * Get tips of a property.
              * @param type The type descriptor. 
              * @param prop The property descriptor. 
-             * @param showPropertyName Whether to add a banner to the tips to indicate the property name. The default is false.
-             * @returns The tips of the property.
+             * @returns The localized tips of the property.
              */
-            getPropTips(type: FTypeDescriptor, prop: FPropertyDescriptor, showPropertyName?: boolean): string;
+            getPropTips(type: FTypeDescriptor, prop: FPropertyDescriptor): string;
 
             /**
              * Get the caption of the catalog.
@@ -7985,9 +8756,16 @@ declare global {
             /**
              * Get the test functions of a property.
              * @param prop The property descriptor.
-             * @returns The test functions of the property.
+             * @returns The test functions of the property, or null when the property has no dynamic tests.
              */
-            getPropTestFunctions(prop: FPropertyDescriptor): PropertyTestFunctions;
+            getPropTestFunctions(prop: FPropertyDescriptor): PropertyTestFunctions | null;
+
+            /**
+             * Get the test function of a property to determine whether it is serializable.
+             * @param prop The property descriptor.
+             * @returns The test function, or null when `serializable` is not an expression string.
+             */
+            getPropSerializableTestFunction(prop: FPropertyDescriptor): Function | null;
 
             /**
              * Get all default value comparator functions of a type. This function is used to determine whether a value is equal to the default value. The key is the property name.
@@ -8001,30 +8779,30 @@ declare global {
              * @param type The type descriptor. 
              * @param datapath The path of the property. 
              * @param out The result array. If it is not null, the result will be added to this array, otherwise a new array will be created.
-             * @returns The result array.
+             * @returns The result array, or null if any segment in `datapath` cannot be resolved.
              */
-            getPropertyByPath(type: FTypeDescriptor, datapath: ReadonlyArray<string>, out?: FPropertyDescriptor[]): FPropertyDescriptor[];
+            getPropertyByPath(type: FTypeDescriptor, datapath: ReadonlyArray<string>, out?: FPropertyDescriptor[]): FPropertyDescriptor[] | null;
 
             /**
              * Get the type descriptor of an object. Null will be returned if the prototype of the object is not registered.
              * @param obj The object.
              * @returns The type descriptor of the object. 
              */
-            getTypeOfObj(obj: any): FTypeDescriptor;
+            getTypeOfObj(obj: any): FTypeDescriptor | null;
 
             /**
              * Get the type descriptor of a class. Null will be returned if the class is not registered.
              * @param cls The class.
              * @returns The type descriptor of the class. 
              */
-            getTypeOfClass(cls: Function): FTypeDescriptor;
+            getTypeOfClass(cls: Function): FTypeDescriptor | null;
 
             /**
              * Get the type descriptor of a class without looking for its base types. Null will be returned if the class is not registered.
              * @param cls The class.
              * @return The type descriptor of the class.
              */
-            getOwnTypeOfClass(cls: Function): FTypeDescriptor;
+            getOwnTypeOfClass(cls: Function): FTypeDescriptor | null;
 
             /**
              * Sort properties. The order is determined by the position property and the catalog property of the property descriptor.
@@ -8033,6 +8811,52 @@ declare global {
              */
             sortProps(props: Array<FPropertyDescriptor>, considerCatalog?: boolean): void;
         }
+
+        /**
+         * Determines how a delayed call handles another schedule request while one is pending.
+         *
+         * - `debounce`: restart the delay and keep the latest arguments.
+         * - `throttle`: keep the original deadline and update to the latest arguments.
+         */
+        export type DelayedCallMode = "debounce" | "throttle";
+
+        /** Configuration for an independently managed delayed callback. */
+        export interface IDelayedCallOptions {
+            /**
+             * The scheduling strategy. The default is `debounce`.
+             */
+            mode?: DelayedCallMode;
+        }
+
+        /** A reusable debounce/throttle handle created by {@link IUtils.createDelayedCall}. */
+        export interface IDelayedCall<TArgs extends unknown[]> {
+            /**
+             * Whether a call is currently pending.
+             */
+            readonly pending: boolean;
+
+            /**
+             * Schedule the callback.
+             * @param delay Delay in milliseconds. A value less than or equal to zero clears
+             * the pending call and returns false so the caller can execute synchronously.
+             * @param args Arguments passed to the callback.
+             * @returns True if the callback was scheduled; false if it should execute synchronously.
+             */
+            schedule(delay: number, ...args: TArgs): boolean;
+
+            /**
+             * Cancel the pending call.
+             */
+            clear(): void;
+
+            /**
+             * Cancel and immediately execute the pending call.
+             * @returns Whether a pending call was executed.
+             */
+            flush(): boolean;
+        }
+
+        /** General file-system, path, timing, string and process helpers exposed by the editor. */
         export interface IUtils {
             /**
              * Parse string content from a file to a JSON object.
@@ -8089,6 +8913,21 @@ declare global {
             writeJsonAsync(filePath: string, content: any, space?: string | number): Promise<void>;
 
             /**
+             * Debounce writes to a file while preserving serial write order for that path.
+             * @param filePath The destination file path.
+             * @param contents The complete contents for the next write.
+             * @param delay The debounce delay in milliseconds. The default is 100.
+             */
+            scheduleFileWrite(filePath: string, contents: string | Uint8Array, delay?: number): void;
+
+            /**
+             * Flush one file's delayed and queued writes, or all managed writes when no
+             * path is supplied.
+             * @param filePath The destination file path. Omit it to flush every file.
+             */
+            flushFileWrites(filePath?: string): Promise<void>;
+
+            /**
              * Read the first N bytes of a file. This is useful for reading the file signature.
              * @param filePath The path of the file. 
              * @param bytesCount The number of bytes to read.
@@ -8135,17 +8974,32 @@ declare global {
             splitCamelCase(str: string): string;
 
             /**
+             * @deprecated Use `getTempBaseDirAsync` instead.
              * Get the base directory for temporary files. It is the `library/temp` folder in the project. The API ensures that this folder exists.
              * @returns The base directory for temporary files.
              */
             getTempBaseDir(): string;
 
             /**
+             * Asynchronously get the base directory for temporary files and ensure it exists.
+             * @returns The base directory for temporary files.
+             */
+            getTempBaseDirAsync(): Promise<string>;
+
+            /**
+             * @deprecated Use `mkTempDirAsync` instead.
              * Create a subdirectory in the temporary directory. The temporary directory is returned by `getTempBaseDir`.
              * @param subDir The name of the subdirectory. If not specified, a subdirectory with a random name is created.
              * @returns The absolute path of the subdirectory.
              */
             mkTempDir(subDir?: string): string;
+
+            /**
+             * Asynchronously create a subdirectory in the temporary directory.
+             * @param subDir The name of the subdirectory. If not specified, a subdirectory with a random name is created.
+             * @returns The absolute path of the subdirectory.
+             */
+            mkTempDirAsync(subDir?: string): Promise<string>;
 
             /**
              * It is equivalent to `path.join`. Only for the purpose of without importing `path`.
@@ -8175,7 +9029,7 @@ declare global {
 
             /**
              * Copy all files and subfolders recursively from a folder to another folder.
-             * @param src The source folder path.
+             * @param source The source folder path.
              * @param destDir The destination folder path.
              * @param options The options.
              * - autoRename: Whether to automatically rename the file when a file with the same name exists in the destination folder. The default is false, meaning the file will be overwritten.
@@ -8183,9 +9037,9 @@ declare global {
              */
             copyDir(source: string, destDir: string, options?: { autoRename?: boolean, regenerateUUID?: boolean }): Promise<void>;
 
-            /*
+            /**
              * Move all files and subfolders recursively from a folder to another folder.
-             * @param src The source folder path.
+             * @param source The source folder path.
              * @param destDir The destination folder path.
              * @param options The options.
              * - autoRename: Whether to automatically rename the file when a file with the same name exists in the destination folder. The default is false, meaning the file will be overwritten.
@@ -8284,6 +9138,19 @@ declare global {
             sleep(ms: number): Promise<void>;
 
             /**
+             * Create an independently managed delayed callback.
+             *
+             * Use `debounce` to restart the delay on every request. Use `throttle` to keep
+             * the first request's deadline while updating the callback arguments.
+             * @param callback The callback to execute.
+             * @param options Scheduling options.
+             */
+            createDelayedCall<TArgs extends unknown[]>(
+                callback: (...args: TArgs) => void,
+                options?: IDelayedCallOptions,
+            ): IDelayedCall<TArgs>;
+
+            /**
              * Create a promise that resolves until the predicate returns true, or the timeout is reached.
              * @param predicate The predicate function. 
              * @param timeoutInMs The timeout in milliseconds. If not specified, there is no timeout. 
@@ -8313,6 +9180,14 @@ declare global {
              * @returns The script element.
              */
             loadLib(src: string, async?: boolean, onScriptError?: (err: ErrorEvent) => void): Promise<HTMLScriptElement>;
+
+            /**
+             * Load an ES module and return its module namespace object.
+             * HTTP(S) and custom-protocol responses are imported through a Blob URL so
+             * the request can pass through the editor's fetch transport.
+             * @param src The absolute or document-relative URL of the module.
+             */
+            loadModule<T = unknown>(src: string): Promise<T>;
 
             /**
              * Execute arithmetic expressions.
@@ -8453,7 +9328,7 @@ declare global {
             /**
              * Print the results of a promise.
              * @param rets The results of the promises.
-             * @param group The optinal group name of console messages. 
+             * @param group The optional group name for console messages.
              */
             printPromiseResult(rets: Iterable<PromiseSettledResult<any>>, group?: string): void;
 
@@ -8494,6 +9369,8 @@ declare global {
              */
             getPathForWebFile(file: File): string;
         }
+
+        /** UUID generation, validation and compact-string conversion helpers. */
         export interface IUUIDUtils {
             /**
              * Generate a UUID. UUID is a 36-character string with 4 dashes.
@@ -8549,6 +9426,7 @@ declare global {
              */
             decompressUUID(str: string): string;
         }
+
         /**
          * Zip file writer.
          */
@@ -8712,7 +9590,7 @@ declare global {
              * @example
              * ```
              * //The settings panel id is "TestBuildSettings", which can be used in this field.
-             * @IEditor.panel("TestBuildSettings", { usage: "build-settings", title: "My Test" })
+             * ＠IEditor.panel("TestBuildSettings", { usage: "build-settings", title: "My Test" })
              * export class TestBuildSettings extends IEditor.EditorPanel {
              * }
              * ```
@@ -8720,7 +9598,7 @@ declare global {
             inspector?: string;
 
             /**
-             * The build template path. It is a absolute path to the directory that contains the build template files.
+             * Absolute path to the directory containing the build-template files.
              * Contents in the directory will be copied to the build output directory during the build process.
              */
             templatePath?: string;
@@ -8747,6 +9625,11 @@ declare global {
             isMiniGame?: boolean;
 
             /**
+             * Whether the build target is a native platform, e.g. Android, iOS, Windows, Mac, etc.
+             */
+            isNative?: boolean;
+
+            /**
              * Sets the position of the build target in the build settings panel. 
              * 
              * Supported syntax: "first" / "last" / "before id" / "after id". e.g. "before web" or "after android".
@@ -8762,6 +9645,7 @@ declare global {
             Android = 1,
             IOS = 2,
         }
+
         /**
          * Interface for logging messages
          */
@@ -8834,6 +9718,7 @@ declare global {
             renderTemplate(content: string, templateArgs?: Record<string, any>, options?: RenderTemplateOptions): string;
 
             /**
+             * @deprecated Use `renderTemplateFileAsync` instead.
              * Render a template string read from a file and write the result back to the file.
              * @param filePath Path to the template file. 
              * @param templateArgs Template arguments. 
@@ -8858,17 +9743,17 @@ declare global {
             /**
              * An array of supported formats for the clipboard `type`.
              */
-            availableFormats(type?: 'selection' | 'clipboard'): string[];
+            availableFormats(type?: 'selection' | 'clipboard'): Promise<string[]>;
             /**
              * Clears the clipboard content.
              */
-            clear(type?: 'selection' | 'clipboard'): void;
+            clear(type?: 'selection' | 'clipboard'): Promise<void>;
             /**
              * Whether the clipboard supports the specified `format`.
              *
              * @experimental
              */
-            has(format: string, type?: 'selection' | 'clipboard'): boolean;
+            has(format: string, type?: 'selection' | 'clipboard'): Promise<boolean>;
             /**
              * Reads `format` type from the clipboard.
              *
@@ -8877,7 +9762,7 @@ declare global {
              *
              * @experimental
              */
-            read(format: string): string;
+            read(format: string): Promise<string>;
             /**
              * * `title` string
              * * `url` string
@@ -8888,13 +9773,13 @@ declare global {
              *
              * @platform darwin,win32
              */
-            readBookmark(): any;
+            readBookmark(): Promise<any>;
             /**
              * Reads `format` type from the clipboard.
              *
              * @experimental
              */
-            readBuffer(format: string): Buffer;
+            readBuffer(format: string): Promise<Buffer>;
             /**
              * The text on the find pasteboard, which is the pasteboard that holds information
              * about the current state of the active application’s find panel.
@@ -8905,27 +9790,27 @@ declare global {
              *
              * @platform darwin
              */
-            readFindText(): string;
+            readFindText(): Promise<string>;
             /**
              * The content in the clipboard as markup.
              */
-            readHTML(type?: 'selection' | 'clipboard'): string;
+            readHTML(type?: 'selection' | 'clipboard'): Promise<string>;
             /**
              * The image content in the clipboard.
              */
-            readImage(type?: 'selection' | 'clipboard'): any;
+            readImage(type?: 'selection' | 'clipboard'): Promise<any>;
             /**
              * The content in the clipboard as RTF.
              */
-            readRTF(type?: 'selection' | 'clipboard'): string;
+            readRTF(type?: 'selection' | 'clipboard'): Promise<string>;
             /**
              * The content in the clipboard as plain text.
              */
-            readText(type?: 'selection' | 'clipboard'): string;
+            readText(type?: 'selection' | 'clipboard'): Promise<string>;
             /**
              * Writes `data` to the clipboard.
              */
-            write(data: any, type?: 'selection' | 'clipboard'): void;
+            write(data: any, type?: 'selection' | 'clipboard'): Promise<void>;
             /**
              * Writes the `title` (macOS only) and `url` into the clipboard as a bookmark.
              *
@@ -8935,13 +9820,13 @@ declare global {
              *
              * @platform darwin,win32
              */
-            writeBookmark(title: string, url: string, type?: 'selection' | 'clipboard'): void;
+            writeBookmark(title: string, url: string, type?: 'selection' | 'clipboard'): Promise<void>;
             /**
              * Writes the `buffer` into the clipboard as `format`.
              *
              * @experimental
              */
-            writeBuffer(format: string, buffer: Buffer, type?: 'selection' | 'clipboard'): void;
+            writeBuffer(format: string, buffer: Buffer, type?: 'selection' | 'clipboard'): Promise<void>;
             /**
              * Writes the `text` into the find pasteboard (the pasteboard that holds
              * information about the current state of the active application’s find panel) as
@@ -8950,24 +9835,25 @@ declare global {
              *
              * @platform darwin
              */
-            writeFindText(text: string): void;
+            writeFindText(text: string): Promise<void>;
             /**
              * Writes `markup` to the clipboard.
              */
-            writeHTML(markup: string, type?: 'selection' | 'clipboard'): void;
+            writeHTML(markup: string, type?: 'selection' | 'clipboard'): Promise<void>;
             /**
              * Writes `image` to the clipboard.
              */
-            writeImage(image: any, type?: 'selection' | 'clipboard'): void;
+            writeImage(image: any, type?: 'selection' | 'clipboard'): Promise<void>;
             /**
              * Writes the `text` into the clipboard in RTF.
              */
-            writeRTF(text: string, type?: 'selection' | 'clipboard'): void;
+            writeRTF(text: string, type?: 'selection' | 'clipboard'): Promise<void>;
             /**
              * Writes the `text` into the clipboard as plain text.
              */
-            writeText(text: string, type?: 'selection' | 'clipboard'): void;
+            writeText(text: string, type?: 'selection' | 'clipboard'): Promise<void>;
         }
+
         export interface IPlist {
             /**
              * Parse a plist format string to an object.
@@ -9241,10 +10127,14 @@ declare global {
              */
             notifyAll(channel: string, ...args: any[]): void;
         }
+        /** Converts decorator/runtime type metadata into editor property descriptors. */
         export interface ITypeParser {
+            /** Get class metadata, optionally creating an empty metadata record when absent. */
             getClassMeta(constructor: Function, forceCreate?: boolean): any;
+            /** Parse a constructor, enum, array, record, or property-options value into descriptor fields. */
             parsePropType(ptype: any): Partial<FPropertyDescriptor>;
         }
+
         export namespace IReflectUtils {
             /**
              * Define metadata for a target.
@@ -9333,15 +10223,15 @@ declare global {
              */
             onCloseBox?(): void;
             /**
-             * Called when the node is selected in the stage. Available for both 2D and 3D nodes.
+             * Called when the node is selected in the stage.
              */
             onSelected?(): void;
             /**
-             * Called when the node is unselected in the stage. Available for both 2D and 3D nodes.
+             * Called when the node is unselected in the stage.
              */
             onUnSelected?(): void;
             /**
-             * In this callback, you can draw elements or create handles in the scene view. Only available for 3D nodes.
+             * In this callback, you can draw elements or create handles in the scene view.
              * @example
              * ```
              * // Draw a hemisphere at the node's position.
@@ -9352,8 +10242,7 @@ declare global {
              */
             onSceneGUI?(): void;
             /**
-             * In this callback, you can draw gizmos that are always drawn. Available for both 2D and 3D nodes.
-             * If owner is a 2D node, no vector graphics manager is available in this callback.
+             * In this callback, you can draw gizmos that are always drawn.
              * @example
              * ```
              * // Draw a gizmo icon at the node's position.
@@ -9364,21 +10253,7 @@ declare global {
              */
             onDrawGizmos?(): void;
             /**
-             * In this callback, you can draw gizmos only when the object is selected. Available for both 2D and 3D nodes.
-             * IEditorEnv.Gizmos2D.getManager can be used to get a vector graphics manager for drawing gizmos.
-             * @example
-             * ```
-             * //Demo for drawing a circle gizmo when a 2D sprite is selected.
-             * private _circle: IEditorEnv.IGizmoCircle;
-             * onDrawGizmosSelected() {
-             *     if (!this._circle) {
-             *          let manager = IEditorEnv.Gizmos2D.getManager(this.owner);
-             *          this._circle = manager.createCircle(10);
-             *          this._circle.fill("#ff0");
-             *     }
-             *     this._circle.setLocalPos(10, 10);
-             * }
-             * ```
+             * In this callback, you can draw gizmos only when the object is selected.
              */
             onDrawGizmosSelected?(): void;
         }
@@ -9584,6 +10459,7 @@ declare global {
         }
 
         export class AssetPreview implements IAssetPreview {
+            static bgColor: Laya.Color;
             readonly scene: IOffscreenRenderScene;
             readonly sprite: Laya.Sprite;
             renderTarget: Laya.Sprite | Laya.Scene3D | null;
@@ -9618,7 +10494,7 @@ declare global {
             /**
              * Background color of the thumbnail.
              */
-            static readonly bgColor: Laya.Color;
+            static bgColor: Laya.Color;
             private static _border;
             private static _renderer;
             generate(asset: IAssetInfo): Promise<string | Buffer | null | "source">;
@@ -9702,146 +10578,6 @@ declare global {
             protected setSharedData<T extends any>(key: string, value: T): void;
         }
 
-        export class NumericInput extends gui.Label {
-            /**
-             * Minimum value. Default is -Infinity.
-             */
-            min: number;
-            /**
-             * Maximum value. Default is Infinity.
-             */
-            max: number;
-            private _value;
-            private _holder;
-            private _lastHolderPos;
-            private _textField;
-            private _lastScroll;
-            private _fractionDigits;
-            private _step;
-            private _suffix;
-            private _prevTabStop;
-            private _savedText;
-            private _isPointerLocked;
-            private _onPointerMoveHandler;
-            private _accumulatedMovement;
-            private _enablePointerLock;
-            constructor();
-            /**
-             * Number of decimal places. Default is 3;
-             */
-            get fractionDigits(): number;
-            set fractionDigits(value: number);
-            /**
-             * The amount by which the value changes each time when changing the value by dragging. Default is 0.01.
-             *
-             * If fractionDigits is set, the step will be adjusted to 1 / 10 ^ fractionDigits if it is less than that value.
-             */
-            get step(): number;
-            set step(value: number);
-            /**
-             * Whether the input is editable. Default is true.
-             */
-            get editable(): boolean;
-            set editable(value: boolean);
-            /**
-             * The suffix of the number. Default is "". For example, if the suffix is "%", the displayed value will be "100%".
-             */
-            get suffix(): string;
-            set suffix(value: string);
-            /**
-             * Whether to enable pointer lock when dragging. Default is true.
-             * When enabled, the mouse cursor will be locked and hidden during dragging for better UX.
-             */
-            get enablePointerLock(): boolean;
-            set enablePointerLock(value: boolean);
-            get value(): number;
-            set value(val: number);
-            get text(): string;
-            set text(value: string);
-            onConstruct(): void;
-            private __onKeydown;
-            private _holderDragStart;
-            private _holderDragEnd;
-            private _holderDragMove;
-            private _handlePointerMove;
-            private __click;
-            private __focusIn;
-            private __focusOut;
-            private __onSubmit;
-            private __mouseWheel;
-        }
-
-        export class NumericInputWithSlider extends gui.Label {
-            private _slider;
-            private _input;
-            private _centeredAtOne;
-            constructor();
-            get min(): number;
-            set min(value: number);
-            get max(): number;
-            set max(value: number);
-            /**
-             * If true, the center of the slider represents the value 1.0, with the left side representing values between min and 1.0,
-             * and the right side representing values between 1.0 and max.
-             */
-            get centeredAtOne(): boolean;
-            set centeredAtOne(value: boolean);
-            get fractionDigits(): number;
-            set fractionDigits(value: number);
-            get step(): number;
-            set step(value: number);
-            get editable(): boolean;
-            set editable(value: boolean);
-            get suffix(): string;
-            set suffix(value: string);
-            get value(): number;
-            set value(value: number);
-            get text(): string;
-            set text(value: string);
-            onConstruct(): void;
-            private syncInputToSlider;
-        }
-
-        export class TextInput extends gui.Label {
-            protected _savedText: string;
-            protected _textField: gui.TextInput;
-            protected _clear: gui.Widget;
-            protected _lang: gui.Widget;
-            protected _key: gui.TextField;
-            protected _textInfo: gui.I18nTextInfo;
-            private _canceled;
-            get text(): string;
-            set text(value: string);
-            get editable(): boolean;
-            set editable(value: boolean);
-            onConstruct(): void;
-            private __keyDown;
-            private __focusIn;
-            private __focusOut;
-            private __textChanged;
-            private __clickClear;
-            private __clickLang;
-            private __clickLangRemove;
-        }
-
-        export class TextArea extends gui.Label {
-            private _savedText;
-            private _textField;
-            private _lang;
-            private _key;
-            private _textInfo;
-            get editable(): boolean;
-            set editable(value: boolean);
-            get text(): string;
-            set text(value: string);
-            onConstruct(): void;
-            private __keyDown;
-            private __focusIn;
-            private __focusOut;
-            private __clickLang;
-            private __clickLangRemove;
-        }
-
         export class ServiceProvider implements IServiceProvider {
             private _name;
             private _handlers;
@@ -9900,6 +10636,9 @@ declare global {
          * @see MyMessagePortStatic
          */
         const MyMessagePort: (new (port: MessagePort, queueTask?: boolean) => IMyMessagePort) & typeof MyMessagePortStatic;
+        /** Built-in polygon clipping, offsetting, and path utility library. */
+        const Clipper2: IClipper2;
+
         /**
          * `Gizmos2D` is a helper class for drawing 2D gizmos.
          */
@@ -10126,7 +10865,7 @@ declare global {
         function onPreload(target: Object, propertyName: string): void;
 
         /**
-         * Decorator function for registering a class. The registered class can be visited by it's name in UI process.
+         * Decorator function for registering a class. The registered class can be accessed by its name from the UI process.
          * @returns The class decorator function.
          * @example
          * ```
@@ -10164,14 +10903,14 @@ declare global {
         function regBuildPlugin(platform: string, piority?: number): (func: new () => IBuildPlugin) => void;
 
         /**
-         * Decorator function for registering a class as a asset processor.
+         * Decorator function for registering a class as an asset processor.
          * @returns The class decorator function.
          * @see IAssetProcessor
          * @example
          * ```
          * ＠IEditorEnv.regAssetProcessor()
-         * class MyAssetProcessor extends IEditorEnv.IAssetProcessor {
-         *    async onPostprocessAsset(assetImporter: IAssetImporter) {
+         * class MyAssetProcessor implements IEditorEnv.IAssetProcessor {
+         *    async onPostprocessAsset(assetImporter: IEditorEnv.IAssetImporter) {
          *   }
          * }
          * ```
@@ -10179,14 +10918,14 @@ declare global {
         function regAssetProcessor(): (func: new () => IAssetProcessor) => void;
 
         /**
-         * Decorator function for registering a class as a asset importer.
+         * Decorator function for registering a class as an asset importer.
          * @param assetTypeOrFileExts The asset type or file extensions that the importer can handle.
          * @param options The options for the importer.
          * @returns The class decorator function.
          * @see IAssetImporter
          * @example
          * ```
-         * @IEditorEnv.regAssetImporter(["abc"])
+         * ＠IEditorEnv.regAssetImporter(["abc"])
          * export class DemoAssetImporter extends IEditorEnv.AssetImporter {
          *     async handleImport(): Promise<any> {
          *         console.log("importing asset", this.assetFullPath);
@@ -10197,14 +10936,14 @@ declare global {
         function regAssetImporter(assetTypeOrFileExts: ReadonlyArray<AssetType | string>, options?: IAssetImporterOptions): (func: new () => AssetImporter) => void;
 
         /**
-         * Decorator function for registering a class as a asset exporter.
+         * Decorator function for registering a class as an asset exporter.
          * @param assetTypeOrFileExts The asset type or file extensions that the exporter can handle.
          * @param options The options for the exporter.
          * @returns The class decorator function.
          * @see IAssetExporter
          * @example
          * ```
-         * @IEditorEnv.regAssetExporter(["abc"])
+         * ＠IEditorEnv.regAssetExporter(["abc"])
          * export class DemoAssetExporter extends IEditorEnv.AssetExporter {
          *     async handleExport(): Promise<any> {
          *         console.log("exporting asset", this.asset.file);
@@ -10217,15 +10956,15 @@ declare global {
         function regAssetExporter(assetTypeOrFileExts: ReadonlyArray<AssetType | string>, options?: IAssetExporterOptions): (func: new () => AssetExporter) => void;
 
         /**
-         * Decorator function for registering a class as a asset saver.
+         * Decorator function for registering a class as an asset saver.
          * @param assetTypeOrFileExts The asset type or file extensions that the saver can handle.
          * @returns The class decorator function.
          * @see IAssetSaver
          * @example
          * ```
-         * @IEditorEnv.regAssetSaver(["abc"])
-         * export class DemoAssetSaver extends IEditorEnv.IAssetSaver {
-         *    async onSave(asset: IEditorEnv.IAssetInfo, res: ABCResource): Promise<any> {
+         * ＠IEditorEnv.regAssetSaver(["abc"])
+         * export class DemoAssetSaver implements IEditorEnv.IAssetSaver {
+         *    async onSave(asset: IEditorEnv.IAssetInfo, res: ABCResource): Promise<void> {
          *       let data = IEditorEnv.SerializeUtil.encodeObj(res, null, { writeType: false });
          *       await IEditorEnv.utils.writeJsonAsync(EditorEnv.assetMgr.getFullPath(asset), data);
          *   }
@@ -10241,7 +10980,7 @@ declare global {
          * @example
          * ```
          * ＠IEditorEnv.regSceneHook()
-         * class MySceneHook extends IEditorEnv.ISceneHook {
+         * class MySceneHook implements IEditorEnv.ISceneHook {
          *   onCreateNode(scene: IEditorEnv.IGameScene, node: Laya.Node) {
          *      if (node instanceof Laya.Sprite)
          *          node.anchorX = node.anchorY = 0.5;
