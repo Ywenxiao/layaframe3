@@ -2,7 +2,7 @@
   "compilerOptions": {
     "lib": [
       "DOM",
-      "ES2017"
+      "ES2017",
     ],
     "module": "esnext",
     "target": "es6",
@@ -30,6 +30,7 @@
     "./src",
     "./engine",
     "./libs",
-    "./node_modules/@types/node", "libs/define.d.ts",
+    "./node_modules/@types/node",
+    "libs/define.d.ts",
   ]
 }

@@ -1,3 +1,4 @@
+import LogMgr from "../core/LogMgr";
 import { IAppAdapter } from "./IAppAdapter";
 
 export default class PcApp extends Laya.EventDispatcher implements Partial<IAppAdapter> {
@@ -15,7 +16,7 @@ export default class PcApp extends Laya.EventDispatcher implements Partial<IAppA
             return 1;
         }
         if (Laya.Browser.height > 0 && Laya.Browser.width > 0) {
-            console.log("Laya.Browser.height=" + Laya.Browser.height + ",Laya.Browser.width=" + Laya.Browser.width + ",h/w=" + Laya.Browser.height / Laya.Browser.width);
+            LogMgr.log("Laya.Browser.height=" + Laya.Browser.height + ",Laya.Browser.width=" + Laya.Browser.width + ",h/w=" + Laya.Browser.height / Laya.Browser.width);
             if (Laya.Browser.height / Laya.Browser.width < 1.76) {
                 return 2;
             }

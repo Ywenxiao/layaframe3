@@ -1,6 +1,7 @@
 import apk from "./apk";
 import { WITHCONTEXT, INJECT } from "./Context";
 import { ContextType } from "./DefineTypes";
+import LogMgr from "./LogMgr";
 
 type constructorView<T = IView> = new (...args: any[]) => T;
 
@@ -107,12 +108,13 @@ export class ViewInfo {
                 }
 
                 this.ui = p.create() as IView;
+                this.pms_ui = null;
                 return this.ui as any;
             })
             .catch(() => {
+                this.pms_ui = null;
                 logUI("load ui error", this.url);
             })
-            .finally(() => (this.pms_ui = null));
 
         return this.pms_ui;
     }
@@ -619,7 +621,7 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
         return info;
     }
 
-    private clearResUnReference() {}
+    private clearResUnReference() { }
 
     private onTopUI() {
         Laya.timer.clear(this, this._onTopUI);
@@ -711,9 +713,9 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
 }
 
 function logUI(...str: any[]) {
-    console.log("[UI]", ...str);
+    LogMgr.log("[UI]", ...str);
 }
 
 function errUI(...str: any[]) {
-    console.error("[UI]", ...str);
+    LogMgr.error("[UI]", ...str);
 }

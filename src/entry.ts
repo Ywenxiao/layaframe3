@@ -1,5 +1,6 @@
 import apk from "./core/apk";
 import { GET } from "./core/Context";
+import LogMgr, { LogLevel } from "./core/LogMgr";
 import { UILayer, UIManager } from "./core/UIManage";
 import { UIDefine } from "./patch/UIDefine";
 
@@ -8,15 +9,19 @@ Laya.addBeforeInitCallback((stageConfig) => {
     Laya.Config.useWebGL2 = true;
     stageConfig.designWidth = apk.getStageWidth();
 
-    console.log("Laya before init", stageConfig);
+    LogMgr.setOpenLevel(LogLevel.ERROR | LogLevel.NetRequest | LogLevel.NetResponse);
+    LogMgr.log("Laya before init", stageConfig);
 })
 
 Laya.addAfterInitCallback(() => {
-    console.log("Laya initialized");
+    LogMgr.log("Laya initialized");
 })
 
 export function main() {
-    console.log("Game start");
+    LogMgr.log("main");
+    LogMgr.request("main");
+    LogMgr.response("main");
+    LogMgr.error("main");
     GET(UIManager).CreateUI(UIDefine.loading, { type: "view", layer: UILayer.DialogTop });
 }
 

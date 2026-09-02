@@ -95,10 +95,10 @@ export class SpineItem extends Laya.SpineSkeleton {
     constructor(public readonly spinePath: string, tp?: spineTemp) {
         super();
         this._active = true;
-        tp && this.init(tp);
+        tp && this.__init(tp);
     }
 
-    init(tp: spineTemp) {
+    __init(tp: spineTemp) {
 
         if (this.destroyed) {
             return;
@@ -330,7 +330,7 @@ export class Spinemanage extends Injectable {
                 return;
             }
             this.updateReferenceInfo(url, true);
-            sp.init(res);
+            sp.__init(res);
         }).catch(err => {
             console.error(err);
             sp.destroy();
