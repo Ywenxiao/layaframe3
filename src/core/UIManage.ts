@@ -48,6 +48,7 @@ export interface IView extends Laya.Sprite {
 
 //UI界面打开信息
 export class ViewInfo {
+    private static id: number = 0;
     private pms_ui: Promise<IView>;
 
     /**页面唯一标识 */
@@ -86,7 +87,7 @@ export class ViewInfo {
     openToken: symbol | null;
 
     constructor() {
-        ++this.id;
+        this.id = ViewInfo.id++;
     }
 
     async generateView(): Promise<IView> {
@@ -119,10 +120,14 @@ export class ViewInfo {
         return this.pms_ui;
     }
 
-    close(addTime: number = 0) {
+    close(addTime: number = 0, reason?: string) {
         this.closeTime = Date.now() - addTime;
         this.openTime = -1;
+        this.layer = -1;
         this.openToken = null;
+        this.ui?.["__close"](reason);
+
+        this.ui = null;
     }
 
     open() {
@@ -132,6 +137,10 @@ export class ViewInfo {
 
     isOpen() {
         return this.openTime > 0;
+    }
+
+    isDispose() {
+
     }
 
     isClose() {
@@ -239,16 +248,13 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
     public readonly CLOSE_OPEN = "ON_CLOSE";
 
     //UI默认缓存时间 ,10秒自动销毁
-    public readonly defaultUIdisposeTime: number = 15000;
-
-    //UI默认销毁计数
-    public readonly defaultUIdisposeCount: number = 1;
+    private readonly defaultUIdisposeTime: number = 15000;
 
     //当前UI信息
-    public readonly uis: Map<string, ViewInfo> = new Map<string, ViewInfo>();
+    private readonly uis: Map<string, ViewInfo> = new Map<string, ViewInfo>();
 
     //打开队列
-    public queueList: { ui: string; option: Partial<UIOption> }[];
+    private queueList: { ui: string; option: Partial<UIOption> }[];
 
     //UI层级
     private layerList: { [layer: number]: Laya.Sprite };
@@ -272,6 +278,8 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
      * @returns void
      */
     public async CreateUI(url: string, option?: Partial<UIOption>) {
+        option = option || {};
+
         //ui已经打开
         if (this.hasOpen(url)) {
             //不能重复打开
@@ -283,7 +291,6 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
             this.ClearUI(url);
         }
 
-        option = option || {};
 
         let info = this.getUIinfo(url);
         let token = Symbol("open");
@@ -337,10 +344,9 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
 
         info.type === "view" && UILayer.hasLayer(info.layer) && this.onTopUI();
         let offsetTm = info.cache ? 0 : this.defaultUIdisposeTime - 1000;
-        info.layer = -1;
         info.close(offsetTm);
-        info.ui["__close"](reason);
         logUI("close ui", url);
+        
         if (this.queueList.length > 0 && this.queueList[0].ui === url) {
             this.queueList.shift();
             if (this.queueList.length > 0) {

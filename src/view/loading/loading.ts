@@ -1,6 +1,7 @@
 const { regClass } = Laya;
 import apk from "../../core/apk";
 import { GET } from "../../core/Context";
+import LogMgr from "../../core/LogMgr";
 import { Spinemanage } from "../../core/SpineManage";
 import { IView } from "../../core/UIManage";
 import { loadingBase } from "./loading.generated";
@@ -9,7 +10,6 @@ import { loadingBase } from "./loading.generated";
 export class loading extends loadingBase implements IView {
 
     onInit(): void {
-        console.log("loading init");
 
         this.width = 750;
         this.height = Laya.stage.height;
@@ -38,7 +38,7 @@ export class loading extends loadingBase implements IView {
     }
 
     onShow(...args: any[]): void {
-        console.log("loading show");
+        LogMgr.log("loading show");
     }
 
     onClear(reason: string): void {
