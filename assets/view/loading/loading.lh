@@ -1,6 +1,6 @@
 {
   "_$ver": 1,
-  "_$id": "jugyoyyw",
+  "_$id": "17pe77it",
   "_$runtime": "res://6fc7afb1-20ef-4512-a41e-5c2603063673",
   "_$type": "GWidget",
   "name": "Root",
@@ -29,7 +29,7 @@
         {
           "_$type": "Relation",
           "target": {
-            "_$ref": "jugyoyyw"
+            "_$ref": "17pe77it"
           },
           "data": [
             6,
@@ -55,7 +55,7 @@
         {
           "_$type": "Relation",
           "target": {
-            "_$ref": "jugyoyyw"
+            "_$ref": "17pe77it"
           },
           "data": [
             16,
@@ -78,7 +78,7 @@
         {
           "_$type": "Relation",
           "target": {
-            "_$ref": "jugyoyyw"
+            "_$ref": "17pe77it"
           },
           "data": [
             16,
@@ -104,6 +104,18 @@
       "width": 80,
       "height": 104,
       "src": "res://5debf12d-c687-4640-9acd-a85d1d41a347"
+    },
+    {
+      "_$id": "r0rvv960",
+      "_$prefab": "6a67834e-65b7-48a4-8d9e-7fa18f83833c",
+      "_$var": true,
+      "name": "btn_select",
+      "active": true,
+      "x": 375,
+      "y": 809,
+      "width": 168,
+      "height": 62,
+      "visible": true
     }
   ]
 }

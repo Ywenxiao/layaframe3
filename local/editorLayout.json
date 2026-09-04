@@ -1,31 +1,31 @@
 {
   "default": {
-    "width": 1470,
-    "height": 753,
-    "id": "uJRNPuKd",
+    "width": 1916,
+    "height": 953,
+    "id": "86GdDpiX",
     "layout": 1,
     "children": [
       {
-        "width": 1470,
-        "height": 753,
+        "width": 1916,
+        "height": 953,
         "id": "OMNVdDuX",
         "layout": 2,
         "children": [
           {
-            "width": 1470,
-            "height": 753,
+            "width": 1916,
+            "height": 953,
             "id": "kxI_pBKk",
             "layout": 1,
             "children": [
               {
                 "width": 289,
-                "height": 753,
+                "height": 953,
                 "id": "7qp8mq2g",
                 "layout": 2,
                 "children": [
                   {
                     "width": 289,
-                    "height": 378,
+                    "height": 478,
                     "id": "7yjnpdum",
                     "selected": 0,
                     "children": [
@@ -34,7 +34,7 @@
                   },
                   {
                     "width": 289,
-                    "height": 371,
+                    "height": 471,
                     "id": "7q7fz5d1",
                     "selected": 0,
                     "children": [
@@ -45,28 +45,28 @@
                 ]
               },
               {
-                "width": 645,
-                "height": 753,
+                "width": 1091,
+                "height": 953,
                 "id": "bXVBGBox",
                 "layout": 2,
                 "children": [
                   {
-                    "width": 645,
-                    "height": 544,
+                    "width": 1091,
+                    "height": 704,
                     "id": "Ug2tk3sB",
                     "layout": 1,
                     "children": [
                       {
-                        "width": 645,
-                        "height": 544,
+                        "width": 1091,
+                        "height": 704,
                         "id": "zkG3Xl1D",
                         "layout": 2,
                         "children": [
                           {
-                            "width": 645,
-                            "height": 544,
+                            "width": 1091,
+                            "height": 704,
                             "id": "7eatv6px",
-                            "selected": 1,
+                            "selected": 0,
                             "children": [
                               "ScenePanel",
                               "GamePanel",
@@ -80,8 +80,8 @@
                     ]
                   },
                   {
-                    "width": 645,
-                    "height": 205,
+                    "width": 1091,
+                    "height": 245,
                     "id": "cTIBtkMA",
                     "selected": 0,
                     "children": [
@@ -95,13 +95,13 @@
               },
               {
                 "width": 528,
-                "height": 753,
+                "height": 953,
                 "id": "0lqhnpck",
                 "layout": 2,
                 "children": [
                   {
                     "width": 528,
-                    "height": 753,
+                    "height": 953,
                     "id": "7i01d2q9",
                     "selected": 0,
                     "children": [
@@ -120,19 +120,20 @@
       {
         "width": 554,
         "height": 623,
-        "id": "-b3ikzrh",
+        "id": "dmhKUuyx",
         "selected": 0,
         "children": [
           "PreferencesPanel"
         ],
         "x": 573,
         "y": 251,
-        "show": false
+        "show": false,
+        "alwaysInFront": true
       },
       {
         "width": 628,
         "height": 470,
-        "id": "y69169zP",
+        "id": "WGS0dJMB",
         "selected": 1,
         "children": [
           "BuildSettingsPanel",
@@ -140,19 +141,21 @@
         ],
         "x": 579,
         "y": 314,
-        "show": false
+        "show": false,
+        "alwaysInFront": true
       },
       {
         "width": 802,
         "height": 607,
-        "id": "xn7I0LCQ",
+        "id": "3eQSa-fy",
         "selected": 0,
         "children": [
           "PackageManagerPanel"
         ],
-        "x": 554,
+        "x": 546,
         "y": 181,
-        "show": false
+        "show": true,
+        "alwaysInFront": true
       }
     ]
   }

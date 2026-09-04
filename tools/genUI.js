@@ -44,7 +44,7 @@ function scanFiles(dir, ext, baseDir = dir) {
  */
 function fileName(filePath) {
     const name = filePath.split("/").pop();
-    return name.replace(/\.lh$/, "");
+    return name.replace(/\.lh$/, "").replace(/\.ls$/, "");
 }
 
 /**
@@ -91,7 +91,10 @@ export function genUIDefine(opts = {}) {
     const viewDir = path.resolve(base, opts.viewDir || "assets/view");
     const outputFile = path.resolve(base, opts.outputFile || "src/patch/UIDefine.ts");
 
-    const files = scanFiles(viewDir, ".lh");
+    const fileslh = scanFiles(viewDir, ".lh");
+    const filesls = scanFiles(viewDir, ".ls");
+
+    const files = fileslh.concat(filesls);
 
     if (files.length === 0) {
         log("未找到 .lh 文件");

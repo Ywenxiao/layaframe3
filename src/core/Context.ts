@@ -20,8 +20,20 @@ interface InjectorInfo {
 
 
 /**注入类继承此基类，可在内部获得 this.context 的类型提示 */
-export abstract class Injectable {
+export abstract class Injectable implements IContext {
     readonly context!: Context;
+
+    /**切换前台调用 */
+    onShow?(param?: any): void;
+
+    /**切换后台调用 */
+    onHide?(param?: any): void;
+
+    /**激活状态变化 */
+    onActive?(active: boolean): void;
+
+    /**退出游戏之前调用一次 */
+    onDispose?(): void;
 }
 
 export class Context extends Laya.EventDispatcher {
@@ -35,13 +47,14 @@ export class Context extends Laya.EventDispatcher {
     }
 
     private injectMap = new Map<number, InjectorInfo>();
+    private injectMapByName = new Map<string, number>();
 
     private constructor() {
         super();
         this.injectMap = new Map<number, InjectorInfo>();
     }
 
-    inject<T>(classConstructor: InjectClass<T>, type: number = 1, lazy: boolean = true) {
+    inject<T>(classConstructor: InjectClass<T>, type: number = 1, lazy: boolean = true, name: string) {
         const id = getGID(classConstructor);
         if (this.injectMap.has(id)) {
             log("Warning: Class already injected", classConstructor.name);
@@ -54,12 +67,12 @@ export class Context extends Laya.EventDispatcher {
             this.d(instance);
         }
 
-        this.injectMap.set(id, {
-            type,
-            classConstructor,
-            instance,
-            active: true
-        });
+        let injectInfo: InjectorInfo = { type, classConstructor, instance, active: true };
+        this.injectMap.set(id, injectInfo);
+        if (name) {
+            this.injectMapByName.set(name, id);
+            LogMgr.log("inject", name);
+        }
     }
 
     unInject<T>(classConstructor: InjectClass<T>) {
@@ -80,17 +93,31 @@ export class Context extends Laya.EventDispatcher {
     //获取实例
     get<T>(classConstructor: InjectClass<T>): T & { readonly context: Context } {
         const id = getGID(classConstructor);
+        return this.getById(id);
+    }
+
+    getById(id: number) {
         const element = this.injectMap.get(id);
         if (!element) {
-            throw new Error(`Class not injected: ${classConstructor?.name}`);
+            throw new Error(`Class not injected id: ${id}`);
         }
 
         if (!element.instance) {
-            element.instance = new classConstructor();
+            element.instance = new element.classConstructor();
             this.d(element.instance);
         }
 
         return element.instance;
+    }
+
+
+    getByName<T>(name: string): any {
+        const id = this.injectMapByName.get(name);
+        if (!id) {
+            throw new Error(`Class not injected: ${name}`);
+        }
+
+        return this.getById(id);
     }
 
     /**
@@ -147,8 +174,10 @@ export class Context extends Laya.EventDispatcher {
     }
 }
 
-export function INJECT(type: ContextType, lazy: boolean = true): ClassDecorator {
-    return function (target: any) { Context.instance.inject(target, type, lazy); };
+export function INJECT(type: ContextType, lazy: boolean = true, name?: string): ClassDecorator {
+    return function (target: any) {
+        Context.instance.inject(target, type, lazy, name);
+    }
 }
 
 export function GET<T>(c: InjectClass<T>): T & { readonly context: Context } {
@@ -170,7 +199,7 @@ export function DISPATCH(event: keyof IContext, ...args: any[]) {
 }
 
 
-export function WITHCONTEXT<TBase extends Constructor>(Base: TBase): new (...args: ConstructorParameters<TBase>) => InstanceType<TBase> & { readonly context: Context };
+export function WITHCONTEXT<TBase extends Constructor>(Base: TBase): new (...args: ConstructorParameters<TBase>) => InstanceType<TBase> & Injectable;
 export function WITHCONTEXT(): typeof Injectable;
 export function WITHCONTEXT(Base?: any) {
     if (isNil(Base)) return Injectable;

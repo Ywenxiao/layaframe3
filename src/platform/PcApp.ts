@@ -16,7 +16,6 @@ export default class PcApp extends Laya.EventDispatcher implements Partial<IAppA
             return 1;
         }
         if (Laya.Browser.height > 0 && Laya.Browser.width > 0) {
-            LogMgr.log("Laya.Browser.height=" + Laya.Browser.height + ",Laya.Browser.width=" + Laya.Browser.width + ",h/w=" + Laya.Browser.height / Laya.Browser.width);
             if (Laya.Browser.height / Laya.Browser.width < 1.76) {
                 return 2;
             }

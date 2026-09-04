@@ -3,12 +3,14 @@ import apk from "../../core/apk";
 import { GET } from "../../core/Context";
 import LogMgr from "../../core/LogMgr";
 import { Spinemanage } from "../../core/SpineManage";
-import { IView } from "../../core/UIManage";
+import { IView, UILayer, UIManager } from "../../core/UIManage";
+import { UIDefine } from "../../patch/UIDefine";
 import { loadingBase } from "./loading.generated";
 
 @regClass()
 export class loading extends loadingBase implements IView {
 
+    private btn: Laya.GButton;
     onInit(): void {
 
         this.width = 750;
@@ -16,6 +18,9 @@ export class loading extends loadingBase implements IView {
         if (this.height > 1666) {
             this.img_bg.height = this.height;
         }
+
+        this.btn_select.icon = "atlas/comp/button.png";
+        this.btn_select.onClick(this, this.onTweenClick);
 
         if (apk.isPad()) {
             let img = new Laya.GImage();
@@ -37,6 +42,10 @@ export class loading extends loadingBase implements IView {
         })
     }
 
+    clear() {
+
+    }
+
     onShow(...args: any[]): void {
         LogMgr.log("loading show");
     }
@@ -50,8 +59,7 @@ export class loading extends loadingBase implements IView {
     }
 
     private onTweenClick(): void {
-        console.log("onTweenClick");
-        let path = new Laya.CurvePath();
+        GET(UIManager).CreateUI(UIDefine.home, { type: "view", layer: UILayer.DialogTop });
 
     }
 }

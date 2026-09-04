@@ -4,9 +4,9 @@
     "scale": 1,
     "scale2": 0.16923076923076924,
     "dimension": {
-      "name": "2K",
-      "x": 2560,
-      "y": 1440
+      "name": "750",
+      "x": 750,
+      "y": 1334
     },
     "landscape": false
   },
@@ -64,5 +64,6 @@
   },
   "AnimatorControllerPanel": {},
   "TileSetPanel": {},
-  "TileMapPanel": {}
+  "TileMapPanel": {},
+  "quickSearch": {}
 }

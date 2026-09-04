@@ -9,5 +9,6 @@ export class loadingBase extends Laya.GWidget {
     public img_1!: Laya.GImage;
     public bar!: Laya.GProgressBar;
     public txt_version!: Laya.GTextField;
+    public btn_select!: Laya.GButton;
 }
 

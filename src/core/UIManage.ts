@@ -1,6 +1,8 @@
 import apk from "./apk";
-import { WITHCONTEXT, INJECT } from "./Context";
+import { BadgeManage } from "./BadgeManage";
+import { WITHCONTEXT, INJECT, GET } from "./Context";
 import { ContextType } from "./DefineTypes";
+import { EventManage } from "./EventManage";
 import LogMgr from "./LogMgr";
 
 type constructorView<T = IView> = new (...args: any[]) => T;
@@ -87,7 +89,7 @@ export class ViewInfo {
     openToken: symbol | null;
 
     constructor() {
-        this.id = ViewInfo.id++;
+        this.id = ++ViewInfo.id;
     }
 
     async generateView(): Promise<IView> {
@@ -126,8 +128,6 @@ export class ViewInfo {
         this.layer = -1;
         this.openToken = null;
         this.ui?.["__close"](reason);
-
-        this.ui = null;
     }
 
     open() {
@@ -135,16 +135,25 @@ export class ViewInfo {
         this.closeTime = -1;
     }
 
+    dispose() {
+        this.ui?.["__dispose"]();
+        this.pms_ui = null;
+        this.ui = null;
+        this.openTime = -1;
+        this.closeTime = -1;
+    }
+
     isOpen() {
         return this.openTime > 0;
     }
 
-    isDispose() {
-
-    }
-
     isClose() {
         return this.closeTime > 0;
+    }
+
+    isDispose() {
+        let isDispose = this.openTime === -1 && this.closeTime === -1;
+        return isDispose || !this.ui || this.ui.destroyed;
     }
 }
 
@@ -254,10 +263,10 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
     private readonly uis: Map<string, ViewInfo> = new Map<string, ViewInfo>();
 
     //打开队列
-    private queueList: { ui: string; option: Partial<UIOption> }[];
+    private queueList: { ui: string; option: Partial<UIOption> }[] = [];
 
     //UI层级
-    private layerList: { [layer: number]: Laya.Sprite };
+    private layerList: { [layer: number]: Laya.Sprite } = {};
 
     //累计打开ui数量
     private uiCount: number = 0;
@@ -267,8 +276,14 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
 
     constructor() {
         super();
-        this.queueList = [];
-        this.layerList = {};
+    }
+
+    onShow(param?: any): void {
+
+    }
+
+    onHide(param?: any): void {
+
     }
 
     /**
@@ -278,12 +293,10 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
      * @returns void
      */
     public async CreateUI(url: string, option?: Partial<UIOption>) {
-        option = option || {};
 
         //ui已经打开
         if (this.hasOpen(url)) {
-            //不能重复打开
-            if (option.overwrite !== true) {
+            if (option?.overwrite !== true) {
                 logUI("ui already open", url);
                 return;
             }
@@ -292,6 +305,7 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
         }
 
 
+        option = option || {};
         let info = this.getUIinfo(url);
         let token = Symbol("open");
         info.openToken = token;
@@ -316,9 +330,9 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
         }
 
         //预加载资源
-        if (option.perloader !== false) {
-            //TODO
-        }
+        // if (option.perloader !== false) {
+        //     //TODO
+        // }
 
         view.zIndex = option.zIndex ?? 0;
         view.zOrder = option.zOrder ?? 0;
@@ -346,7 +360,7 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
         let offsetTm = info.cache ? 0 : this.defaultUIdisposeTime - 1000;
         info.close(offsetTm);
         logUI("close ui", url);
-        
+
         if (this.queueList.length > 0 && this.queueList[0].ui === url) {
             this.queueList.shift();
             if (this.queueList.length > 0) {
@@ -370,6 +384,8 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
     //关闭一组UI
     public ClearuiByGroup(group: number) {
         this.uis.forEach((v, k) => {
+            if (v.isClose()) return;
+
             if (v.group === group) {
                 this.ClearUI(v.url);
             }
@@ -458,9 +474,6 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
      * @returns
      */
     public setActiveLayer(layer: number) {
-        let layersp = UILayer.hasLayer(layer);
-        if (!layersp) return;
-
         if (!UILayer.hasLayer(layer)) return;
 
         for (let key of UILayer.fomatArray()) {
@@ -512,6 +525,10 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
 
     public updateTime() {
         this.uis.forEach((v, k) => {
+            if (v.isDispose()) {
+                return;
+            }
+
             //UI已经打开
             if (this.hasOpen(v.url) && v.ui && !v.ui.destroyed) {
                 v.ui.onUpdateTime && v.ui.onUpdateTime();
@@ -524,32 +541,18 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
             }
 
             //一段时间没打开自动动销毁UI
-            if (
-                v.closeTime > 0 &&
-                v.ui &&
-                !v.ui.destroyed &&
-                Date.now() - v.closeTime > this.defaultUIdisposeTime
-            ) {
+            if (Date.now() - v.closeTime > this.defaultUIdisposeTime) {
                 logUI("dispose ui", v.ui?.name);
-                (v.ui as any).__dispose();
+                v.dispose();
                 this.clearResByUI(v);
-
-                v.openTime = v.closeTime = -1;
-                v.ui = null;
-                // this.destoreResCount++;
             }
         });
-
-        // if (this.destoreResCount > 5) {
-
-        //     this.clearResUnReference();
-        // }
     }
 
     //state true切换前台 false切换后台
     public setGameState(state: boolean, res: any) {
         let callStr = state ? "onGameShow" : "onGameHide";
-        console.log("切换状态", callStr);
+        logUI("切换状态", callStr);
         this.uis.forEach((v, k) => {
             //不存在UI实例不用处理
             if (this.hasOpen(v.url) && v.ui && !v.ui.destroyed) {
@@ -582,38 +585,38 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
      * @returns
      */
     private clearResByUI(uiInfo: ViewInfo) {
-        let arr = [];
-        let ui = uiInfo.uiView;
+        // let arr = [];
+        // let ui = uiInfo.uiView;
 
-        if (ui && ui["uiView"]) {
-            arr = ui["uiView"].loadList || [];
-        }
+        // if (ui && ui["uiView"]) {
+        //     arr = ui["uiView"].loadList || [];
+        // }
 
-        // arr = arr.concat(uiInfo.perLoaderList || []);
+        // // arr = arr.concat(uiInfo.perLoaderList || []);
 
-        if (!arr || arr.length <= 0) return;
+        // if (!arr || arr.length <= 0) return;
 
-        // let clear_arr = [];
-        let len = 0;
-        for (let elm of arr) {
-            let url = null;
-            if (typeof elm === "string") {
-                url = elm;
-            } else if (typeof elm === "object") {
-                url = elm.url;
-            }
+        // // let clear_arr = [];
+        // let len = 0;
+        // for (let elm of arr) {
+        //     let url = null;
+        //     if (typeof elm === "string") {
+        //         url = elm;
+        //     } else if (typeof elm === "object") {
+        //         url = elm.url;
+        //     }
 
-            if (!url || url.indexOf("cdn/") < 0) continue;
+        //     if (!url || url.indexOf("cdn/") < 0) continue;
 
-            let res = Laya.loader.getRes(url);
-            if (!res || res._referenceCount > 0) continue;
+        //     let res = Laya.loader.getRes(url);
+        //     if (!res || res._referenceCount > 0) continue;
 
-            Laya.loader.clearRes(url);
-            len++;
-            // clear_arr.push(url);
-        }
+        //     Laya.loader.clearRes(url);
+        //     len++;
+        //     // clear_arr.push(url);
+        // }
 
-        logUI("清理资源 clear ui res", len);
+        // logUI("清理资源 clear ui res", len);
     }
 
     private getUIinfo(url: string): ViewInfo {
@@ -627,7 +630,6 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
         return info;
     }
 
-    private clearResUnReference() { }
 
     private onTopUI() {
         Laya.timer.clear(this, this._onTopUI);
@@ -659,7 +661,7 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
     }
 
     private define_init(info: ViewInfo) {
-        if (!info || !info.ui || info.id < 0) {
+        if (!info || !info.ui) {
             errUI("define_init error", info?.url);
             return;
         }
@@ -668,32 +670,30 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
 
         info.ui.onInit?.();
 
+        let mgr = this;
         this.d(info.ui, "uuid", info.id);
-        let self = this;
-
         this.d(info.ui, "close", function (reason?: string) {
-            self.ClearUI(info.url);
+            mgr.ClearUI(info.url, reason);
         });
 
         this.d(info.ui, "__close", function (reason?: string) {
-            this.removeSelf();
-            self.offAllCaller(this);
 
-            // TODO
-            // evm.offAllCaller(this);
-            // badge.offAll(this);
+            GET(EventManage).offAllCaller(this);
+            GET(BadgeManage).offAll(this);
+
+            this.removeSelf();
+            this.offAllCaller(this);
 
             this.onClear && this.onClear(reason);
-            self.event(self.CLOSE_OPEN, {
+            mgr.event(mgr.CLOSE_OPEN, {
                 uuid: this.uuid,
                 view: this,
                 open: false,
-                reason: this.reason,
+                reason: reason,
             });
         });
 
         this.d(info.ui, "__dispose", function () {
-            self.clearResByUI(info);
             this.onDispose?.();
             this.destroy();
         });
