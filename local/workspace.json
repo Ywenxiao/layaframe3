@@ -2,7 +2,7 @@
   "GamePanel": {
     "muted": false,
     "scale": 1,
-    "scale2": 0.16923076923076924,
+    "scale2": 0.26425,
     "dimension": {
       "name": "750",
       "x": 750,
@@ -15,15 +15,24 @@
   },
   "ProjectPanel": {
     "expandedNodes": [
+      "../src/view/loading",
+      "view/home",
+      "resources/common",
       "",
-      "view",
+      "resources/apk",
       "view/loading",
-      "../src"
+      "prefab",
+      "prefab/common",
+      "atlas",
+      "atlas/comp",
+      "~/internal",
+      "~/internal/UI",
+      "~/internal/UI/images"
     ],
     "twoColumn": false,
     "firstColumnWidth": 289,
     "iconScale": 0,
-    "selected": "f7b1216d-4d04-43a6-9f88-f7ce5e877c5d"
+    "selected": "c13c1b8e-c516-4a0f-98ad-e356f45f0365"
   },
   "ConsolePanel": {
     "collapse": true
@@ -32,13 +41,13 @@
     "platform": "bytedancegame"
   },
   "ProjectSettingsPanel": {
-    "catalog": "PlayerSettings"
+    "catalog": "PlayerSettings.EngineLibsSettings"
   },
   "SelectResourceDialog": {
     "iconScale": 0,
     "previewPanelHeight": 202,
-    "x": 1011,
-    "y": 313,
+    "x": 1008,
+    "y": 271,
     "width": 631,
     "height": 621
   },
@@ -49,7 +58,7 @@
     "height": 429
   },
   "y": {},
-  "playButtonBehavior": "startup",
+  "playButtonBehavior": "current",
   "playUsingHttps": false,
   "S": {},
   "x": {},
@@ -62,8 +71,17 @@
   "FrameDebuggerPanel": {
     "resolution": 0
   },
-  "AnimatorControllerPanel": {},
+  "AnimatorControllerPanel": {
+    "layerWidth": 150
+  },
   "TileSetPanel": {},
   "TileMapPanel": {},
-  "quickSearch": {}
+  "quickSearch": {
+    "recentFiles": [
+      {
+        "file": "view/loading/loading.lh",
+        "time": 1788505724297
+      }
+    ]
+  }
 }

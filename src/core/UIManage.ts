@@ -110,6 +110,7 @@ export class ViewInfo {
                     return null;
                 }
 
+
                 this.ui = p.create() as IView;
                 this.pms_ui = null;
                 return this.ui as any;
@@ -188,9 +189,6 @@ export interface UIOption {
 
     /**常驻界面，不会被销毁 default:false*/
     permanent: boolean;
-
-    /**是否是预加载,等加载完成再打开界面 default:true */
-    perloader: boolean;
 
     /**替换cdn */
     replaceCdn: string;
@@ -274,10 +272,6 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
     //当前顶层UI
     private currTopView: number;
 
-    constructor() {
-        super();
-    }
-
     onShow(param?: any): void {
 
     }
@@ -328,11 +322,6 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
             errUI("create ui error", url);
             return;
         }
-
-        //预加载资源
-        // if (option.perloader !== false) {
-        //     //TODO
-        // }
 
         view.zIndex = option.zIndex ?? 0;
         view.zOrder = option.zOrder ?? 0;
@@ -678,13 +667,17 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
 
         this.d(info.ui, "__close", function (reason?: string) {
 
+            //先触发关闭事件
+            this.onClear && this.onClear(reason);
+
+            //清理事件与红点注册
             GET(EventManage).offAllCaller(this);
             GET(BadgeManage).offAll(this);
 
-            this.removeSelf();
+            //清理定时器，移除渲染
             this.offAllCaller(this);
+            this.removeSelf();
 
-            this.onClear && this.onClear(reason);
             mgr.event(mgr.CLOSE_OPEN, {
                 uuid: this.uuid,
                 view: this,
@@ -695,7 +688,7 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
 
         this.d(info.ui, "__dispose", function () {
             this.onDispose?.();
-            this.destroy();
+            info.dispose();
         });
     }
 

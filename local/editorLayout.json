@@ -52,19 +52,19 @@
                 "children": [
                   {
                     "width": 1091,
-                    "height": 704,
+                    "height": 640,
                     "id": "Ug2tk3sB",
                     "layout": 1,
                     "children": [
                       {
                         "width": 1091,
-                        "height": 704,
+                        "height": 640,
                         "id": "zkG3Xl1D",
                         "layout": 2,
                         "children": [
                           {
                             "width": 1091,
-                            "height": 704,
+                            "height": 640,
                             "id": "7eatv6px",
                             "selected": 0,
                             "children": [
@@ -81,7 +81,7 @@
                   },
                   {
                     "width": 1091,
-                    "height": 245,
+                    "height": 309,
                     "id": "cTIBtkMA",
                     "selected": 0,
                     "children": [
@@ -120,7 +120,7 @@
       {
         "width": 554,
         "height": 623,
-        "id": "dmhKUuyx",
+        "id": "wfKE5J8J",
         "selected": 0,
         "children": [
           "PreferencesPanel"
@@ -133,7 +133,7 @@
       {
         "width": 628,
         "height": 470,
-        "id": "WGS0dJMB",
+        "id": "jXXZlzIb",
         "selected": 1,
         "children": [
           "BuildSettingsPanel",
@@ -147,14 +147,14 @@
       {
         "width": 802,
         "height": 607,
-        "id": "3eQSa-fy",
+        "id": "HUCv8U1C",
         "selected": 0,
         "children": [
           "PackageManagerPanel"
         ],
-        "x": 546,
+        "x": 538,
         "y": 181,
-        "show": true,
+        "show": false,
         "alwaysInFront": true
       }
     ]
