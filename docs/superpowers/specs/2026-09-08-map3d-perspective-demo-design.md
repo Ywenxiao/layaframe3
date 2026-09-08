@@ -54,14 +54,15 @@ y 驱动手动缩放（`scale = camZ/(camZ+z)`）+ zOrder 排序遮挡。
 Scene2D（根，_$runtime: mapDemo.ts）
 └── Scene3D（第一个子节点）
     ├── Main Camera    Camera：透视（orthographic=false）、fov 60、
-    │                  localPosition (0, 700, -900)、俯角约 35~45° 斜视地面
+    │                  localPosition (0, 700, -900)、看向 (0, 0, 0)（地面中心），
+    │                  俯角约 35~45° 斜视地面（实现时按视觉效果微调俯角与距离）
     ├── DirectionLight Sprite3D + DirectionLightCom（3D 管线光照，保底）
     ├── Ground         Sprite3D + MeshFilter(internal/Plane.lm) + MeshRenderer(Unlit 地面材质)
     │                  平躺地面（绕 X 转 -90°），2000×3000 单位，贴"网格+道路"占位图
     ├── Building       Sprite3D + MeshFilter(internal/Plane.lm) + MeshRenderer(Unlit 建筑材质)
     │                  直立四边形立在地面上，位于路径中部
     └── Role           Sprite3D + MeshFilter(internal/Plane.lm) + MeshRenderer(Unlit 角色材质)
-                       直立公告板（面向相机），贴占位角色图
+                       直立公告板（相机固定，面向相机的朝向在场景中静态设置一次即可），贴占位角色图
 ```
 
 相机参数：fov 60、nearPlane 0.3、farPlane 5000（保证地面远端在裁剪范围内）。
