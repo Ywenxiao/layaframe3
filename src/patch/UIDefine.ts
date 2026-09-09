@@ -2,4 +2,5 @@
 export class UIDefine {
     static readonly loading = "view/loading/loading.lh";
     static readonly home = "view/home/home.ls";
+    static readonly mapDemo = "view/map/mapDemo.ls";
 }
