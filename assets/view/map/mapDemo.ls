@@ -15,7 +15,6 @@
       "_$id": "i8h5997d",
       "_$type": "Scene3D",
       "name": "Scene3D",
-      "_$var": true,
       "skyRenderer": {
         "meshType": "dome"
       },

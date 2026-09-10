@@ -4,8 +4,9 @@
  * view/map/mapDemo.ls
  */
 export class mapDemoBase extends Laya.Scene {
-    /** @internal */
-    declare scene3D: Laya.Scene3D;
-    /** @internal */
+    /**
+     * 注意：Laya.Scene 已内置 scene3D 访问器，这里不能再声明同名变量（会与基类访问器冲突）。
+     * @internal
+     */
     declare ground: Laya.Sprite3D;
 }

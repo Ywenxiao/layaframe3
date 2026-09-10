@@ -28,6 +28,9 @@ export class MapGrid3D {
         const offsetX = ((cols - 1) * tileSize) / 2;
         const offsetZ = ((rows - 1) * tileSize) / 2;
 
+        // 所有地块共享同一份 Plane 网格，只有材质（贴图）各不相同
+        const sharedMesh = Laya.PrimitiveMesh.createPlane(tileSize, tileSize);
+
         let created = 0;
         const createBatch = () => {
             const end = Math.min(created + batchPerFrame, total);
@@ -45,7 +48,7 @@ export class MapGrid3D {
                 // PrimitiveMesh.createPlane 生成的平面本身就是 XZ 水平面（法线 +Y），无需旋转
 
                 const meshFilter = tile.addComponent(Laya.MeshFilter);
-                meshFilter.sharedMesh = Laya.PrimitiveMesh.createPlane(tileSize, tileSize);
+                meshFilter.sharedMesh = sharedMesh;
 
                 const meshRenderer = tile.addComponent(Laya.MeshRenderer);
                 const material = new Laya.UnlitMaterial();
