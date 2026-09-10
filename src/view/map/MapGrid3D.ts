@@ -37,12 +37,12 @@ export class MapGrid3D {
                 const index = i + 1;
 
                 const x = col * tileSize - offsetX;
-                const z = row * tileSize - offsetZ;
+                // 相机位于 +Z 侧俯视，屏幕上方对应 -Z，因此底行(row 0)应放在 +Z
+                const z = offsetZ - row * tileSize;
 
                 const tile = new Laya.Sprite3D(`tile_${index.toString().padStart(2, "0")}`);
                 tile.transform.localPosition = new Laya.Vector3(x, 0, z);
-                // Plane 默认竖直于 XY 平面，绕 X 轴转 -90° 使其平躺在 XZ 平面
-                tile.transform.localRotationEuler = new Laya.Vector3(-90, 0, 0);
+                // PrimitiveMesh.createPlane 生成的平面本身就是 XZ 水平面（法线 +Y），无需旋转
 
                 const meshFilter = tile.addComponent(Laya.MeshFilter);
                 meshFilter.sharedMesh = Laya.PrimitiveMesh.createPlane(tileSize, tileSize);
