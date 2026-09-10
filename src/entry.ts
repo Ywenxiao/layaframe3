@@ -20,7 +20,10 @@ Laya.addAfterInitCallback(() => {
 export function main() {
 
     LogMgr.log("Laya.Browser.height=" + Laya.Browser.height + ",Laya.Browser.width=" + Laya.Browser.width + ",h/w=" + Laya.Browser.height / Laya.Browser.width);
-    GET(UIManager).CreateUI(UIDefine.loading, { type: "view", layer: UILayer.DialogTop });
-    GET(UIManager).CreateUI(UIDefine.loading, { type: "view", layer: UILayer.DialogTop, overwrite: true });
+    // 原 loading 入口，恢复时取消下面两行注释
+    // GET(UIManager).CreateUI(UIDefine.loading, { type: "view", layer: UILayer.DialogTop });
+    // GET(UIManager).CreateUI(UIDefine.loading, { type: "view", layer: UILayer.DialogTop, overwrite: true });
+
+    GET(UIManager).CreateUI(UIDefine.mapDemo, { type: "view", layer: UILayer.View });
 }
 
