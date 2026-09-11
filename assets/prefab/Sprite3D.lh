@@ -1,0 +1,19 @@
+{
+  "_$ver": 1,
+  "_$id": "y78sowm6",
+  "_$type": "Sprite3D",
+  "name": "Sprite3D",
+  "_$comp": [
+    {
+      "_$type": "UI3D",
+      "lightmapScaleOffset": {
+        "_$type": "Vector4"
+      },
+      "prefab": {
+        "_$uuid": "2b59abc6-8b58-4bda-aa70-7289461232db",
+        "_$type": "Prefab"
+      },
+      "resolutionRate": 512
+    }
+  ]
+}

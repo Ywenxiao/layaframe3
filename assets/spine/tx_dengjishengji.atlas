@@ -1,0 +1,20 @@
+
+tx_dengjishengji.png
+size: 109,109
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bian1
+  rotate: false
+  xy: 92, 89
+  size: 15, 18
+  orig: 16, 19
+  offset: 0, 0
+  index: -1
+liang
+  rotate: false
+  xy: 2, 20
+  size: 88, 87
+  orig: 95, 94
+  offset: 3, 4
+  index: -1

@@ -6,7 +6,10 @@
   },
   "modules": {
     "laya.ui": true,
-    "laya.spine": true
+    "laya.spine": true,
+    "laya.d3": true,
+    "laya.trail3D": true,
+    "laya.bridge": true
   },
   "addons": {
     "laya.ui": "ui2"

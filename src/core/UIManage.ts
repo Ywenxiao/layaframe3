@@ -326,8 +326,13 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
         view.zIndex = option.zIndex ?? 0;
         view.zOrder = option.zOrder ?? 0;
 
-        let parent = option.parent || this.getLayer(info.layer);
-        parent.addChild(view);
+        if (view instanceof Laya.Scene) {
+            Laya.stage.addChild(view);
+        } else {
+            let parent = option.parent || this.getLayer(info.layer);
+            parent.addChild(view);
+        }
+
 
         this.define_init(info);
         view.onShow?.(...(option.data || []));

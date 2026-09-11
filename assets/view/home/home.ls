@@ -12,15 +12,89 @@
   "height": 1334,
   "_$child": [
     {
-      "_$id": "wllnfqsi",
-      "_$var": true,
-      "_$type": "GImage",
-      "name": "img",
-      "x": 119,
-      "y": 617,
-      "width": 512,
-      "height": 313,
-      "src": "res://c13c1b8e-c516-4a0f-98ad-e356f45f0365"
+      "_$id": "usysb6e6",
+      "_$type": "Scene3D",
+      "name": "Scene3D",
+      "skyRenderer": {
+        "meshType": "dome"
+      },
+      "ambientColor": {
+        "_$type": "Color",
+        "r": 0.212,
+        "g": 0.227,
+        "b": 0.259
+      },
+      "_$child": [
+        {
+          "_$id": "j53tnesb",
+          "_$type": "Camera",
+          "name": "Camera",
+          "transform": {
+            "localPosition": {
+              "_$type": "Vector3",
+              "x": 0.019588230161149633,
+              "y": -1.214470366559278
+            }
+          },
+          "fieldOfView": 68,
+          "nearPlane": 0.3,
+          "farPlane": 1000,
+          "clearColor": {
+            "_$type": "Color",
+            "r": 0.39215686274509803,
+            "g": 0.5843137254901961,
+            "b": 0.9294117647058824
+          }
+        },
+        {
+          "_$id": "sgaizfta",
+          "_$type": "Sprite3D",
+          "name": "Sprite3D",
+          "active": false,
+          "_$comp": [
+            {
+              "_$type": "UI3D",
+              "lightmapScaleOffset": {
+                "_$type": "Vector4"
+              },
+              "prefab": {
+                "_$uuid": "b0c7f4b6-9a33-4cd8-897e-4888efe760fe",
+                "_$type": "Prefab"
+              },
+              "cameraSpace": true,
+              "scale": {
+                "_$type": "Vector2",
+                "x": 1,
+                "y": 0.3671875
+              },
+              "billboard": false
+            }
+          ]
+        },
+        {
+          "_$id": "us57tn37",
+          "_$type": "Sprite3D",
+          "name": "Sprite3D_1",
+          "_$comp": [
+            {
+              "_$type": "MeshFilter",
+              "sharedMesh": {
+                "_$uuid": "7e9b0d09-b83c-425d-adf1-3d319f026e38",
+                "_$type": "Mesh"
+              }
+            },
+            {
+              "_$type": "MeshRenderer",
+              "lightmapScaleOffset": {
+                "_$type": "Vector4"
+              },
+              "sharedMaterials": [
+                null
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "mcp__ide__getDiagnostics"
+      "mcp__ide__getDiagnostics",
+      "Bash(node --experimental-strip-types --help)",
+      "Bash(printf 'const x: number = 42;\\\\nconsole.log\\(\"strip-types ok\", x\\);\\\\n')",
+      "Bash(node --experimental-strip-types /tmp/t.ts)",
+      "Bash(rm /tmp/t.ts)"
     ]
   }
 }

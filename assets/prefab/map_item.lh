@@ -1,0 +1,15 @@
+{
+  "_$ver": 1,
+  "_$id": "3p8qddh3",
+  "_$type": "Sprite",
+  "name": "Sprite",
+  "x": 23,
+  "y": 218,
+  "width": 512,
+  "height": 512,
+  "texture": {
+    "_$uuid": "e5255370-0c79-4fcf-a649-085f9fd4e064",
+    "_$type": "Texture"
+  },
+  "blendMode": "normal"
+}

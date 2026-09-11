@@ -16,7 +16,15 @@ const MAP_BATCH_PER_FRAME = 8;
 @regClass()
 export class mapDemo extends mapDemoBase implements IView {
 
+    private ground: Laya.Sprite3D;
     onInit(): void {
+        this.ground = this.scene3D.getChildByName("Ground") as Laya.Sprite3D;
+        LogMgr.log("mapDemo onInit");
+        this._buildMap();
+    }
+
+    onOpened(param: any): void {
+        this.ground = this.scene3D.getChildByName("Ground") as Laya.Sprite3D;
         LogMgr.log("mapDemo onInit");
         this._buildMap();
     }

@@ -5,6 +5,5 @@
  * view/home/home.ls
  */
 export class homeViewBase extends Laya.Scene {
-    public img!: Laya.GImage;
 }
 

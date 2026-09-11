@@ -16,18 +16,19 @@
   "ProjectPanel": {
     "expandedNodes": [
       "../src/view/loading",
-      "view/home",
       "resources/common",
       "",
       "resources/apk",
-      "view/loading",
-      "prefab",
-      "prefab/common",
-      "atlas",
       "atlas/comp",
       "~/internal",
       "~/internal/UI",
-      "~/internal/UI/images"
+      "~/internal/UI/images",
+      "../src",
+      "view",
+      "../src/view",
+      "../src/view/map",
+      "cdn/map",
+      "view/home"
     ],
     "twoColumn": false,
     "firstColumnWidth": 289,
@@ -41,13 +42,13 @@
     "platform": "bytedancegame"
   },
   "ProjectSettingsPanel": {
-    "catalog": "PlayerSettings.EngineLibsSettings"
+    "catalog": "CompilerSettings"
   },
   "SelectResourceDialog": {
     "iconScale": 0,
     "previewPanelHeight": 202,
-    "x": 1008,
-    "y": 271,
+    "x": 1281,
+    "y": 44,
     "width": 631,
     "height": 621
   },
@@ -58,7 +59,7 @@
     "height": 429
   },
   "y": {},
-  "playButtonBehavior": "current",
+  "playButtonBehavior": "startup",
   "playUsingHttps": false,
   "S": {},
   "x": {},

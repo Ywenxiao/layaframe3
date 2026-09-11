@@ -70,8 +70,23 @@ export class MapGrid3D {
         createBatch();
     }
 
+    /**
+     * 注意：这里不能传 Laya.Loader.TEXTURE2D。
+     *
+     * Texture2DLoader 需要资源在「运行时资源索引」里（即 fileconfig.json）有对应的导入 meta
+     * （sRGB / wrapMode / filterMode / mipmap / pma ...）才能构造 Texture2D，拿不到就 resolve 成 null。
+     * 只有满足以下之一的资源才会进这个索引：
+     *   1) 放在 assets/resources/ 下；
+     *   2) 被已打包的场景 / 预制体引用（依赖分析带入）；
+     *   3) 列在 settings/BuildSettings.json 的 alwaysIncluded 里。
+     * assets/cdn/map/ 三条都不满足，所以带 TEXTURE2D 加载恒为 null。
+     *
+     * 不带类型加载会走 2D 图片通道，返回 Laya.Texture；其 bitmap 就是底层 Texture2D，
+     * 正好是 albedoTexture 需要的 BaseTexture。
+     */
     private static _loadTexture(url: string, material: Laya.UnlitMaterial): void {
-        Laya.loader.load(url, Laya.Loader.TEXTURE2D).then((tex: Laya.Texture2D) => {
+        Laya.loader.load(url).then((res: any) => {
+            const tex = MapGrid3D._toTexture2D(res);
             if (!tex) {
                 LogMgr.error(`[MapGrid3D] tile texture is null: ${url}`);
                 return;
@@ -80,5 +95,13 @@ export class MapGrid3D {
         }).catch((err: any) => {
             LogMgr.error(`[MapGrid3D] failed to load tile texture: ${url}`, err);
         });
+    }
+
+    /** 把加载结果统一转成 3D 可用的 BaseTexture */
+    private static _toTexture2D(res: any): Laya.BaseTexture {
+        if (!res) return null;
+        if (res instanceof Laya.Texture2D) return res;
+        // 2D 通道返回的是 Laya.Texture，真正的贴图在其 bitmap 上
+        return res.bitmap || null;
     }
 }
