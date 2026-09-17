@@ -43,7 +43,6 @@ export default class LogMgr {
 
         const isBrowser = Laya.Browser.onChrome || Laya.Browser.onEdge || Laya.Browser.onFirefox;
 
-
         if (!isBrowser || Laya.LayaEnv.isEditor) {
             console.log(this.getTime() + " " + this.getLevelName(level), ...str);
             return;

@@ -13,7 +13,9 @@
         "_$uuid": "2b59abc6-8b58-4bda-aa70-7289461232db",
         "_$type": "Prefab"
       },
-      "resolutionRate": 512
+      "cameraSpace": true,
+      "resolutionRate": 512,
+      "billboard": false
     }
   ]
 }

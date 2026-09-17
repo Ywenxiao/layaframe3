@@ -71,7 +71,7 @@ export class Context extends Laya.EventDispatcher {
         this.injectMap.set(id, injectInfo);
         if (name) {
             this.injectMapByName.set(name, id);
-            LogMgr.log("inject", name);
+            log("inject", name);
         }
     }
 
@@ -220,7 +220,8 @@ function getGID(classConstructor: InjectClass): number {
 }
 
 function log(...str: any[]) {
-    LogMgr.log(...str);
+    // LogMgr.log(...str);
+    console.log(...str);
 }
 
 const gid = (function () {

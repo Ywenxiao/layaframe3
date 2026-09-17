@@ -32,8 +32,7 @@
           "transform": {
             "localPosition": {
               "_$type": "Vector3",
-              "x": 0.019588230161149633,
-              "y": -1.214470366559278
+              "z": 2
             }
           },
           "fieldOfView": 68,
@@ -47,52 +46,68 @@
           }
         },
         {
-          "_$id": "sgaizfta",
-          "_$type": "Sprite3D",
+          "_$id": "aptuackt",
+          "_$prefab": "fa978fdd-6da7-428d-9917-98519471515c",
           "name": "Sprite3D",
-          "active": false,
-          "_$comp": [
-            {
-              "_$type": "UI3D",
-              "lightmapScaleOffset": {
-                "_$type": "Vector4"
-              },
-              "prefab": {
-                "_$uuid": "b0c7f4b6-9a33-4cd8-897e-4888efe760fe",
-                "_$type": "Prefab"
-              },
-              "cameraSpace": true,
-              "scale": {
-                "_$type": "Vector2",
-                "x": 1,
-                "y": 0.3671875
-              },
-              "billboard": false
+          "active": true,
+          "layer": 0,
+          "transform": {
+            "localPosition": {
+              "_$type": "Vector3"
+            },
+            "localRotation": {
+              "_$type": "Quaternion"
             }
-          ]
+          }
         },
         {
-          "_$id": "us57tn37",
-          "_$type": "Sprite3D",
+          "_$id": "uk06x4ky",
+          "_$prefab": "fa978fdd-6da7-428d-9917-98519471515c",
           "name": "Sprite3D_1",
-          "_$comp": [
-            {
-              "_$type": "MeshFilter",
-              "sharedMesh": {
-                "_$uuid": "7e9b0d09-b83c-425d-adf1-3d319f026e38",
-                "_$type": "Mesh"
-              }
+          "active": true,
+          "layer": 0,
+          "transform": {
+            "localPosition": {
+              "_$type": "Vector3",
+              "x": 1
             },
-            {
-              "_$type": "MeshRenderer",
-              "lightmapScaleOffset": {
-                "_$type": "Vector4"
-              },
-              "sharedMaterials": [
-                null
-              ]
+            "localRotation": {
+              "_$type": "Quaternion"
             }
-          ]
+          }
+        },
+        {
+          "_$id": "jqlgd1pp",
+          "_$prefab": "fa978fdd-6da7-428d-9917-98519471515c",
+          "name": "Sprite3D_2",
+          "active": true,
+          "layer": 0,
+          "transform": {
+            "localPosition": {
+              "_$type": "Vector3",
+              "y": 1
+            },
+            "localRotation": {
+              "_$type": "Quaternion"
+            }
+          }
+        },
+        {
+          "_$id": "pltrdg29",
+          "_$prefab": "fa978fdd-6da7-428d-9917-98519471515c",
+          "name": "Sprite3D_3",
+          "active": true,
+          "layer": 0,
+          "transform": {
+            "localPosition": {
+              "_$type": "Vector3",
+              "x": 1,
+              "y": 1
+            },
+            "localRotation": {
+              "_$type": "Quaternion"
+            }
+          }
         }
       ]
     }

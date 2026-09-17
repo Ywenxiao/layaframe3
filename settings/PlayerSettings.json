@@ -7,13 +7,15 @@
   "modules": {
     "laya.ui": true,
     "laya.spine": true,
+    "laya.bridge": true,
     "laya.d3": true,
-    "laya.trail3D": true,
-    "laya.bridge": true
+    "laya.light2D": true
   },
   "addons": {
-    "laya.ui": "ui2"
+    "laya.ui": "ui2",
+    "laya.navMesh": "wasm"
   },
+  "physics2dModule": "laya.box2D.wasm",
   "splash": {
     "image": "assets/resources/layaAir.png",
     "fit": "center"
