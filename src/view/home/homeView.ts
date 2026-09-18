@@ -8,7 +8,7 @@ export class homeView extends homeViewBase implements IView {
 
     onInit(): void {
         LogMgr.log("homeView onInit");
-        this.img.onClick(this, this.onTweenClick);
+        // this.img.onClick(this, this.onTweenClick);
     }
 
     onShow(...args: any[]): void {

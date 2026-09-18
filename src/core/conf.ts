@@ -5,7 +5,7 @@ export class conf {
 
     static mLoginTickKey: string;
 
-    static readonly version = '0.0.1';
+    static readonly version = 1000;
 
     static readonly release = false;
 

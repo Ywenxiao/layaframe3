@@ -2,160 +2,91 @@
   "default": {
     "width": 1916,
     "height": 953,
-    "id": "uUt0BokC",
+    "id": "-tfeeR76",
     "layout": 1,
     "children": [
       {
-        "width": 1916,
-        "height": 953,
-        "id": "OMNVdDuX",
+        "width": 289,
+        "height": 853,
+        "id": "7qp8mq2g",
         "layout": 2,
         "children": [
           {
-            "width": 1916,
-            "height": 953,
-            "id": "kxI_pBKk",
-            "layout": 1,
+            "width": 289,
+            "height": 284,
+            "id": "7yjnpdum",
+            "selected": 0,
             "children": [
-              {
-                "width": 289,
-                "height": 953,
-                "id": "7qp8mq2g",
-                "layout": 2,
-                "children": [
-                  {
-                    "width": 289,
-                    "height": 478,
-                    "id": "7yjnpdum",
-                    "selected": 0,
-                    "children": [
-                      "HierarchyPanel"
-                    ]
-                  },
-                  {
-                    "width": 289,
-                    "height": 471,
-                    "id": "7q7fz5d1",
-                    "selected": 0,
-                    "children": [
-                      "ProjectPanel",
-                      "WidgetsPanel"
-                    ]
-                  }
-                ]
-              },
-              {
-                "width": 1091,
-                "height": 953,
-                "id": "bXVBGBox",
-                "layout": 2,
-                "children": [
-                  {
-                    "width": 1091,
-                    "height": 640,
-                    "id": "Ug2tk3sB",
-                    "layout": 1,
-                    "children": [
-                      {
-                        "width": 1091,
-                        "height": 640,
-                        "id": "zkG3Xl1D",
-                        "layout": 2,
-                        "children": [
-                          {
-                            "width": 1091,
-                            "height": 640,
-                            "id": "7eatv6px",
-                            "selected": 0,
-                            "children": [
-                              "ScenePanel",
-                              "GamePanel",
-                              "AnimatorControllerPanel",
-                              "ProjectSettingsPanel",
-                              "McpServerPanel"
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "width": 1091,
-                    "height": 309,
-                    "id": "cTIBtkMA",
-                    "selected": 0,
-                    "children": [
-                      "ConsolePanel",
-                      "TimelinePanel",
-                      "TileMapPanel",
-                      "TileSetPanel"
-                    ]
-                  }
-                ]
-              },
-              {
-                "width": 528,
-                "height": 953,
-                "id": "0lqhnpck",
-                "layout": 2,
-                "children": [
-                  {
-                    "width": 528,
-                    "height": 953,
-                    "id": "7i01d2q9",
-                    "selected": 0,
-                    "children": [
-                      "InspectorPanel",
-                      "AssetDependencyPanel"
-                    ]
-                  }
-                ]
-              }
+              "HierarchyPanel"
+            ]
+          },
+          {
+            "width": 289,
+            "height": 563,
+            "id": "7q7fz5d1",
+            "selected": 0,
+            "children": [
+              "ProjectPanel",
+              "WidgetsPanel"
             ]
           }
         ]
-      }
-    ],
-    "popups": [
-      {
-        "width": 554,
-        "height": 623,
-        "id": "hScFxZ3j",
-        "selected": 0,
-        "children": [
-          "PreferencesPanel"
-        ],
-        "x": 573,
-        "y": 251,
-        "show": false,
-        "alwaysInFront": true
       },
       {
-        "width": 628,
-        "height": 470,
-        "id": "kMB4k42J",
-        "selected": 1,
+        "width": 799,
+        "height": 853,
+        "id": "bXVBGBox",
+        "layout": 2,
         "children": [
-          "BuildSettingsPanel",
-          "BuildTasksPanel"
-        ],
-        "x": 579,
-        "y": 314,
-        "show": false,
-        "alwaysInFront": true
+          {
+            "width": 799,
+            "height": 601,
+            "id": "Ug2tk3sB",
+            "layout": 1,
+            "children": [
+              {
+                "width": 799,
+                "height": 601,
+                "id": "7eatv6px",
+                "selected": 0,
+                "children": [
+                  "ScenePanel",
+                  "AnimatorControllerPanel",
+                  "GamePanel",
+                  "ProjectSettingsPanel"
+                ]
+              }
+            ]
+          },
+          {
+            "width": 799,
+            "height": 246,
+            "id": "cTIBtkMA",
+            "selected": 0,
+            "children": [
+              "ConsolePanel",
+              "TimelinePanel"
+            ]
+          }
+        ]
       },
       {
-        "width": 802,
-        "height": 607,
-        "id": "0k0leHvq",
-        "selected": 0,
+        "width": 303,
+        "height": 853,
+        "id": "0lqhnpck",
+        "layout": 2,
         "children": [
-          "PackageManagerPanel"
-        ],
-        "x": 538,
-        "y": 181,
-        "show": false,
-        "alwaysInFront": true
+          {
+            "width": 303,
+            "height": 853,
+            "id": "7i01d2q9",
+            "selected": 0,
+            "children": [
+              "InspectorPanel",
+              "AssetDependencyPanel"
+            ]
+          }
+        ]
       }
     ]
   }

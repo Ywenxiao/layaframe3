@@ -1,3 +1,4 @@
+import IsType from "../utils/IsType";
 import { ecs } from "./ECS";
 import { ECSMask } from "./ECSMask";
 import { CompCtor, CompType, ECSModel } from "./ECSModel";
@@ -168,13 +169,12 @@ export class ECSEntity {
             broadcastCompAddOrRemove(this, compTid);
 
             return comp;
-        }
-        else {
+        } else {
             let tmpCtor = (ctor.constructor as CompCtor<T>);
             let compTid = tmpCtor.tid;
             // console.assert(compTid !== -1 || !compTid, '组件未注册！');
             // console.assert(this.compTid2Ctor.has(compTid), '已存在该组件！');
-            if (compTid === -1 || compTid == null) throw Error(`【${this.name}】实体【${tmpCtor.name}】组件未注册`);
+            if (compTid === -1 || IsType.nil(compTid)) throw Error(`【${this.name}】实体【${tmpCtor.name}】组件未注册`);
             if (this.compTid2Ctor.has(compTid)) throw Error(`【${this.name}】实体【${tmpCtor.name}】组件已经存在`);
 
             this.mask.set(compTid);

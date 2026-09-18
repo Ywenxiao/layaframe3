@@ -55,7 +55,7 @@ export default class LogMgr {
     private static getLevelName(level: LogLevel) {
         switch (level) {
             case LogLevel.LOG:
-                return "[LOG]";
+                return "" /* "[LOG]" */;
             case LogLevel.NetRequest:
                 return "[NetRequest]";
             case LogLevel.NetResponse:

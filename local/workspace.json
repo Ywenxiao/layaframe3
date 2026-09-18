@@ -28,12 +28,14 @@
       "../src/view",
       "../src/view/map",
       "cdn/map",
-      "view/home"
+      "view/home",
+      "view/loading",
+      "patch"
     ],
     "twoColumn": false,
     "firstColumnWidth": 289,
     "iconScale": 0,
-    "selected": "c13c1b8e-c516-4a0f-98ad-e356f45f0365"
+    "selected": "add0cd67-7b42-41a1-8026-e2072c96183f"
   },
   "ConsolePanel": {
     "collapse": true
@@ -59,7 +61,7 @@
     "height": 429
   },
   "y": {},
-  "playButtonBehavior": "startup",
+  "playButtonBehavior": "current",
   "playUsingHttps": false,
   "S": {},
   "x": {},

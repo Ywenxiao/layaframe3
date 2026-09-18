@@ -29,6 +29,3 @@ export enum ContextType {
     SYSTEM = 3,
 }
 
-export function isNil(v) {
-    return v === null || v === undefined;
-}

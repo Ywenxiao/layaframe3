@@ -102,23 +102,20 @@ export class ViewInfo {
 
         logUI("generate ui from create", this.url);
 
-        this.pms_ui = Laya.loader
-            .load(this.url)
-            .then((p: Laya.Prefab) => {
-                if (!p) {
-                    errUI("load ui error", this.url);
-                    return null;
-                }
+        this.pms_ui = Laya.loader.load(this.url).then((p: Laya.Prefab) => {
+            if (!p) {
+                errUI("load ui error", this.url);
+                return null;
+            }
 
 
-                this.ui = p.create() as IView;
-                this.pms_ui = null;
-                return this.ui as any;
-            })
-            .catch(() => {
-                this.pms_ui = null;
-                logUI("load ui error", this.url);
-            })
+            this.ui = p.create() as IView;
+            this.pms_ui = null;
+            return this.ui as any;
+        }).catch(() => {
+            this.pms_ui = null;
+            logUI("load ui error", this.url);
+        })
 
         return this.pms_ui;
     }
@@ -326,13 +323,11 @@ export class UIManager extends WITHCONTEXT(Laya.EventDispatcher) {
         view.zIndex = option.zIndex ?? 0;
         view.zOrder = option.zOrder ?? 0;
 
-        if (view instanceof Laya.Scene) {
-            Laya.stage.addChild(view);
-        } else {
-            let parent = option.parent || this.getLayer(info.layer);
-            parent.addChild(view);
+        let parent = option.parent || this.getLayer(info.layer);
+        parent.addChild(view);
+        if (view["_scene3D"]) {
+            Laya.stage.addChildAt(view["_scene3D"], 0);
         }
-
 
         this.define_init(info);
         view.onShow?.(...(option.data || []));

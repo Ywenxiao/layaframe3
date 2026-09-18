@@ -1,5 +1,5 @@
-import { ContextType, IContext, isNil } from "./DefineTypes";
-import LogMgr from "./LogMgr";
+import IsType from "../utils/IsType";
+import { ContextType, IContext } from "./DefineTypes";
 
 // type InjectClass<T = any> = new () => T;
 
@@ -202,7 +202,7 @@ export function DISPATCH(event: keyof IContext, ...args: any[]) {
 export function WITHCONTEXT<TBase extends Constructor>(Base: TBase): new (...args: ConstructorParameters<TBase>) => InstanceType<TBase> & Injectable;
 export function WITHCONTEXT(): typeof Injectable;
 export function WITHCONTEXT(Base?: any) {
-    if (isNil(Base)) return Injectable;
+    if (IsType.nil(Base)) return Injectable;
 
     class ContextInject extends Base implements Injectable {
     }

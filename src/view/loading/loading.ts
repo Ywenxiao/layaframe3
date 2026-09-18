@@ -22,13 +22,6 @@ export class loading extends loadingBase implements IView {
         this.btn_select.icon = "atlas/comp/button.png";
         this.btn_select.onClick(this, this.onTweenClick);
 
-        if (apk.isPad()) {
-            let img = new Laya.GImage();
-            img.src = apk.resCDN() + "bgs/pad_bg.jpg";
-            img.size(Laya.stage.width, Laya.stage.height);
-            Laya.stage.addChildAt(img, 0);
-        }
-
         Laya.loader.fetch("resources/apk/version.txt", Laya.Loader.TEXT).then((text: any) => {
             this.txt_version.text = text;
         });
